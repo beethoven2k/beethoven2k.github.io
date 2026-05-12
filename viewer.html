@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>노트 뷰어</title>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<style>
+  :root {
+    --bg:   #07090f; --bg2: #0d1017; --bg3: #131720;
+    --gold: #c8a84b; --gold-dim: #8a7235;
+    --teal: #2eb8a0;
+    --text: #dcd7cc; --text-muted: #8a8578;
+    --border: #2a2d38;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif;
+    line-height: 1.85;
+    padding: 0 1rem 4rem;
+  }
+
+  /* ── 헤더 ── */
+  header {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(7,9,15,0.96);
+    border-bottom: 1px solid var(--border);
+    padding: 0.85rem 2rem;
+    display: flex; align-items: center; gap: 1.5rem;
+  }
+  .back-btn {
+    font-family: "Courier New", monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .back-btn:hover { color: var(--gold); }
+  .back-btn::before { content: "← "; }
+  #note-title-header {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ── 본문 ── */
+  main {
+    max-width: 740px;
+    margin: 3rem auto 0;
+    padding: 0 1rem;
+  }
+
+  /* ── 마크다운 스타일 ── */
+  #content h1 { font-size: 2rem; font-weight: 400; color: #f0ece0; margin: 2rem 0 0.6rem; line-height: 1.2; }
+  #content h2 { font-size: 1.45rem; font-weight: 400; color: #e8e4d8; margin: 2.2rem 0 0.5rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+  #content h3 { font-size: 1.15rem; font-weight: 400; color: #ddd8cc; margin: 1.8rem 0 0.4rem; }
+  #content h4 { font-size: 1rem; color: var(--gold-dim); margin: 1.4rem 0 0.3rem; letter-spacing: 0.04em; }
+  #content p  { margin-bottom: 1rem; font-size: 0.97rem; color: var(--text); }
+  #content a  { color: var(--teal); text-decoration: none; border-bottom: 1px solid rgba(46,184,160,0.3); }
+  #content a:hover { border-bottom-color: var(--teal); }
+
+  #content ul, #content ol { padding-left: 1.8rem; margin-bottom: 1rem; }
+  #content li { margin-bottom: 0.35rem; font-size: 0.97rem; color: var(--text); }
+
+  #content blockquote {
+    border-left: 3px solid var(--gold-dim);
+    padding: 0.6rem 1.2rem;
+    margin: 1.2rem 0;
+    background: var(--bg2);
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  #content code {
+    font-family: "Courier New", monospace;
+    font-size: 0.88rem;
+    background: var(--bg3);
+    color: #c8e6c9;
+    padding: 0.15rem 0.45rem;
+    border-radius: 3px;
+  }
+  #content pre {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold-dim);
+    padding: 1rem 1.2rem;
+    overflow-x: auto;
+    margin: 1.2rem 0;
+  }
+  #content pre code { background: none; padding: 0; color: #d4e6d4; font-size: 0.85rem; }
+
+  #content hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+
+  #content table { width: 100%; border-collapse: collapse; margin: 1.2rem 0; font-size: 0.9rem; }
+  #content th { background: var(--bg3); color: var(--gold); font-weight: 400; padding: 0.6rem 0.9rem; border: 1px solid var(--border); text-align: left; }
+  #content td { padding: 0.55rem 0.9rem; border: 1px solid var(--border); color: var(--text); }
+  #content tr:nth-child(even) td { background: var(--bg2); }
+
+  /* 정의/정리 박스 — > [!definition] 스타일 */
+  #content .callout-def {
+    border-left: 3px solid var(--gold);
+    background: rgba(200,168,75,0.06);
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+  }
+
+  /* ── 로딩 / 에러 ── */
+  .loading { color: var(--text-muted); font-family: "Courier New", monospace; font-size: 0.85rem; letter-spacing: 0.12em; text-align: center; padding: 4rem 0; }
+  .error   { color: #b46464; font-family: "Courier New", monospace; font-size: 0.85rem; text-align: center; padding: 4rem 0; line-height: 1.9; }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="back-btn" href="index.html">홈으로</a>
+  <span id="note-title-header"></span>
+</header>
+
+<main>
+  <div id="content"><div class="loading">노트를 불러오는 중 ...</div></div>
+</main>
+
+<script>
+const params = new URLSearchParams(location.search);
+const file   = params.get('file');
+
+if (!file) {
+  document.getElementById('content').innerHTML =
+    '<div class="error">불러올 파일이 지정되지 않았습니다.<br>홈으로 돌아가세요.</div>';
+} else {
+  const rawBase = 'https://raw.githubusercontent.com/beethoven2k/beethoven2k.github.io/main/';
+  const url     = rawBase + file;
+
+  const name = file.split('/').pop().replace(/\.md$/i, '');
+  document.title = name + ' — 수학 공부 노트';
+  document.getElementById('note-title-header').textContent = name;
+
+  fetch(url)
+    .then(r => {
+      if (!r.ok) throw new Error(r.status);
+      return r.text();
+    })
+    .then(md => {
+      document.getElementById('content').innerHTML = marked.parse(md);
+      if (window.MathJax) MathJax.typesetPromise();
+    })
+    .catch(() => {
+      document.getElementById('content').innerHTML =
+        '<div class="error">파일을 불러올 수 없습니다.<br>' +
+        '파일이 set-theory/ 폴더 안에 있는지 확인해주세요.<br><br>' +
+        '시도한 경로: ' + file + '</div>';
+    });
+}
+</script>
+</body>
+</html>
