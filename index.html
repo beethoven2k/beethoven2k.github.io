@@ -745,62 +745,10 @@ MathJax = {
     <div class="sec-label">Recent Notes</div>
     <h2>최근 기록</h2>
     <div class="rule"></div>
-    <div class="notes-list fadeup">
-
-      <div class="note-item">
-        <span class="note-date">2026.05.12</span>
-        <a href="set-theory/07 - 순서수와 그 연산.html" class="note-title">
-          순서수와 그 연산
-          <span class="note-badge analysis">집합론</span>
-        </a>
-        <span class="note-arrow">→</span>
+    <div class="notes-list fadeup" id="recent-notes-list">
+      <div style="font-family:'Courier New',monospace;font-size:0.78rem;color:var(--text-muted);padding:2rem 0;letter-spacing:0.1em;">
+        불러오는 중 ...
       </div>
-
-      <div class="note-item">
-        <span class="note-date">2026.05.12</span>
-        <a href="set-theory/06 - 선택공리와 동치명제.html" class="note-title">
-          선택공리와 동치명제
-          <span class="note-badge analysis">집합론</span>
-        </a>
-        <span class="note-arrow">→</span>
-      </div>
-
-      <div class="note-item">
-        <span class="note-date">2026.05.12</span>
-        <a href="set-theory/05 - 집합의 크기.html" class="note-title">
-          집합의 크기
-          <span class="note-badge analysis">집합론</span>
-        </a>
-        <span class="note-arrow">→</span>
-      </div>
-
-      <div class="note-item">
-        <span class="note-date">2026.05.12</span>
-        <a href="notes.html" class="note-title">
-          정사영
-          <span class="note-badge algebra">선형대수학</span>
-        </a>
-        <span class="note-arrow">→</span>
-      </div>
-
-      <div class="note-item">
-        <span class="note-date">2026.05.12</span>
-        <a href="notes.html" class="note-title">
-          외적공식의 탄생
-          <span class="note-badge algebra">선형대수학</span>
-        </a>
-        <span class="note-arrow">→</span>
-      </div>
-
-      <div class="note-item">
-        <span class="note-date">2026.05.12</span>
-        <a href="notes.html" class="note-title">
-          내적과 직교성
-          <span class="note-badge algebra">선형대수학</span>
-        </a>
-        <span class="note-arrow">→</span>
-      </div>
-
     </div>
   </div>
 </section>
@@ -946,6 +894,137 @@ for (let w = 0; w < 53; w++) {
 }
 html += '</div>';
 grid.innerHTML = html;
+
+/* ── RECENT NOTES: GitHub API 자동 로딩 ───────────────────── */
+const REPO = 'beethoven2k/beethoven2k.github.io';
+const API  = 'https://api.github.com/repos/' + REPO;
+
+async function fetchDir(path) {
+  try {
+    const r = await fetch(`${API}/contents/${path}`);
+    if (!r.ok) return [];
+    return await r.json();
+  } catch { return []; }
+}
+
+function cleanTitle(name, ext) {
+  return name
+    .replace(ext, '')
+    .replace(/^\d+\s*-\s*/, '')
+    .replace(/_/g, ' ')
+    .trim();
+}
+
+function formatDate(iso) {
+  return iso ? iso.slice(0, 10).replace(/-/g, '.') : '';
+}
+
+async function loadRecentNotes() {
+  const container = document.getElementById('recent-notes-list');
+  if (!container) return;
+
+  // 1) 디렉토리 목록 병렬 조회
+  const [setFiles, linearFiles, calcFiles, recentCommits] = await Promise.all([
+    fetchDir('set-theory'),
+    fetchDir('pdf/%EC%84%A0%ED%98%95%EB%8C%80%EC%88%98%ED%95%99'),
+    fetchDir('pdf/%EB%8B%A4%EB%B3%80%EC%88%98%EB%AF%B8%EC%A0%81%EB%B6%84%ED%95%99'),
+    fetch(`${API}/commits?per_page=30`).then(r => r.ok ? r.json() : []).catch(() => []),
+  ]);
+
+  // 2) 커밋에서 최근 변경 파일 추적
+  const recentFiles = new Map(); // filename → date
+  for (const c of recentCommits) {
+    const date = c.commit?.author?.date?.slice(0, 10) || '';
+    try {
+      const detail = await fetch(c.url).then(r => r.json());
+      for (const f of detail.files || []) {
+        if (!recentFiles.has(f.filename)) {
+          recentFiles.set(f.filename, date);
+        }
+      }
+    } catch {}
+    if (recentFiles.size >= 30) break;
+  }
+
+  // 3) 항목 생성
+  const items = [];
+
+  // 집합론 HTML
+  (setFiles || [])
+    .filter(f => f.type === 'file' && f.name.endsWith('.html'))
+    .sort((a, b) => b.name.localeCompare(a.name))
+    .forEach(f => {
+      const date = recentFiles.get(f.path) || recentFiles.get('set-theory/' + f.name) || '';
+      items.push({
+        title: cleanTitle(f.name, '.html'),
+        href:  'set-theory/' + f.name,
+        badge: '집합론',
+        cls:   'analysis',
+        date,
+        sort:  f.name,
+      });
+    });
+
+  // 선형대수학 PDF
+  (linearFiles || [])
+    .filter(f => f.type === 'file' && f.name.endsWith('.pdf'))
+    .forEach(f => {
+      const date = recentFiles.get(f.path) || '';
+      items.push({
+        title: cleanTitle(f.name, '.pdf'),
+        href:  'notes.html',
+        badge: '선형대수학',
+        cls:   'algebra',
+        date,
+        sort:  f.name,
+      });
+    });
+
+  // 다변수미적분학 PDF
+  (calcFiles || [])
+    .filter(f => f.type === 'file' && f.name.endsWith('.pdf'))
+    .forEach(f => {
+      const date = recentFiles.get(f.path) || '';
+      items.push({
+        title: cleanTitle(f.name, '.pdf'),
+        href:  'notes.html',
+        badge: '다변수미적분학',
+        cls:   'topology',
+        date,
+        sort:  f.name,
+      });
+    });
+
+  // 4) 날짜 기준 정렬 (날짜 없으면 이름 역순)
+  items.sort((a, b) => {
+    if (a.date && b.date) return b.date.localeCompare(a.date);
+    if (a.date) return -1;
+    if (b.date) return 1;
+    return b.sort.localeCompare(a.sort);
+  });
+
+  // 5) 렌더링 (최대 6개)
+  if (items.length === 0) {
+    container.innerHTML = '<div style="font-family:\'Courier New\',monospace;font-size:0.78rem;color:var(--text-muted);padding:2rem 0;">기록이 없습니다.</div>';
+    return;
+  }
+
+  container.innerHTML = items.slice(0, 6).map(item => `
+    <div class="note-item">
+      <span class="note-date">${item.date || '—'}</span>
+      <a href="${item.href}" class="note-title">
+        ${item.title}
+        <span class="note-badge ${item.cls}">${item.badge}</span>
+      </a>
+      <span class="note-arrow">→</span>
+    </div>
+  `).join('');
+
+  // fadeup 재적용
+  container.classList.add('visible');
+}
+
+loadRecentNotes();
 
 /* ── INTERSECTION OBSERVER: fade up ───────────────────────── */
 const observer = new IntersectionObserver(entries => {
