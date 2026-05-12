@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>명사가 아닌 동사로 — 편린</title>
+<style>
+  :root {
+    --bg:#07090f; --bg2:#0d1017; --bg3:#131720;
+    --gold:#c8a84b; --gold-dim:#8a7235;
+    --teal:#2eb8a0;
+    --text:#dcd7cc; --muted:#8a8578; --border:#2a2d38;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif;
+    line-height: 2;
+    min-height: 100vh;
+  }
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(7,9,15,0.97);
+    border-bottom: 1px solid var(--border);
+    padding: .85rem 2rem;
+    display: flex; align-items: center; gap: 1.5rem;
+  }
+  .back {
+    font-family: "Courier New", monospace;
+    font-size: .75rem; letter-spacing: .12em;
+    color: var(--muted); text-decoration: none;
+    text-transform: uppercase; transition: color .2s;
+  }
+  .back:hover { color: var(--gold); }
+  .back::before { content: "← "; }
+  .nav-label {
+    font-family: "Courier New", monospace;
+    font-size: .75rem; color: var(--muted); letter-spacing: .1em;
+  }
+  article {
+    max-width: 640px;
+    margin: 5rem auto 8rem;
+    padding: 0 1.5rem;
+  }
+  .post-header { margin-bottom: 3.5rem; }
+  .post-meta {
+    font-family: "Courier New", monospace;
+    font-size: 0.7rem; color: var(--muted);
+    letter-spacing: 0.1em; margin-bottom: 1.4rem;
+    display: flex; gap: 1.4rem; flex-wrap: wrap;
+  }
+  h1 {
+    font-size: 2rem; font-weight: 400;
+    color: #f0ece0; line-height: 1.3;
+    margin-bottom: 1.2rem;
+  }
+  .post-lead {
+    font-size: 1rem; color: var(--muted);
+    font-style: italic; line-height: 1.9;
+    border-left: 2px solid var(--gold-dim);
+    padding-left: 1.2rem;
+  }
+  .post-body p {
+    margin-bottom: 1.7rem;
+    font-size: 1rem; color: var(--text);
+    line-height: 2.05; word-break: keep-all;
+  }
+  .post-body strong { color: #f0ece0; }
+  .post-body em { color: var(--gold-dim); font-style: italic; }
+  .post-body hr {
+    border: none; border-top: 1px solid var(--border);
+    margin: 2.5rem 0;
+  }
+  .post-body blockquote {
+    border-left: 2px solid var(--gold-dim);
+    padding: 0.7rem 1.4rem;
+    margin: 2rem 0;
+    color: var(--muted);
+    font-style: italic; line-height: 1.85;
+  }
+  .video-wrap {
+    margin: 2.5rem 0;
+    border: 1px solid var(--border);
+    background: var(--bg2);
+    padding: 1.2rem 1.4rem;
+  }
+  .video-label {
+    font-family: "Courier New", monospace;
+    font-size: 0.68rem; color: var(--gold-dim);
+    letter-spacing: 0.15em; text-transform: uppercase;
+    margin-bottom: 0.7rem;
+  }
+  .video-link {
+    color: var(--teal); font-size: 0.88rem;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(46,184,160,0.3);
+    word-break: break-all;
+    transition: border-color 0.2s;
+  }
+  .video-link:hover { border-bottom-color: var(--teal); }
+  .post-tags {
+    display: flex; gap: 0.6rem; flex-wrap: wrap;
+    margin-top: 3rem; padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .post-tag {
+    font-family: "Courier New", monospace;
+    font-size: 0.65rem; padding: 0.2rem 0.6rem;
+    border: 1px solid var(--border);
+    color: var(--muted); letter-spacing: 0.06em;
+  }
+  .post-nav {
+    display: flex; justify-content: space-between;
+    margin-top: 2rem; padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    font-family: "Courier New", monospace; font-size: 0.75rem;
+  }
+  .post-nav a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .post-nav a:hover { color: var(--gold); }
+  .post-nav .prev::before { content: "← "; }
+  .post-nav .next::after  { content: " →"; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="back" href="../pyeonlin.html">편린으로</a>
+  <span class="nav-label">편린 · 片鱗</span>
+</nav>
+
+<article>
+  <header class="post-header">
+    <div class="post-meta">
+      <span>2026.05.12</span>
+      <span>월요일</span>
+    </div>
+    <h1>명사가 아닌 동사로</h1>
+    <p class="post-lead">
+      "인간이래 그런데 인간답지 않아." — 오늘은 주인공 변은아의 이 대사가
+      명사라는 껍데기만 남은 내 모습을 바라보게 했다.
+    </p>
+  </header>
+
+  <div class="post-body">
+
+    <p>"우리는 이름으로 불릴 때 인간일까요, 아니면 그 이름에 걸맞은 행동을 할 때 인간일까요?" 오늘은 주인공 변은아의 대사가 인간답지 않은 나의 무능을 바라보게 했습니다.</p>
+
+    <p>가끔은 도로 위를 달리는 제 차보다 제 이름 앞에 붙은 '명사'들이 더 무겁게 느껴질 때가 있습니다. 한때는 '교사'라는 명사를 가슴에 달고 있었고, 지금은 '운수업'이라는 명사 속에 저를 밀어 넣었으며, 밤마다 '수학 학습자'라는 명사를 붙들고 씨름합니다.</p>
+
+    <p>하지만 그 화려한 이름표들과는 달리, 정작 아이의 닫힌 마음 앞에서 아무런 해답도 찾지 못했던 순간이나, 어려운 수식 한 줄 앞에서 쩔쩔매는 저 자신을 마주할 때면 존재 자체가 지워지는 듯한 공포를 느낍니다. "선생님이라면서요?", "수학 전공했다면서요?"라는 환청이 들리는 것만 같은 그 순간, 저는 은아가 말한 '기능을 상실한 존재의 서글픔'을 뼈아프게 실감합니다.</p>
+
+    <blockquote>야구선수인데 공을 못 던지고, 요리사인데 요리를 못 하는 상태. 톱니바퀴가 빠져버려 시간이라는 본질을 만들어내지 못하는 텅 빈 시계처럼, 저 또한 명사라는 껍데기만 남은 채 '동사'를 잃어버린 건 아닐까 자문하곤 했습니다.</blockquote>
+
+    <p>하지만 오늘 밤, 사색의 끝에서 저는 은아의 그 아픈 일갈 뒤에 숨겨진 또 다른 진실을 봅니다. 제가 이토록 괴로운 이유는, 역설적으로 제가 여전히 '인간답고' 싶어 하기 때문이라는 사실을요. 정말 무능한 사람은 자신의 실력 없음에 눈물 흘리지 않습니다. 정말 인간답지 않은 사람은 자신의 명사가 껍데기뿐이라는 사실에 부끄러워하지도 않죠.</p>
+
+    <p><em>"인간인데 인간답지 않아"</em>라고 읊조리며 아파하는 이 마음이야말로, 제 안에 아직 '이름값'을 해내고 싶어 하는 뜨거운 <strong>동사(動詞)</strong>가 살아있다는 가장 확실한 증거였습니다.</p>
+
+    <hr>
+
+    <p>돌이켜보면, 명사라는 껍데기 뒤에 숨어 마땅히 행해야 할 동사들을 놓쳐버렸던 과거의 모든 일들이 너무나 미안합니다. 그 시절 제 이름이 닿았던 사람들에게, 그리고 그 무게를 감당하지 못했던 제 자신에게 말이죠. 하지만 그 깊은 미안함이야말로 제가 다시 시작할 수 있는 유일한 통로임을 깨닫습니다. 미안함이 고이는 곳에서부터 비로소 진정한 동사가 시작되기 때문입니다.</p>
+
+    <p>무능은 결과가 아니라, '더 이상 애쓰지 않기로 한 포기'에서 시작되는 것임을 이제는 압니다. 과거의 허물을 미안함으로 씻어내고, 이제는 조금 더 인간답게 살아가고 싶습니다. 화려한 명사로 남기보다는, 서툴더라도 정직하게 움직이는 <strong>동사로 살아가고 싶습니다.</strong></p>
+
+    <p>제 삶이라는 함수 위에서, 그 어떤 화려한 상수(명사)보다 빛나는 건 오늘 하루를 묵묵히 버텨내고 사색하며 움직인 저의 정직한 변수(동사)들이었음을 믿기로 했습니다. 타인의 마음에 들기 위한 인생이 아니라, 적어도 제 스스로의 부끄러움과 정면으로 마주하며 한 걸음 더 '인간'에게 가까워지는 삶을 저는 계속 살아내 보려 합니다.</p>
+
+    <div class="video-wrap">
+      <div class="video-label">함께 본 영상</div>
+      <a class="video-link" href="https://youtu.be/Iuyjz83mq2U" target="_blank">
+        https://youtu.be/Iuyjz83mq2U ↗
+      </a>
+    </div>
+
+  </div>
+
+  <div class="post-tags">
+    <span class="post-tag">사색</span>
+    <span class="post-tag">명사와 동사</span>
+    <span class="post-tag">인간다움</span>
+  </div>
+
+  <div class="post-nav">
+    <span></span>
+    <span style="font-family:'Courier New',monospace;font-size:0.7rem;color:var(--muted);">첫 번째 편린</span>
+  </div>
+</article>
+
+</body>
+</html>
