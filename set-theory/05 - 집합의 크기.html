@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>05 — 집합의 크기 — 집합론</title>
+
+<script>
+MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+  processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea']}};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+<style>
+:root{--bg:#07090f;--bg2:#0d1017;--bg3:#131720;--gold:#c8a84b;--gold-dim:#8a7235;
+  --teal:#2eb8a0;--teal-dim:#1a6e60;--text:#dcd7cc;--muted:#8a8578;--border:#2a2d38;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);
+  font-family:"Palatino Linotype","Book Antiqua",Georgia,serif;line-height:1.85;min-height:100vh;}
+nav{position:sticky;top:0;z-index:50;background:rgba(7,9,15,0.97);
+  border-bottom:1px solid var(--border);padding:.85rem 2rem;
+  display:flex;align-items:center;gap:1.5rem;}
+.back{font-family:"Courier New",monospace;font-size:.75rem;letter-spacing:.12em;
+  color:var(--muted);text-decoration:none;text-transform:uppercase;transition:color .2s;}
+.back:hover{color:var(--gold);}
+.back::before{content:"← ";}
+.nav-title{font-size:.85rem;color:var(--muted);}
+main{max-width:740px;margin:3rem auto 5rem;padding:0 1.5rem;}
+h1{font-size:2rem;font-weight:400;color:#f0ece0;margin:2rem 0 .6rem;line-height:1.2;}
+h2{font-size:1.45rem;font-weight:400;color:#e8e4d8;margin:2.4rem 0 .5rem;
+  padding-bottom:.4rem;border-bottom:1px solid var(--border);}
+h3{font-size:1.15rem;font-weight:400;color:#ddd8cc;margin:1.8rem 0 .4rem;}
+h4{font-size:1rem;color:var(--gold-dim);margin:1.4rem 0 .3rem;letter-spacing:.04em;}
+p{margin-bottom:1rem;font-size:.97rem;}
+a{color:var(--teal);text-decoration:none;border-bottom:1px solid rgba(46,184,160,.3);}
+a:hover{border-bottom-color:var(--teal);}
+ul,ol{padding-left:1.8rem;margin-bottom:1rem;}
+li{margin-bottom:.35rem;font-size:.97rem;}
+li input[type=checkbox]{margin-right:.5rem;}
+blockquote{border-left:3px solid var(--gold-dim);padding:.6rem 1.2rem;margin:1.2rem 0;
+  background:var(--bg2);color:var(--muted);font-style:italic;}
+code{font-family:"Courier New",monospace;font-size:.88rem;background:var(--bg3);
+  color:#c8e6c9;padding:.15rem .45rem;border-radius:3px;}
+pre{background:var(--bg3);border:1px solid var(--border);border-left:3px solid var(--gold-dim);
+  padding:1rem 1.2rem;overflow-x:auto;margin:1.2rem 0;}
+pre code{background:none;padding:0;color:#d4e6d4;font-size:.85rem;}
+hr{border:none;border-top:1px solid var(--border);margin:2rem 0;}
+table{width:100%;border-collapse:collapse;margin:1.2rem 0;font-size:.9rem;}
+th{background:var(--bg3);color:var(--gold);font-weight:400;
+  padding:.6rem .9rem;border:1px solid var(--border);text-align:left;}
+td{padding:.55rem .9rem;border:1px solid var(--border);}
+tr:nth-child(even) td{background:var(--bg2);}
+.callout{border-left:3px solid var(--gold-dim);background:var(--bg2);
+  padding:.9rem 1.2rem .9rem 1.4rem;margin:1.4rem 0;border-radius:0 4px 4px 0;}
+.callout-label{font-family:"Courier New",monospace;font-size:.68rem;
+  letter-spacing:.18em;text-transform:uppercase;font-weight:600;margin-bottom:.55rem;}
+.callout p{margin-bottom:.4rem;}.callout p:last-child{margin-bottom:0;}
+.callout table{margin:.6rem 0;}
+.collapsible-toggle{font-family:"Courier New",monospace;font-size:.72rem;
+  letter-spacing:.1em;color:var(--muted);background:none;border:none;
+  cursor:pointer;padding:0;margin-top:.3rem;display:block;}
+.collapsible-toggle:hover{color:var(--gold);}
+.collapsible-body{display:none;margin-top:.6rem;}
+.collapsible-body.open{display:block;}
+.nav-links{display:flex;gap:1.5rem;margin-top:3rem;padding-top:1.5rem;
+  border-top:1px solid var(--border);font-family:"Courier New",monospace;font-size:.78rem;}
+.nav-links a{border:1px solid var(--border);padding:.5rem 1rem;
+  color:var(--muted);text-decoration:none;border-bottom:1px solid var(--border);transition:all .2s;}
+.nav-links a:hover{border-color:var(--gold-dim);color:var(--gold);}
+.nav-links .prev::before{content:"← ";}
+.nav-links .next::after{content:" →";}
+.nav-links .spacer{flex:1;}
+</style>
+</head>
+<body>
+<nav>
+  <a class="back" href="../index.html">홈으로</a>
+  <span class="nav-title">05 — 집합의 크기</span>
+</nav>
+<main>
+<h1>05 — 집합의 크기</h1>
+<p>← <a href="04 - 관계와 함수.html">04 - 관계와 함수</a> | 다음 → <a href="06 - 선택공리와 동치명제.html">06 - 선택공리와 동치명제</a></p>
+<hr />
+<h2>무한집합과 유한집합</h2>
+<div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 무한집합 · 유한집합 (Dedekind)</div><p>집합 $X$의 진부분집합 $Y$가 존재하고 $X \sim Y$ (일대일 대응)이면 $X$를 <strong>무한집합</strong>이라 한다.<br />
+무한집합이 아닌 집합을 <strong>유한집합</strong>이라 한다.</p>
+<p>[!theorem] 무한·유한집합의 성질<br />
+<strong>(1)</strong> $X$가 무한이고 $X \subset Z$이면 $Z$도 무한집합</p>
+<p><strong>(2)</strong> $X$가 유한이고 $Z \subset X$이면 $Z$도 유한집합</p>
+<p><strong>(3)</strong> $f: X \to Y$가 전단사이면, $X$가 무한 $\iff$ $Y$가 무한</p>
+<p>[!theorem] 유한집합의 특성<br />
+공집합이 아닌 집합 $X$가 유한집합 $\iff$ 적당한 $k \in \mathbb{N}$에 대해<br />
+$X \sim \mathbb{N}_k = {1, 2, \ldots, k}$</p></div>
+<hr />
+<h2>집합의 대등</h2>
+<div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 대등 (Equipotent)</div><p>$X$와 $Y$ 사이에 전단사함수가 존재할 때, $X$와 $Y$가 <strong>대등(equipotent)</strong>하다고 하고<br />
+$$X \sim Y$$<br />
+로 나타낸다.</p>
+<p>[!lemma] 대등은 동치관계<br />
+집합들의 집합 $\mathcal{F}$ 위에서 $R = {(X,Y) \mid X \sim Y}$는 동치관계이다.<br />
+(반사: 항등함수, 대칭: 역함수, 추이: 합성함수)</p>
+<p>[!theorem] 대등과 합집합<br />
+$X \cap Z = \varnothing$, $Y \cap W = \varnothing$이고 $f: X \sim Y$, $g: Z \sim W$이면<br />
+$$f \cup g: X \cup Z \sim Y \cup W$$</p>
+<p>[!theorem] 대등과 Cartesian 곱<br />
+$f: X \sim Y$, $g: Z \sim W$이면 $f \times g: X \times Z \sim Y \times W$</p>
+<p>[!theorem] 대등과 함수 집합<br />
+$f: X \sim Y$, $g: Z \sim W$이면 $X^Z \sim Y^W$</p>
+<p>(전단사 $\Phi: X^Z \to Y^W$는 $\Phi(h) = f \circ h \circ g^{-1}$으로 구성)</p>
+<p>[!lemma] 멱집합과 $2^X$의 대등<br />
+임의의 집합 $X \neq \varnothing$에 대해<br />
+$$\mathcal{P}(X) \sim 2^X = {0,1}^X$$<br />
+(특성함수 $\chi_A(x) = 1\text{ if }x \in A$, $0\text{ if }x \notin A$로 전단사 구성)</p></div>
+<hr />
+<h2>가부번집합</h2>
+<div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 가부번집합 (Countable Set)</div><p>$X \sim \mathbb{N}$인 집합을 <strong>가부번집합(countable/denumerable set)</strong>이라 한다.</p>
+<p>[!theorem] 가부번집합의 합집합<br />
+가부번집합 $X = {x_1, x_2, \ldots}$, $Y = {y_1, y_2, \ldots}$가 서로소이면 $X \cup Y$도 가부번집합이다.</p>
+<p>(전단사: $f(n) = x_{(n+1)/2}$ (홀수), $f(n) = y_{n/2}$ (짝수))</p>
+<p>[!theorem] $\mathbb{N} \times \mathbb{N}$은 가부번집합<br />
+<strong>Cantor 짝짓기 함수</strong>:<br />
+$$f(m, n) = \frac{(m+n-2)(m+n-1)}{2} + m$$<br />
+이 전단사함수를 이룬다. ($m+n$ 대각선 방향으로 번호를 매기는 방식)</p>
+<p>[!theorem] $\mathbb{Q}$는 가부번집합<br />
+- $\mathbb{Q}^+$: $\mathbb{N} \times \mathbb{N} \to \mathbb{Q}^+$, $(m,n) \mapsto m/n$이 전사이므로 가부번<br />
+- $\mathbb{Q}^- \sim \mathbb{Q}^+$ (부호 반전)<br />
+- $\mathbb{Q} = \mathbb{Q}^+ \cup \mathbb{Q}^- \cup {0}$ — 가부번집합의 유한 합집합</p>
+<p>[!theorem] 가부번집합의 가산합<br />
+<strong>(1)</strong> 서로소인 가부번집합들의 가산 합집합 $\bigcup_{k=1}^\infty A_k$도 가부번집합</p>
+<p><strong>(2)</strong> 임의의 무한집합 $X$에 대하여 $X$의 가부번 부분집합 $Y$가 존재한다</p></div>
+<hr />
+<h2>비가부번 무한집합</h2>
+<div class="callout" style="border-left-color:#2eb8a0;background:rgba(46,184,160,0.07)"><div class="callout-label" style="color:#2eb8a0">정리 — Cantor의 대각법</div><p>실수 집합 $\mathbb{R}$의 열린구간 $(0, 1)$은 <strong>비가부번 무한집합</strong>이다.</p>
+<p>[!proof]- 증명 (Cantor 대각법)<br />
+$(0,1)$이 가부번집합이라 가정하면, 모든 원소를 $x_1, x_2, x_3, \ldots$으로 나열할 수 있다.</p>
+<p>각 $x_n$을 십진 소수로 표현:<br />
+$$x_n = 0.a_{n1}a_{n2}a_{n3}\cdots$$</p>
+<p>새로운 수 $y = 0.b_1b_2b_3\cdots$를 대각 성분과 다르게:<br />
+$$b_n = \begin{cases} 1 &amp; a_{nn} \neq 1 \ 2 &amp; a_{nn} = 1 \end{cases}$$</p>
+<p>그러면 $y \in (0,1)$이지만 모든 $n$에 대해 $y \neq x_n$ ($n$번째 자리가 다름).<br />
+이는 모든 원소를 나열했다는 가정에 모순. $\square$</p>
+<p>[!theorem] 따름정리<br />
+<strong>(1)</strong> $\mathbb{R}$은 비가부번 무한집합</p>
+<p><strong>(2)</strong> 무리수 집합 $\mathbb{R} \setminus \mathbb{Q}$는 비가부번 무한집합</p>
+<p><strong>(3)</strong> 단위원 $S^1 = {(x,y) \mid x^2 + y^2 = 1}$은 비가부번 무한집합<br />
+(전단사: $f: [0,1) \to S^1$, $f(t) = (\cos 2\pi t, \sin 2\pi t)$)</p>
+<p><strong>(4)</strong> 비가부번 $X$와 가부번 $Y$에 대해 $X - Y \sim X$ (가부번을 제거해도 크기 보존)</p>
+<p><strong>(5)</strong> $\mathbb{R} \setminus \mathbb{Q} \sim \mathbb{R}$</p></div>
+<hr />
+<h2>기수와 기수의 대소</h2>
+<div class="callout" style="border-left-color:#b46464;background:rgba(180,100,100,0.07)"><div class="callout-label" style="color:#b46464">공리 — 기수 공리 (C1~C4)</div><ul>
+<li><strong>C1</strong>: 임의의 집합 $A$에 대해 기수 $\operatorname{card}(A)$가 유일하게 존재한다</li>
+<li><strong>C2</strong>: $A \sim \varnothing \iff \operatorname{card}(A) = 0$</li>
+<li><strong>C3</strong>: $A \sim \mathbb{N}_k$이면 $\operatorname{card}(A) = k$</li>
+<li><strong>C4</strong>: $A \sim B \iff \operatorname{card}(A) = \operatorname{card}(B)$</li>
+</ul>
+<p>[!definition] 기수의 대소<br />
+- $\operatorname{card}(A) \leq \operatorname{card}(B)$: $A$가 $B$의 어떤 부분집합과 대등<br />
+- $\operatorname{card}(A) &lt; \operatorname{card}(B)$: $\leq$이지만 $A \not\sim B$</p></div>
+<p>주요 기수:<br />
+$$\operatorname{card}(\mathbb{N}) = \aleph_0, \qquad \operatorname{card}(\mathbb{R}) = c = 2^{\aleph_0}$$<br />
+$$\aleph_0 &lt; c$$</p>
+<hr />
+<h2>Cantor–Schröder–Bernstein 정리</h2>
+<div class="callout" style="border-left-color:#2eb8a0;background:rgba(46,184,160,0.07)"><div class="callout-label" style="color:#2eb8a0">정리 — Cantor–Schröder–Bernstein (CSB)</div><p>단사함수 $f: A \to B$와 단사함수 $g: B \to A$가 존재하면<br />
+$$A \sim B$$</p>
+<p>[!theorem] CSB의 따름정리<br />
+<strong>(1)</strong> 임의의 두 집합 $A, B$에 대해 $\operatorname{card}(A) &lt; \operatorname{card}(B)$, $=$, $&gt;$ 중 정확히 하나만 성립</p>
+<p><strong>(2)</strong> $A \subset B \subset C$이고 $A \sim C$이면 $A \sim B \sim C$</p>
+<p><strong>(3)</strong> 임의의 무한집합 $A$와 $a \in A$에 대해 $A \sim A - {a}$</p></div>
+<hr />
+<h2>Cantor 정리와 연속체 가설</h2>
+<div class="callout" style="border-left-color:#2eb8a0;background:rgba(46,184,160,0.07)"><div class="callout-label" style="color:#2eb8a0">정리 — Cantor 정리</div><p>임의의 집합 $X$에 대해<br />
+$$\operatorname{card}(X) &lt; \operatorname{card}(\mathcal{P}(X))$$</p>
+<p>[!theorem] 따름정리<br />
+$X$가 가부번집합이면 $\mathcal{P}(X)$는 비가부번 무한집합.</p>
+<p>$X \sim Y$이면 $\operatorname{card}(\mathcal{P}(X)) = \operatorname{card}(\mathcal{P}(Y))$.</p>
+<p>[!hypothesis] 연속체 가설 (Continuum Hypothesis, CH)<br />
+$\aleph_0 &lt; a &lt; 2^{\aleph_0} = c$를 만족하는 초한기수 $a$는 존재하지 않는다.</p>
+<p>[!hypothesis] 일반 연속체 가설 (GCH)<br />
+임의의 초한기수 $a$에 대해 $a &lt; b &lt; 2^a$를 만족하는 초한기수 $b$는 존재하지 않는다.</p>
+<p>[!remark] 독립성<br />
+Gödel(1938)과 Cohen(1963)은 CH가 ZFC 공리계로부터 독립적임을 증명했다.<br />
+즉, CH는 ZFC에서 증명도 반증도 불가능하다.</p></div>
+<hr />
+<h2>기수의 연산</h2>
+<p>기수에는 덧셈, 곱셈, 거듭제곱이 정의된다. 뺄셈과 나눗셈은 정의하지 않는다.</p>
+<div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 기수 연산</div><p>$\operatorname{card}(A) = x$, $\operatorname{card}(B) = y$일 때:</p>
+<ul>
+<li><strong>합</strong>: $x + y = \operatorname{card}(A \cup B)$ ($A \cap B = \varnothing$)</li>
+<li><strong>곱</strong>: $xy = \operatorname{card}(A \times B)$</li>
+<li><strong>거듭제곱</strong>: $x^y = \operatorname{card}(A^B)$ ($A^B$: $B$에서 $A$로의 모든 함수의 집합)</li>
+</ul>
+<p>[!theorem] 기수 연산의 주요 결과<br />
+$$2^{\aleph_0} = c, \qquad \aleph_0 &lt; c = 2^{\aleph_0}$$<br />
+$$c^{\aleph_0} = c^k = c \quad (k \geq 2 \text{ 유한})$$<br />
+$$k^{\aleph_0} = \aleph_0^{\aleph_0} = c$$<br />
+$$a \leq b, x \leq y \Rightarrow a^x \leq b^y$$</p></div>
+<div class="nav-links"><a class="prev" href="04 - 관계와 함수.html">04 - 관계와 함수</a><span class="spacer"></span><a class="next" href="06 - 선택공리와 동치명제.html">06 - 선택공리와 동치명제</a></div>
+</main>
+</body>
+</html>

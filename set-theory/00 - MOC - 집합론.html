@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MOC — 집합론 — 집합론</title>
+
+<script>
+MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+  processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea']}};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+<style>
+:root{--bg:#07090f;--bg2:#0d1017;--bg3:#131720;--gold:#c8a84b;--gold-dim:#8a7235;
+  --teal:#2eb8a0;--teal-dim:#1a6e60;--text:#dcd7cc;--muted:#8a8578;--border:#2a2d38;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);
+  font-family:"Palatino Linotype","Book Antiqua",Georgia,serif;line-height:1.85;min-height:100vh;}
+nav{position:sticky;top:0;z-index:50;background:rgba(7,9,15,0.97);
+  border-bottom:1px solid var(--border);padding:.85rem 2rem;
+  display:flex;align-items:center;gap:1.5rem;}
+.back{font-family:"Courier New",monospace;font-size:.75rem;letter-spacing:.12em;
+  color:var(--muted);text-decoration:none;text-transform:uppercase;transition:color .2s;}
+.back:hover{color:var(--gold);}
+.back::before{content:"← ";}
+.nav-title{font-size:.85rem;color:var(--muted);}
+main{max-width:740px;margin:3rem auto 5rem;padding:0 1.5rem;}
+h1{font-size:2rem;font-weight:400;color:#f0ece0;margin:2rem 0 .6rem;line-height:1.2;}
+h2{font-size:1.45rem;font-weight:400;color:#e8e4d8;margin:2.4rem 0 .5rem;
+  padding-bottom:.4rem;border-bottom:1px solid var(--border);}
+h3{font-size:1.15rem;font-weight:400;color:#ddd8cc;margin:1.8rem 0 .4rem;}
+h4{font-size:1rem;color:var(--gold-dim);margin:1.4rem 0 .3rem;letter-spacing:.04em;}
+p{margin-bottom:1rem;font-size:.97rem;}
+a{color:var(--teal);text-decoration:none;border-bottom:1px solid rgba(46,184,160,.3);}
+a:hover{border-bottom-color:var(--teal);}
+ul,ol{padding-left:1.8rem;margin-bottom:1rem;}
+li{margin-bottom:.35rem;font-size:.97rem;}
+li input[type=checkbox]{margin-right:.5rem;}
+blockquote{border-left:3px solid var(--gold-dim);padding:.6rem 1.2rem;margin:1.2rem 0;
+  background:var(--bg2);color:var(--muted);font-style:italic;}
+code{font-family:"Courier New",monospace;font-size:.88rem;background:var(--bg3);
+  color:#c8e6c9;padding:.15rem .45rem;border-radius:3px;}
+pre{background:var(--bg3);border:1px solid var(--border);border-left:3px solid var(--gold-dim);
+  padding:1rem 1.2rem;overflow-x:auto;margin:1.2rem 0;}
+pre code{background:none;padding:0;color:#d4e6d4;font-size:.85rem;}
+hr{border:none;border-top:1px solid var(--border);margin:2rem 0;}
+table{width:100%;border-collapse:collapse;margin:1.2rem 0;font-size:.9rem;}
+th{background:var(--bg3);color:var(--gold);font-weight:400;
+  padding:.6rem .9rem;border:1px solid var(--border);text-align:left;}
+td{padding:.55rem .9rem;border:1px solid var(--border);}
+tr:nth-child(even) td{background:var(--bg2);}
+.callout{border-left:3px solid var(--gold-dim);background:var(--bg2);
+  padding:.9rem 1.2rem .9rem 1.4rem;margin:1.4rem 0;border-radius:0 4px 4px 0;}
+.callout-label{font-family:"Courier New",monospace;font-size:.68rem;
+  letter-spacing:.18em;text-transform:uppercase;font-weight:600;margin-bottom:.55rem;}
+.callout p{margin-bottom:.4rem;}.callout p:last-child{margin-bottom:0;}
+.callout table{margin:.6rem 0;}
+.collapsible-toggle{font-family:"Courier New",monospace;font-size:.72rem;
+  letter-spacing:.1em;color:var(--muted);background:none;border:none;
+  cursor:pointer;padding:0;margin-top:.3rem;display:block;}
+.collapsible-toggle:hover{color:var(--gold);}
+.collapsible-body{display:none;margin-top:.6rem;}
+.collapsible-body.open{display:block;}
+.nav-links{display:flex;gap:1.5rem;margin-top:3rem;padding-top:1.5rem;
+  border-top:1px solid var(--border);font-family:"Courier New",monospace;font-size:.78rem;}
+.nav-links a{border:1px solid var(--border);padding:.5rem 1rem;
+  color:var(--muted);text-decoration:none;border-bottom:1px solid var(--border);transition:all .2s;}
+.nav-links a:hover{border-color:var(--gold-dim);color:var(--gold);}
+.nav-links .prev::before{content:"← ";}
+.nav-links .next::after{content:" →";}
+.nav-links .spacer{flex:1;}
+</style>
+</head>
+<body>
+<nav>
+  <a class="back" href="../index.html">홈으로</a>
+  <span class="nav-title">MOC — 집합론</span>
+</nav>
+<main>
+<h1>MOC — 집합론</h1>
+<blockquote>
+<p>출처: 집합론 공부를 위한 공리와 정의 그리고 정리 (Kronecker7, 2025)</p>
+</blockquote>
+<hr />
+<h2>섹션 목록</h2>
+<table>
+<thead>
+<tr>
+<th>섹션</th>
+<th>노트</th>
+<th>핵심 개념</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><a href="01 - 수리논리학의 기초.html">01 - 수리논리학의 기초</a></td>
+<td>명제, 결합자, 한정기호</td>
+</tr>
+<tr>
+<td>2</td>
+<td><a href="02 - Peano 공리.html">02 - Peano 공리</a></td>
+<td>PA 공리, 수학적귀납법, 자연수 연산</td>
+</tr>
+<tr>
+<td>3</td>
+<td><a href="03 - 집합의 개념.html">03 - 집합의 개념</a></td>
+<td>부분집합, 집합 연산, Russell의 역설</td>
+</tr>
+<tr>
+<td>4</td>
+<td><a href="04 - 관계와 함수.html">04 - 관계와 함수</a></td>
+<td>Cartesian 곱, 동치관계, 함수</td>
+</tr>
+<tr>
+<td>5</td>
+<td><a href="05 - 집합의 크기.html">05 - 집합의 크기</a></td>
+<td>기수, 가산/비가산, Cantor 정리</td>
+</tr>
+<tr>
+<td>6</td>
+<td><a href="06 - 선택공리와 동치명제.html">06 - 선택공리와 동치명제</a></td>
+<td>AC, Zorn의 보조정리, 정렬원리</td>
+</tr>
+<tr>
+<td>7</td>
+<td><a href="07 - 순서수와 그 연산.html">07 - 순서수와 그 연산</a></td>
+<td>순서수, Burali-Forti 역설</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>개념 지도</h2>
+<h3>논리적 기초</h3>
+<ul>
+<li><a href="01 - 수리논리학의 기초.html">명제와 결합자</a></li>
+<li><a href="01 - 수리논리학의 기초.html">전칭·존재 한정기호</a></li>
+</ul>
+<h3>자연수의 구성</h3>
+<ul>
+<li><a href="02 - Peano 공리.html">PA 공리계</a></li>
+<li><a href="02 - Peano 공리.html">수학적귀납법</a> ← PA5로부터</li>
+<li><a href="02 - Peano 공리.html">덧셈</a>, <a href="02 - Peano 공리.html">곱셈</a> ← 재귀적 정의</li>
+</ul>
+<h3>집합론의 핵심</h3>
+<ul>
+<li><a href="03 - 집합의 개념.html">부분집합, 멱집합</a></li>
+<li><a href="03 - 집합의 개념.html">Russell의 역설 → ZFC 필요성</a></li>
+<li><a href="04 - 관계와 함수.html">동치관계 → 분할</a></li>
+</ul>
+<h3>선택공리 삼각형</h3>
+<pre><code>AC ⟺ Zorn의 보조정리 ⟺ 정렬원리
+</code></pre>
+<p>→ <a href="06 - 선택공리와 동치명제.html">06 - 선택공리와 동치명제</a></p>
+<hr />
+<h2>전체 정의 목록</h2>
+<h2>전체 정리 목록</h2>
+<div class="nav-links"><span class="spacer"></span></div>
+</main>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>01 — 수리논리학의 기초 — 집합론</title>
+
+<script>
+MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+  processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea']}};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+<style>
+:root{--bg:#07090f;--bg2:#0d1017;--bg3:#131720;--gold:#c8a84b;--gold-dim:#8a7235;
+  --teal:#2eb8a0;--teal-dim:#1a6e60;--text:#dcd7cc;--muted:#8a8578;--border:#2a2d38;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);
+  font-family:"Palatino Linotype","Book Antiqua",Georgia,serif;line-height:1.85;min-height:100vh;}
+nav{position:sticky;top:0;z-index:50;background:rgba(7,9,15,0.97);
+  border-bottom:1px solid var(--border);padding:.85rem 2rem;
+  display:flex;align-items:center;gap:1.5rem;}
+.back{font-family:"Courier New",monospace;font-size:.75rem;letter-spacing:.12em;
+  color:var(--muted);text-decoration:none;text-transform:uppercase;transition:color .2s;}
+.back:hover{color:var(--gold);}
+.back::before{content:"← ";}
+.nav-title{font-size:.85rem;color:var(--muted);}
+main{max-width:740px;margin:3rem auto 5rem;padding:0 1.5rem;}
+h1{font-size:2rem;font-weight:400;color:#f0ece0;margin:2rem 0 .6rem;line-height:1.2;}
+h2{font-size:1.45rem;font-weight:400;color:#e8e4d8;margin:2.4rem 0 .5rem;
+  padding-bottom:.4rem;border-bottom:1px solid var(--border);}
+h3{font-size:1.15rem;font-weight:400;color:#ddd8cc;margin:1.8rem 0 .4rem;}
+h4{font-size:1rem;color:var(--gold-dim);margin:1.4rem 0 .3rem;letter-spacing:.04em;}
+p{margin-bottom:1rem;font-size:.97rem;}
+a{color:var(--teal);text-decoration:none;border-bottom:1px solid rgba(46,184,160,.3);}
+a:hover{border-bottom-color:var(--teal);}
+ul,ol{padding-left:1.8rem;margin-bottom:1rem;}
+li{margin-bottom:.35rem;font-size:.97rem;}
+li input[type=checkbox]{margin-right:.5rem;}
+blockquote{border-left:3px solid var(--gold-dim);padding:.6rem 1.2rem;margin:1.2rem 0;
+  background:var(--bg2);color:var(--muted);font-style:italic;}
+code{font-family:"Courier New",monospace;font-size:.88rem;background:var(--bg3);
+  color:#c8e6c9;padding:.15rem .45rem;border-radius:3px;}
+pre{background:var(--bg3);border:1px solid var(--border);border-left:3px solid var(--gold-dim);
+  padding:1rem 1.2rem;overflow-x:auto;margin:1.2rem 0;}
+pre code{background:none;padding:0;color:#d4e6d4;font-size:.85rem;}
+hr{border:none;border-top:1px solid var(--border);margin:2rem 0;}
+table{width:100%;border-collapse:collapse;margin:1.2rem 0;font-size:.9rem;}
+th{background:var(--bg3);color:var(--gold);font-weight:400;
+  padding:.6rem .9rem;border:1px solid var(--border);text-align:left;}
+td{padding:.55rem .9rem;border:1px solid var(--border);}
+tr:nth-child(even) td{background:var(--bg2);}
+.callout{border-left:3px solid var(--gold-dim);background:var(--bg2);
+  padding:.9rem 1.2rem .9rem 1.4rem;margin:1.4rem 0;border-radius:0 4px 4px 0;}
+.callout-label{font-family:"Courier New",monospace;font-size:.68rem;
+  letter-spacing:.18em;text-transform:uppercase;font-weight:600;margin-bottom:.55rem;}
+.callout p{margin-bottom:.4rem;}.callout p:last-child{margin-bottom:0;}
+.callout table{margin:.6rem 0;}
+.collapsible-toggle{font-family:"Courier New",monospace;font-size:.72rem;
+  letter-spacing:.1em;color:var(--muted);background:none;border:none;
+  cursor:pointer;padding:0;margin-top:.3rem;display:block;}
+.collapsible-toggle:hover{color:var(--gold);}
+.collapsible-body{display:none;margin-top:.6rem;}
+.collapsible-body.open{display:block;}
+.nav-links{display:flex;gap:1.5rem;margin-top:3rem;padding-top:1.5rem;
+  border-top:1px solid var(--border);font-family:"Courier New",monospace;font-size:.78rem;}
+.nav-links a{border:1px solid var(--border);padding:.5rem 1rem;
+  color:var(--muted);text-decoration:none;border-bottom:1px solid var(--border);transition:all .2s;}
+.nav-links a:hover{border-color:var(--gold-dim);color:var(--gold);}
+.nav-links .prev::before{content:"← ";}
+.nav-links .next::after{content:" →";}
+.nav-links .spacer{flex:1;}
+</style>
+</head>
+<body>
+<nav>
+  <a class="back" href="../index.html">홈으로</a>
+  <span class="nav-title">01 — 수리논리학의 기초</span>
+</nav>
+<main>
+<h1>01 — 수리논리학의 기초</h1>
+<p>← <a href="00 - MOC - 집합론.html">00 - MOC - 집합론</a> | 다음 → <a href="02 - Peano 공리.html">02 - Peano 공리</a></p>
+<hr />
+<h2>명제와 연산자</h2>
+<div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 명제와 명제함수</div><p><strong>(1)</strong> 명제(statement)는 참과 거짓을 구별할 수 있는 문장이다.</p>
+<p><strong>(2)</strong> 명제함수 $p(x)$는 변수 $x$에 따라 참과 거짓이 결정되는 문장이다.<br />
+이 경우 $p(x)$를 만족하는 $x$가 존재하지 않을 수도 있다.</p>
+<p>[!definition] 단순명제와 합성명제<br />
+<strong>(1)</strong> 단순명제(simple)는 더 이상 간단한 명제로 분해할 수 없는 명제이다.</p>
+<p><strong>(2)</strong> 단순명제가 아닌 명제를 합성명제(compound)라 한다.<br />
+합성명제는 둘 이상의 단순명제들이 결합된 명제이다.</p>
+<p>[!definition] 결합자 (Connectives)</p>
+<table>
+<thead>
+<tr>
+<th>종류</th>
+<th>기호</th>
+<th>의미</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>부정 (negation)</td>
+<td>$\sim$ 또는 $\neg$</td>
+<td>아니다 (not)</td>
+</tr>
+<tr>
+<td>논리곱 (conjugate)</td>
+<td>$\wedge$</td>
+<td>이고 (and)</td>
+</tr>
+<tr>
+<td>논리합 (disjunction)</td>
+<td>$\vee$</td>
+<td>또는 (or)</td>
+</tr>
+<tr>
+<td>조건문 (conditional)</td>
+<td>$\rightarrow$</td>
+<td>…이면 (if…then)</td>
+</tr>
+<tr>
+<td>쌍조건문 (bi-conditional)</td>
+<td>$\leftrightarrow$</td>
+<td>…이면 그리고 그때에만 (iff)</td>
+</tr>
+</tbody>
+</table>
+<p>[!definition] 기본 진리표</p>
+<table>
+<thead>
+<tr>
+<th>$p$</th>
+<th>$\sim p$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T</td>
+<td>F</td>
+</tr>
+<tr>
+<td>F</td>
+<td>T</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>$p$</th>
+<th>$q$</th>
+<th>$p \wedge q$</th>
+<th>$p \vee q$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T</td>
+<td>T</td>
+<td>T</td>
+<td>T</td>
+</tr>
+<tr>
+<td>T</td>
+<td>F</td>
+<td>F</td>
+<td>T</td>
+</tr>
+<tr>
+<td>F</td>
+<td>T</td>
+<td>F</td>
+<td>T</td>
+</tr>
+<tr>
+<td>F</td>
+<td>F</td>
+<td>F</td>
+<td>F</td>
+</tr>
+</tbody>
+</table>
+<p>[!definition] 논리적 동치<br />
+두 명제 $P$와 $Q$가 모든 논리적 가능성에 대해 항상 같은 진리값을 가질 때,<br />
+$P$와 $Q$가 <strong>논리적 동치(equivalence)</strong>라 하고 $P \equiv Q$로 나타낸다.</p></div>
+<hr />
+<h2>항진, 모순, 함의, 동치명제</h2>
+<div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 항진·모순·함의·동치명제</div><p><strong>(1)</strong> 명제 $P$가 모든 논리적 가능성에 관해 항상 참일 때, $P$를 <strong>항진명제(tautology)</strong>라 한다.</p>
+<p><strong>(2)</strong> 명제 $P$가 모든 논리적 가능성에 관해 항상 거짓일 때, $P$를 <strong>모순명제(contradiction)</strong>라 한다.</p>
+<p><strong>(3)</strong> $P \rightarrow Q$가 항상 참일 때, <strong>함의명제</strong>라 하고 $P \Rightarrow Q$로 나타낸다.</p>
+<p><strong>(4)</strong> $P \leftrightarrow Q$가 항상 참일 때, <strong>동치명제</strong>라 하고 $P \Leftrightarrow Q$ 또는 $P \equiv Q$로 나타낸다.</p>
+<p>[!theorem] 기본 논리 법칙<br />
+임의의 명제 $p, q$에 대하여:</p>
+<p><strong>(1)</strong> $\sim(\sim p) \equiv p$ — 이중부정 (double negation)</p>
+<p><strong>(2)</strong> $p \wedge q \equiv q \wedge p,\quad p \vee q \equiv q \vee p$ — 교환법칙 (commutative)</p>
+<p><strong>(3)</strong> $p \wedge p \equiv p,\quad p \vee p \equiv p$ — 멱등법칙 (idempotency)</p>
+<p><strong>(4)</strong> $p \rightarrow q \equiv \sim q \rightarrow \sim p$ — 대우법칙 (contrapositive)</p>
+<p>[!theorem] De Morgan의 법칙<br />
+<strong>(1)</strong> $\sim(p \wedge q) \equiv \sim p \vee \sim q$</p>
+<p><strong>(2)</strong> $\sim(p \vee q) \equiv \sim p \wedge \sim q$</p>
+<p>[!theorem] 따름정리<br />
+$$p \rightarrow q \equiv \sim p \vee q$$</p>
+<p>[!theorem] 결합·분배·추이 법칙<br />
+임의의 명제 $p, q, r$에 대하여:</p>
+<p><strong>(1)</strong> $(p \wedge q) \wedge r \equiv p \wedge (q \wedge r)$ — 결합법칙 (associative)</p>
+<p><strong>(2)</strong> $p \vee (q \wedge r) \equiv (p \vee q) \wedge (p \vee r)$ — 분배법칙 (distributive)</p>
+<p><strong>(3)</strong> $[(p \rightarrow q) \wedge (q \rightarrow r)] \rightarrow (p \rightarrow r)$ — 추이법칙 (transitive)</p></div>
+<hr />
+<h2>한정규칙</h2>
+<p>명제함수 $p(x)$가 전체집합 $U$의 모든 원소 $x$에 대하여 성립하는 경우, <strong>전칭명제</strong>라 한다.</p>
+<p>$$\forall x \in U,\; p(x)$$</p>
+<p>명제함수 $p(x)$가 적당한 원소 $x \in U$에 대하여 성립하는 경우, <strong>특칭명제</strong>라 한다.</p>
+<p>$$\exists x \in U \text{ s.t. } p(x)$$</p>
+<p>명제함수 $p(x)$가 참인 모든 $x \in U$의 집합을 <strong>진리집합(truth set)</strong>이라 한다.</p>
+<p>$${x \in U \mid p(x)}$$</p>
+<p>전칭명제와 특칭명제 사이의 관계:</p>
+<p>$$\begin{aligned}<br />
+\sim(\forall x \in U,\; p(x)) &amp;\equiv \exists x \in U \text{ s.t. } \sim p(x) \<br />
+\sim(\exists x \in U \text{ s.t. } p(x)) &amp;\equiv \forall x \in U,\; \sim p(x)<br />
+\end{aligned}$$</p>
+<div class="nav-links"><span class="spacer"></span><a class="next" href="02 - Peano 공리.html">02 - Peano 공리</a></div>
+</main>
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>03 — 집합의 개념 — 집합론</title>
+
+<script>
+MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+  processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea']}};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+<style>
+:root{--bg:#07090f;--bg2:#0d1017;--bg3:#131720;--gold:#c8a84b;--gold-dim:#8a7235;
+  --teal:#2eb8a0;--teal-dim:#1a6e60;--text:#dcd7cc;--muted:#8a8578;--border:#2a2d38;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);
+  font-family:"Palatino Linotype","Book Antiqua",Georgia,serif;line-height:1.85;min-height:100vh;}
+nav{position:sticky;top:0;z-index:50;background:rgba(7,9,15,0.97);
+  border-bottom:1px solid var(--border);padding:.85rem 2rem;
+  display:flex;align-items:center;gap:1.5rem;}
+.back{font-family:"Courier New",monospace;font-size:.75rem;letter-spacing:.12em;
+  color:var(--muted);text-decoration:none;text-transform:uppercase;transition:color .2s;}
+.back:hover{color:var(--gold);}
+.back::before{content:"← ";}
+.nav-title{font-size:.85rem;color:var(--muted);}
+main{max-width:740px;margin:3rem auto 5rem;padding:0 1.5rem;}
+h1{font-size:2rem;font-weight:400;color:#f0ece0;margin:2rem 0 .6rem;line-height:1.2;}
+h2{font-size:1.45rem;font-weight:400;color:#e8e4d8;margin:2.4rem 0 .5rem;
+  padding-bottom:.4rem;border-bottom:1px solid var(--border);}
+h3{font-size:1.15rem;font-weight:400;color:#ddd8cc;margin:1.8rem 0 .4rem;}
+h4{font-size:1rem;color:var(--gold-dim);margin:1.4rem 0 .3rem;letter-spacing:.04em;}
+p{margin-bottom:1rem;font-size:.97rem;}
+a{color:var(--teal);text-decoration:none;border-bottom:1px solid rgba(46,184,160,.3);}
+a:hover{border-bottom-color:var(--teal);}
+ul,ol{padding-left:1.8rem;margin-bottom:1rem;}
+li{margin-bottom:.35rem;font-size:.97rem;}
+li input[type=checkbox]{margin-right:.5rem;}
+blockquote{border-left:3px solid var(--gold-dim);padding:.6rem 1.2rem;margin:1.2rem 0;
+  background:var(--bg2);color:var(--muted);font-style:italic;}
+code{font-family:"Courier New",monospace;font-size:.88rem;background:var(--bg3);
+  color:#c8e6c9;padding:.15rem .45rem;border-radius:3px;}
+pre{background:var(--bg3);border:1px solid var(--border);border-left:3px solid var(--gold-dim);
+  padding:1rem 1.2rem;overflow-x:auto;margin:1.2rem 0;}
+pre code{background:none;padding:0;color:#d4e6d4;font-size:.85rem;}
+hr{border:none;border-top:1px solid var(--border);margin:2rem 0;}
+table{width:100%;border-collapse:collapse;margin:1.2rem 0;font-size:.9rem;}
+th{background:var(--bg3);color:var(--gold);font-weight:400;
+  padding:.6rem .9rem;border:1px solid var(--border);text-align:left;}
+td{padding:.55rem .9rem;border:1px solid var(--border);}
+tr:nth-child(even) td{background:var(--bg2);}
+.callout{border-left:3px solid var(--gold-dim);background:var(--bg2);
+  padding:.9rem 1.2rem .9rem 1.4rem;margin:1.4rem 0;border-radius:0 4px 4px 0;}
+.callout-label{font-family:"Courier New",monospace;font-size:.68rem;
+  letter-spacing:.18em;text-transform:uppercase;font-weight:600;margin-bottom:.55rem;}
+.callout p{margin-bottom:.4rem;}.callout p:last-child{margin-bottom:0;}
+.callout table{margin:.6rem 0;}
+.collapsible-toggle{font-family:"Courier New",monospace;font-size:.72rem;
+  letter-spacing:.1em;color:var(--muted);background:none;border:none;
+  cursor:pointer;padding:0;margin-top:.3rem;display:block;}
+.collapsible-toggle:hover{color:var(--gold);}
+.collapsible-body{display:none;margin-top:.6rem;}
+.collapsible-body.open{display:block;}
+.nav-links{display:flex;gap:1.5rem;margin-top:3rem;padding-top:1.5rem;
+  border-top:1px solid var(--border);font-family:"Courier New",monospace;font-size:.78rem;}
+.nav-links a{border:1px solid var(--border);padding:.5rem 1rem;
+  color:var(--muted);text-decoration:none;border-bottom:1px solid var(--border);transition:all .2s;}
+.nav-links a:hover{border-color:var(--gold-dim);color:var(--gold);}
+.nav-links .prev::before{content:"← ";}
+.nav-links .next::after{content:" →";}
+.nav-links .spacer{flex:1;}
+</style>
+</head>
+<body>
+<nav>
+  <a class="back" href="../index.html">홈으로</a>
+  <span class="nav-title">03 — 집합의 개념</span>
+</nav>
+<main>
+<h1>03 — 집합의 개념</h1>
+<p>← <a href="02 - Peano 공리.html">02 - Peano 공리</a> | 다음 → <a href="04 - 관계와 함수.html">04 - 관계와 함수</a></p>
+<hr />
+<h2>집합과 부분집합</h2>
+<p>집합을 정의하기 위해 무정의 용어(원소, 모임)를 허용한다.<br />
+집합을 <em>우리의 직관과 사고를 통해 뚜렷이 구별할 수 있는 대상들의 모임</em> 으로 약간 모호하게 정의한다.</p>
+<ul>
+<li>원소가 없는 집합: <strong>공집합</strong> $\varnothing$</li>
+<li>원소가 하나인 집합: <strong>단집합(singleton)</strong></li>
+<li>원소나열법: 순서 무관, 중복 시 한 번만 표기 (중복 허용 시: <strong>다중집합</strong> multi-set)</li>
+<li>조건제시법: 명제함수 이용</li>
+</ul>
+<div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 부분집합</div><p>두 집합 $A$와 $B$에 대하여 $A$의 모든 원소가 $B$의 원소일 때,<br />
+$A$는 $B$의 <strong>부분집합(subset)</strong>이라 하고 $A \subset B$ 또는 $A \subseteq B$로 나타낸다:<br />
+$$x \in A \Rightarrow x \in B$$<br />
+$A \subset B$이지만 $A \neq B$일 때, $A$를 $B$의 <strong>진부분집합(proper subset)</strong>이라 한다.</p>
+<p>[!definition] 집합의 동등<br />
+$$A = B \iff A \subset B \wedge B \subset A \iff (x \in A \Leftrightarrow x \in B)$$</p>
+<p>[!theorem] 부분집합의 기본 성질<br />
+<strong>(1)</strong> 공집합 $\varnothing$은 모든 집합의 부분집합이다.</p>
+<p><strong>(2)</strong> 임의의 집합 $A$가 $\varnothing$의 부분집합이면 $A = \varnothing$이다.</p>
+<p><strong>(3)</strong> $A \subset B$이고 $B \subset C$이면 $A \subset C$ — 추이성</p>
+<p>[!definition] 멱집합 (Power Set)<br />
+임의의 집합 $A$에 대하여:<br />
+$$\mathcal{P}(A) = {C \mid C \subset A}$$</p></div>
+<hr />
+<h2>합집합과 교집합</h2>
+<div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 합집합과 교집합</div><p><strong>(합집합, union)</strong><br />
+$$x \in A \cup B \Leftrightarrow x \in A \vee x \in B$$</p>
+<p><strong>(교집합, intersection)</strong><br />
+$$x \in A \cap B \Leftrightarrow x \in A \wedge x \in B$$</p>
+<p>특히 $A \cap B = \varnothing$일 때, $A$와 $B$가 <strong>서로소(mutually disjoint)</strong>라 한다.</p>
+<p>[!theorem] 집합 연산의 기본 법칙<br />
+집합 $X$의 부분집합 $A, B, C$에 대하여:</p>
+<p><strong>(1)</strong> $A \cup \varnothing = A,\quad A \cap X = A$ — 항등법칙</p>
+<p><strong>(2)</strong> $A \cup A = A,\quad A \cap A = A$ — 멱등법칙</p>
+<p><strong>(3)</strong> $A \cup B = B \cup A,\quad A \cap B = B \cap A$ — 교환법칙</p>
+<p><strong>(4)</strong> $A \cup (B \cup C) = (A \cup B) \cup C$ — 결합법칙</p>
+<p><strong>(5)</strong> $A \cap (B \cup C) = (A \cap B) \cup (A \cap C)$ — 분배법칙</p>
+<p>[!lemma] 부분집합과 연산의 관계<br />
+<strong>(1)</strong> $A \subset B \iff A \cup B = B$</p>
+<p><strong>(2)</strong> $A \subset B \iff A \cap B = A$</p>
+<p><strong>(3)</strong> $A \cup B = A \cap B \iff A = B$</p>
+<p>[!lemma] 멱집합의 성질<br />
+<strong>(1)</strong> $A \subset B \iff \mathcal{P}(A) \subset \mathcal{P}(B)$</p>
+<p><strong>(2)</strong> $\mathcal{P}(A) \cap \mathcal{P}(B) = \mathcal{P}(A \cap B)$</p>
+<p><strong>(3)</strong> $\mathcal{P}(A) \cup \mathcal{P}(B) \subset \mathcal{P}(A \cup B)$</p></div>
+<hr />
+<h2>차집합과 여집합</h2>
+<div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 차집합과 여집합</div><p><strong>(1)</strong> <strong>차집합(relative complement)</strong>:<br />
+$$A - B = {x \in A \mid x \notin B}$$</p>
+<p><strong>(2)</strong> 전체집합 $U$의 부분집합 $A$에 대한 <strong>여집합(complement)</strong>:<br />
+$$A^{c} = U - A$$</p>
+<p>[!theorem] 여집합의 성질<br />
+전체집합 $U$와 $U$의 부분집합 $A, B$에 대하여:</p>
+<p><strong>(1)</strong> $A - B = A \cap B^{c}$<br />
+<strong>(2)</strong> $(A^{c})^{c} = A$<br />
+<strong>(3)</strong> $\varnothing^{c} = U,\quad U^{c} = \varnothing$<br />
+<strong>(4)</strong> $A \cap A^{c} = \varnothing,\quad A \cup A^{c} = U$<br />
+<strong>(5)</strong> $A \subset B \Leftrightarrow B^{c} \subset A^{c}$</p>
+<p>[!theorem] De Morgan의 법칙 (집합)<br />
+$$(A \cap B)^{c} = A^{c} \cup B^{c}, \qquad (A \cup B)^{c} = A^{c} \cap B^{c}$$</p></div>
+<hr />
+<h2>첨수집합족</h2>
+<div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 첨수집합족 (Indexed Family of Sets)</div><p>집합 $\Gamma$와 각각의 $\gamma \in \Gamma$에 대해 $A_{\gamma}$가 대응할 때,<br />
+$\gamma$를 <strong>첨수(index)</strong>, $\Gamma$를 <strong>첨수집합</strong>이라 한다:<br />
+$$\mathcal{F} = {A_{\gamma} \mid \gamma \in \Gamma}$$</p>
+<p>[!definition] 일반 합집합과 교집합<br />
+<strong>(1)</strong> $\displaystyle\bigcup_{\gamma \in \Gamma} A_{\gamma} = {x \in U \mid x \in A_{\gamma}\text{를 만족하는 } A_{\gamma}\text{가 존재}}$</p>
+<p><strong>(2)</strong> $\displaystyle\bigcap_{\gamma \in \Gamma} A_{\gamma} = {x \in U \mid \text{모든 } \gamma \in \Gamma,\; x \in A_{\gamma}}$</p>
+<p>[!theorem] 일반 De Morgan의 법칙<br />
+$$\left(\bigcup_{\gamma \in \Gamma} A_{\gamma}\right)^{c} = \bigcap_{\gamma \in \Gamma} A_{\gamma}^{c}, \qquad \left(\bigcap_{\gamma \in \Gamma} A_{\gamma}\right)^{c} = \bigcup_{\gamma \in \Gamma} A_{\gamma}^{c}$$</p>
+<p>[!theorem] 분배법칙 (일반)<br />
+$$B \cap \left(\bigcup_{\gamma \in \Gamma} A_{\gamma}\right) = \bigcup_{\gamma \in \Gamma} (B \cap A_{\gamma}), \qquad B \cup \left(\bigcap_{\gamma \in \Gamma} A_{\gamma}\right) = \bigcap_{\gamma \in \Gamma} (B \cup A_{\gamma})$$</p></div>
+<hr />
+<h2>Russell의 역설</h2>
+<h3>동기와 배경</h3>
+<p>19세기 말 나이브 집합론은 "임의의 성질 $P(x)$를 만족하는 모든 대상의 모임 ${x \mid P(x)}$은 집합이다"라는 <strong>비제한적 이해 원리</strong>에 의존하였다.<br />
+이 원리는 곧바로 Russell의 역설을 낳는다.</p>
+<div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 비제한적 이해 원리</div><p>임의의 공식 $P(x)$에 대해 ${x \mid P(x)}$가 <strong>항상</strong> 집합으로 존재한다고 가정하는 원리.</p>
+<p>[!definition] Russell의 집합(류)<br />
+$$\mathcal{R} = {x \mid x \notin x}$$<br />
+나이브 집합론에서는 이것을 집합으로 간주할 수 있으나, ZFC에서는 <strong>집합이 아닌 대상(진류; proper class)</strong>으로 취급된다.</p>
+<p>[!theorem] Russell의 역설<br />
+나이브 집합론에서 $\mathcal{R} = {x \mid x \notin x}$를 집합으로 인정하면 모순이 발생한다.</p>
+<p>[!proof]- 증명<br />
+$\mathcal{R} \in \mathcal{R}$라고 가정하면 정의상 $\mathcal{R} \notin \mathcal{R}$.<br />
+반대로 $\mathcal{R} \notin \mathcal{R}$이면 정의상 $\mathcal{R} \in \mathcal{R}$.<br />
+따라서 $\mathcal{R} \in \mathcal{R} \iff \mathcal{R} \notin \mathcal{R}$ — 모순. $\square$</p></div>
+<h3>ZFC의 해결책</h3>
+<div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 분리 공리 (Axiom Schema of Separation)</div><p>주어진 모체 집합 $A$와 공식 $\varphi(x)$에 대하여<br />
+$$B = {x \in A \mid \varphi(x)}$$<br />
+가 집합으로 존재한다는 공리족. <strong>전 우주에서의 필터링은 허용하지 않는다.</strong></p>
+<p>[!definition] 진류 (Proper Class)<br />
+공식으로 서술 가능하더라도 ZFC에서 집합으로 형성되지 않는 대상.<br />
+진류는 어떤 집합의 원소가 될 수 없다 (예: "모든 집합들의 모임").</p>
+<p>[!theorem] 보편집합은 존재하지 않는다<br />
+모든 집합을 원소로 갖는 집합 $U$는 ZFC에서 존재하지 않는다.</p>
+<p>[!proof]- 증명<br />
+$U$가 존재한다고 하자. 멱집합 공리에 의해 $\mathcal{P}(U)$가 존재하고,<br />
+모든 부분집합은 $U$의 원소이므로 $\mathcal{P}(U) \subseteq U$, 즉 $|\mathcal{P}(U)| \leq |U|$.<br />
+그러나 Cantor 정리에 의해 항상 $|\mathcal{P}(U)| &gt; |U|$. 모순. $\square$</p>
+<p>[!theorem] Cantor 정리<br />
+임의의 집합 $A$에 대해 $|\mathcal{P}(A)| &gt; |A|$.</p>
+<p>[!proof]- 증명<br />
+$f : A \to \mathcal{P}(A)$가 전사라 가정하고<br />
+대각선 집합 $D = {x \in A \mid x \notin f(x)}$를 잡으면,<br />
+임의 $a \in A$에 대해 $f(a) = D$이면 $a \in D \iff a \notin f(a) = D$ — 모순.<br />
+따라서 전사는 존재하지 않는다. $\square$</p></div>
+<h3>요약</h3>
+<div class="callout" style="border-left-color:#2eb8a0;background:rgba(46,184,160,0.07)"><div class="callout-label" style="color:#2eb8a0">요약 — Russell의 역설 요약</div><ul>
+<li><strong>문제</strong>: 비제한적 이해 원리 → $\mathcal{R} = {x \mid x \notin x}$ → 모순</li>
+<li><strong>해결</strong>: ZFC의 분리 공리로 집합 형성을 모체 내부로 제한</li>
+<li><strong>결과</strong>: Russell류는 진류(proper class)로만 기술되며, 공리적 틀에서 모순 차단</li>
+<li><strong>보편집합</strong>: Cantor 정리에 의해 ZFC에서 존재 불가</li>
+</ul></div>
+<p><strong>자가점검 (T/F)</strong></p>
+<table>
+<thead>
+<tr>
+<th>명제</th>
+<th>답</th>
+<th>이유</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>무정의 용어가 있으면 역설이 발생한다</td>
+<td><strong>F</strong></td>
+<td>문제는 정의로부터의 존재 남발</td>
+</tr>
+<tr>
+<td>분리 공리는 전 우주에서의 필터링을 허용한다</td>
+<td><strong>F</strong></td>
+<td>반드시 모체 집합 내부</td>
+</tr>
+<tr>
+<td>ZFC에서 모든 집합들의 집합이 존재하지 않는다</td>
+<td><strong>T</strong></td>
+<td>Cantor 정리로 증명</td>
+</tr>
+<tr>
+<td>$\mathcal{R}$은 ZFC에서 집합이다</td>
+<td><strong>F</strong></td>
+<td>진류로만 기술 가능</td>
+</tr>
+</tbody>
+</table>
+<div class="nav-links"><a class="prev" href="02 - Peano 공리.html">02 - Peano 공리</a><span class="spacer"></span><a class="next" href="04 - 관계와 함수.html">04 - 관계와 함수</a></div>
+</main>
+</body>
+</html>
