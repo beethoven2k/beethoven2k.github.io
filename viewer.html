@@ -117,6 +117,39 @@ MathJax = {
     margin: 1.2rem 0;
   }
 
+  /* Obsidian callout 공통 */
+  #content .callout {
+    border-left: 3px solid var(--gold-dim);
+    background: var(--bg2);
+    padding: 0.9rem 1.2rem 0.9rem 1.4rem;
+    margin: 1.4rem 0;
+    border-radius: 0 4px 4px 0;
+  }
+  #content .callout-label {
+    font-family: "Courier New", monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 0.55rem;
+    font-weight: 600;
+  }
+  #content .callout p { margin-bottom: 0.4rem; }
+  #content .callout p:last-child { margin-bottom: 0; }
+
+  /* 타입별 색상 */
+  #content .callout-definition { border-left-color: var(--gold); background: rgba(200,168,75,0.07); }
+  #content .callout-definition .callout-label { color: var(--gold); }
+  #content .callout-theorem    { border-left-color: var(--teal);     background: rgba(46,184,160,0.07); }
+  #content .callout-theorem    .callout-label { color: var(--teal); }
+  #content .callout-proof      { border-left-color: #8a70c0;        background: rgba(138,112,192,0.07); }
+  #content .callout-proof      .callout-label { color: #8a70c0; }
+  #content .callout-lemma      { border-left-color: #6080aa;        background: rgba(96,128,170,0.07); }
+  #content .callout-lemma      .callout-label { color: #6080aa; }
+  #content .callout-corollary  { border-left-color: #5c9e6e;        background: rgba(92,158,110,0.07); }
+  #content .callout-corollary  .callout-label { color: #5c9e6e; }
+  #content .callout-example    { border-left-color: var(--muted);   background: var(--bg3); }
+  #content .callout-example    .callout-label { color: var(--muted); }
+
   /* ── 로딩 / 에러 ── */
   .loading { color: var(--text-muted); font-family: "Courier New", monospace; font-size: 0.85rem; letter-spacing: 0.12em; text-align: center; padding: 4rem 0; }
   .error   { color: #b46464; font-family: "Courier New", monospace; font-size: 0.85rem; text-align: center; padding: 4rem 0; line-height: 1.9; }
@@ -154,6 +187,34 @@ if (!file) {
       return r.text();
     })
     .then(md => {
+      // 1) YAML frontmatter 제거
+      md = md.replace(/^---[\s\S]*?---\n?/, '');
+
+      // 2) Obsidian wikilink → 링크 변환  [[파일명]] → viewer 링크
+      md = md.replace(/\[\[([^\]|]+)(\|[^\]]+)?\]\]/g, (_, name, alias) => {
+        const label = alias ? alias.slice(1) : name;
+        const target = 'viewer.html?file=set-theory/' + name.trim() + '.md';
+        return '[' + label + '](' + target + ')';
+      });
+
+      // 3) Obsidian callout 변환  > [!type] → 스타일 박스
+      const calloutLabels = {
+        definition:'정의', theorem:'정리', proof:'증명',
+        lemma:'보조정리', corollary:'따름정리', example:'예시',
+        note:'노트', warning:'주의', info:'참고', tip:'팁'
+      };
+      md = md.replace(
+        /^(>\s*\[!([\w]+)\][^\n]*\n)((?:^>.*\n?)*)/gm,
+        (_, header, type, body) => {
+          const t = type.toLowerCase();
+          const label = calloutLabels[t] || type;
+          const content = body.replace(/^>\s?/gm, '').trim();
+          return '<div class="callout callout-' + t + '">' +
+                 '<div class="callout-label">' + label + '</div>' +
+                 content + '</div>\n\n';
+        }
+      );
+
       document.getElementById('content').innerHTML = marked.parse(md);
       if (window.MathJax) MathJax.typesetPromise();
     })
