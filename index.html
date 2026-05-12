@@ -4,6 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>수학 공부 홈페이지</title>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$','$'],['\\(','\\)']],
+    displayMath: [['$$','$$'],['\\[','\\]']],
+    processEscapes: true
+  },
+  options: { skipHtmlTags: ['script','noscript','style','textarea'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
 <style>
   :root {
     --bg:        #07090f;
@@ -415,12 +426,11 @@
     margin-bottom: 0.8rem;
   }
   .eq-display {
-    font-family: "Courier New", monospace;
     font-size: 1rem;
     color: #e8e0c8;
-    line-height: 1.9;
-    white-space: nowrap;
-    overflow-x: auto;
+    line-height: 2;
+    text-align: center;
+    padding: 0.5rem 0;
   }
   .eq-desc {
     margin-top: 0.8rem;
@@ -644,7 +654,7 @@
     <div class="rule"></div>
 
     <div style="margin-bottom:2rem; padding:1rem 1.4rem; border:1px solid var(--border); border-left:3px solid var(--gold); background:var(--bg); font-size:0.85rem; color:var(--text-muted);">
-      집합론 기록들. ZFC 공리계를 시작으로 순서쌍, 관계, 함수, 서수·기수의 순서로 쌓아가고 있다.
+      Obsidian 노트에서 내보낸 집합론 기록들. ZFC 공리계를 시작으로 순서쌍, 관계, 함수, 서수·기수의 순서로 쌓아가고 있다.
     </div>
 
     <div class="notes-list fadeup" id="set-theory-list">
@@ -721,6 +731,10 @@
         <span class="note-arrow">→</span>
       </div>
 
+    </div>
+
+    <div style="margin-top:2rem; font-family:'Courier New',monospace; font-size:0.72rem; color:var(--text-muted); letter-spacing:0.1em;">
+      → 노트 추가 시: <code style="color:var(--gold-dim);">set-theory/</code> 폴더에 .md 파일 업로드 후 위 목록에 항목 추가
     </div>
   </div>
 </section>
@@ -801,25 +815,25 @@
 
       <div class="eq-card">
         <div class="eq-name">Stokes' Theorem</div>
-        <div class="eq-display">∫∫_M dω = ∫_∂M ω</div>
-        <p class="eq-desc">미적분학의 기본정리, 그린 정리, 발산 정리를 하나의 언어로 통합한다. ω는 미분형식이고, d는 외미분이다.</p>
+        <div class="eq-display">$$\iint_M d\omega = \oint_{\partial M} \omega$$</div>
+        <p class="eq-desc">미적분학의 기본정리, 그린 정리, 발산 정리를 하나의 언어로 통합한다. $\omega$는 미분형식이고, $d$는 외미분이다.</p>
       </div>
 
       <div class="eq-card">
         <div class="eq-name">Gauss–Bonnet Theorem</div>
-        <div class="eq-display">∫∫_M K dA = 2πχ(M)</div>
+        <div class="eq-display">$$\iint_M K\, dA = 2\pi\,\chi(M)$$</div>
         <p class="eq-desc">곡면의 총 가우스 곡률은 위상적 불변량인 오일러 지표로만 결정된다. 기하가 위상에 얽매이는 순간.</p>
       </div>
 
       <div class="eq-card">
         <div class="eq-name">Cauchy Integral Formula</div>
-        <div class="eq-display">f(a) = (1/2πi) ∮_γ f(z)/(z-a) dz</div>
+        <div class="eq-display">$$f(a) = \frac{1}{2\pi i}\oint_{\gamma} \frac{f(z)}{z-a}\,dz$$</div>
         <p class="eq-desc">정칙 함수의 값이 경계 위의 적분으로 완전히 결정된다는 사실—복소 해석학의 핵심적인 경직성.</p>
       </div>
 
       <div class="eq-card">
         <div class="eq-name">First Isomorphism Theorem</div>
-        <div class="eq-display">G / ker(φ) ≅ Im(φ)</div>
+        <div class="eq-display">$$G \,/\, \ker(\varphi) \;\cong\; \operatorname{Im}(\varphi)$$</div>
         <p class="eq-desc">군 준동형의 핵과 상 사이에 놓인 구조적 동형. 모든 준동형은 몫으로의 사영, 동형, 포함으로 분해된다.</p>
       </div>
 
