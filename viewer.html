@@ -209,9 +209,10 @@ if (!file) {
           const t = type.toLowerCase();
           const label = calloutLabels[t] || type;
           const content = body.replace(/^>\s?/gm, '').trim();
+          const parsedContent = marked.parse(content);
           return '<div class="callout callout-' + t + '">' +
                  '<div class="callout-label">' + label + '</div>' +
-                 content + '</div>\n\n';
+                 parsedContent + '</div>\n\n';
         }
       );
 
