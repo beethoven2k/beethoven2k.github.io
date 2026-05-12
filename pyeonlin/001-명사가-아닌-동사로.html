@@ -27,18 +27,12 @@
     padding: .85rem 2rem;
     display: flex; align-items: center; gap: 1.5rem;
   }
-  .back {
-    font-family: "Courier New", monospace;
-    font-size: .75rem; letter-spacing: .12em;
-    color: var(--muted); text-decoration: none;
-    text-transform: uppercase; transition: color .2s;
-  }
-  .back:hover { color: var(--gold); }
-  .back::before { content: "← "; }
-  .nav-label {
-    font-family: "Courier New", monospace;
-    font-size: .75rem; color: var(--muted); letter-spacing: .1em;
-  }
+  nav { justify-content: space-between; }
+  nav a.logo { color: var(--gold); text-decoration: none; font-size: 1rem; }
+  nav ul { list-style: none; display: flex; gap: 2rem; }
+  nav ul a { color: var(--muted); text-decoration: none; text-transform: uppercase; font-size: .75rem; letter-spacing: .12em; transition: color .2s; }
+  nav ul a:hover, nav ul a.active { color: var(--gold); }
+  @media(max-width:640px){ nav ul { gap: 1rem; font-size: .65rem; } }
   article {
     max-width: 640px;
     margin: 5rem auto 8rem;
@@ -126,8 +120,15 @@
 <body>
 
 <nav>
-  <a class="back" href="../pyeonlin.html">편린으로</a>
-  <span class="nav-label">편린 · 片鱗</span>
+  <a href="../index.html" class="logo">∂ / ∂x</a>
+  <ul>
+    <li><a href="../index.html#about">About</a></li>
+    <li><a href="../pyeonlin.html" class="active">편린</a></li>
+    <li><a href="../index.html#topics">Topics</a></li>
+    <li><a href="../index.html#set-theory">집합론</a></li>
+    <li><a href="../notes.html">Notes</a></li>
+    <li><a href="../index.html#equations">아름다운방정식</a></li>
+  </ul>
 </nav>
 
 <article>
