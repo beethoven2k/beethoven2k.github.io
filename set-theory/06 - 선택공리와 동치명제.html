@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>06 — 선택공리와 동치명제 — 집합론</title>
-
 <script>
-MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
-  processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea']}};
+MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],
+  displayMath:[['$$','$$'],['\\[','\\]']],
+  processEscapes:true,processEnvironments:true},
+  options:{skipHtmlTags:['script','noscript','style','textarea','pre']}};
 </script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
-
 <style>
 :root{--bg:#07090f;--bg2:#0d1017;--bg3:#131720;--gold:#c8a84b;--gold-dim:#8a7235;
   --teal:#2eb8a0;--teal-dim:#1a6e60;--text:#dcd7cc;--muted:#8a8578;--border:#2a2d38;}
@@ -54,9 +54,10 @@ tr:nth-child(even) td{background:var(--bg2);}
 .callout{border-left:3px solid var(--gold-dim);background:var(--bg2);
   padding:.9rem 1.2rem .9rem 1.4rem;margin:1.4rem 0;border-radius:0 4px 4px 0;}
 .callout-label{font-family:"Courier New",monospace;font-size:.68rem;
-  letter-spacing:.18em;text-transform:uppercase;font-weight:600;margin-bottom:.55rem;}
+  letter-spacing:.18em;text-transform:uppercase;font-weight:600;margin-bottom:.6rem;}
 .callout p{margin-bottom:.4rem;}.callout p:last-child{margin-bottom:0;}
 .callout table{margin:.6rem 0;}
+.callout ul,.callout ol{margin:.4rem 0;}
 .collapsible-toggle{font-family:"Courier New",monospace;font-size:.72rem;
   letter-spacing:.1em;color:var(--muted);background:none;border:none;
   cursor:pointer;padding:0;margin-top:.3rem;display:block;}
@@ -65,8 +66,8 @@ tr:nth-child(even) td{background:var(--bg2);}
 .collapsible-body.open{display:block;}
 .nav-links{display:flex;gap:1.5rem;margin-top:3rem;padding-top:1.5rem;
   border-top:1px solid var(--border);font-family:"Courier New",monospace;font-size:.78rem;}
-.nav-links a{border:1px solid var(--border);padding:.5rem 1rem;
-  color:var(--muted);text-decoration:none;border-bottom:1px solid var(--border);transition:all .2s;}
+.nav-links a{border:1px solid var(--border);padding:.5rem 1rem;color:var(--muted);
+  text-decoration:none;border-bottom:1px solid var(--border);transition:all .2s;}
 .nav-links a:hover{border-color:var(--gold-dim);color:var(--gold);}
 .nav-links .prev::before{content:"← ";}
 .nav-links .next::after{content:" →";}
@@ -119,64 +120,57 @@ $$f: \mathcal{F} \to \bigcup_{A \in \mathcal{F}} A, \quad f(A) \in A$$<br />
 가 존재한다.</p></div>
 <p>집합족이 <strong>무한</strong>인 경우, 특별한 규칙 없이 각 집합에서 원소를 무한히 반복 선택하는 일은 실제로는 불가능하다. AC는 이것을 가능하게 해주는 원리이다.</p>
 <p>선택공리는 Zermelo가 처음 제시하였고, Cohen(1963)은 AC가 ZF의 다른 공리들로부터 독립적임을 증명하였다.</p>
-<div class="callout" style="border-left-color:#6080aa;background:rgba(96,128,170,0.07)"><div class="callout-label" style="color:#6080aa">보조정리 — 선택공리의 응용 — 전사함수의 우역원</div><p>$f: X \to Y$가 전사이면, $f \circ g = I_Y$를 만족하는 단사함수 $g: Y \to X$가 존재한다.</p>
-<p>[!proof]- 증명<br />
-각 $y \in Y$에 대해 $f^{-1}({y}) \neq \varnothing$이므로<br />
-집합족 $\mathcal{F} = {f^{-1}({y}) \mid y \in Y}$에 AC를 적용하여 선택함수 $s$를 얻는다.<br />
-$g(y) = s(f^{-1}({y}))$로 정의하면 $f(g(y)) = y$이고, $g(y_1) = g(y_2) \Rightarrow y_1 = y_2$이므로 단사. $\square$</p>
-<p>[!exercise] AC 응용 — 무한집합 판정<br />
-공집합이 아닌 $X$가 어떤 $\mathbb{N}_k$와도 대등하지 않으면 $X$는 무한집합이다.<br />
+<div class="callout" style="border-left-color:#6080aa;background:rgba(96,128,170,0.07)"><div class="callout-label" style="color:#6080aa">보조정리 — 선택공리의 응용 — 전사함수의 우역원</div><p>$f: X \to Y$가 전사이면, $f \circ g = I_Y$를 만족하는 단사함수 $g: Y \to X$가 존재한다.</p></div>
+<div class="callout" style="border-left-color:#8a70c0;background:rgba(138,112,192,0.07)"><div class="callout-label" style="color:#8a70c0">증명 — 증명</div><button class="collapsible-toggle" onclick="this.nextElementSibling.classList.toggle('open')">▶ 펼치기</button><div class="collapsible-body"><p>각 $y \in Y$에 대해 $f^{-1}(\{y\}) \neq \varnothing$이므로<br />
+집합족 $\mathcal{F} = \{f^{-1}(\{y\}) \mid y \in Y\}$에 AC를 적용하여 선택함수 $s$를 얻는다.<br />
+$g(y) = s(f^{-1}(\{y\}))$로 정의하면 $f(g(y)) = y$이고, $g(y_1) = g(y_2) \Rightarrow y_1 = y_2$이므로 단사. $\square$</p><p></div></div></p>
+<div class="callout" style="border-left-color:#5c9e6e;background:rgba(92,158,110,0.07)"><div class="callout-label" style="color:#5c9e6e">연습 — AC 응용 — 무한집합 판정</div><p>공집합이 아닌 $X$가 어떤 $\mathbb{N}_k$와도 대등하지 않으면 $X$는 무한집합이다.<br />
 (AC로 선택함수를 구성 → 재귀적으로 서로 다른 원소 $x_0, x_1, x_2, \ldots$를 뽑아 $g: \mathbb{N} \to X$ 단사함수 구성)</p></div>
 <hr />
 <h2>Hausdorff 극대원리 (HMP)</h2>
 <div class="callout" style="border-left-color:#b46464;background:rgba(180,100,100,0.07)"><div class="callout-label" style="color:#b46464">공리 — Hausdorff 극대원리 (HMP)</div><p>임의의 부분순서집합 $(A, \leq)$에서 모든 사슬들의 모임 $(\mathcal{F}, \subset)$는 <strong>극대원소</strong>를 가진다.</p>
-<p>즉, 임의의 사슬은 극대 사슬로 확장될 수 있다.</p>
-<p>[!theorem] $AC \Rightarrow HMP$</p>
-<p>[!proof]- 증명 (개요)<br />
-부분순서집합 $(P, \leq)$와 사슬 $C_0$가 주어지면, $C_0$를 포함하는 모든 사슬의 모임<br />
-$\mathcal{C} = {C \subseteq P \mid C\text{는 사슬}, C_0 \subseteq C}$를 잡는다.</p>
+<p>즉, 임의의 사슬은 극대 사슬로 확장될 수 있다.</p></div>
+<div class="callout" style="border-left-color:#2eb8a0;background:rgba(46,184,160,0.07)"><div class="callout-label" style="color:#2eb8a0">정리 — $AC \Rightarrow HMP$</div></div>
+<div class="callout" style="border-left-color:#8a70c0;background:rgba(138,112,192,0.07)"><div class="callout-label" style="color:#8a70c0">증명 — 증명 (개요)</div><button class="collapsible-toggle" onclick="this.nextElementSibling.classList.toggle('open')">▶ 펼치기</button><div class="collapsible-body"><p>부분순서집합 $(P, \leq)$와 사슬 $C_0$가 주어지면, $C_0$를 포함하는 모든 사슬의 모임<br />
+$\mathcal{C} = \{C \subseteq P \mid C\text{는 사슬}, C_0 \subseteq C\}$를 잡는다.</p>
 <p>AC로 "사슬을 확장하는 선택함수" $f$를 구성한 뒤,<br />
 순서수 $\alpha$에 따라 사슬 $C_\alpha$를 재귀적으로 확장한다:</p>
 <ul>
-<li>후계 단계: $C_{\alpha+1} = C_\alpha \cup {f(E(C_\alpha))}$ (극대가 아니면 원소 추가)</li>
-<li>극한 단계: $C_\lambda = \bigcup_{\beta &lt; \lambda} C_\beta$</li>
+<li>후계 단계: $C_{\alpha+1} = C_\alpha \cup \{f(E(C_\alpha))\}$ (극대가 아니면 원소 추가)</li>
+<li>극한 단계: $C_\lambda = \bigcup_{\beta < \lambda} C_\beta$</li>
 </ul>
-<p>$|P|$보다 큰 순서수에서 새 원소 추가 불가 → 어떤 $\gamma$에서 $C_\gamma$가 극대 사슬. $\square$</p></div>
+<p>$|P|$보다 큰 순서수에서 새 원소 추가 불가 → 어떤 $\gamma$에서 $C_\gamma$가 극대 사슬. $\square$</p><p></div></div></p>
 <hr />
 <h2>Zorn의 보조정리 (ZL)</h2>
 <p>선택공리를 사실로 가정하므로 실질적으로 <strong>정리</strong>이지만, 유용성 때문에 관습적으로 보조정리로 불린다.</p>
 <div class="callout" style="border-left-color:#b46464;background:rgba(180,100,100,0.07)"><div class="callout-label" style="color:#b46464">공리 — Zorn의 보조정리 (ZL)</div><p>부분순서집합 $(A, \leq)$에서 모든 사슬이 $A$에서 상계를 가지면,<br />
-$(A, \leq)$는 <strong>극대원소</strong>를 가진다.</p>
-<p>[!theorem] $HMP \Rightarrow ZL$</p>
-<p>[!proof]- 증명<br />
-"모든 사슬이 상계를 가진다"고 가정하자.</p>
+$(A, \leq)$는 <strong>극대원소</strong>를 가진다.</p></div>
+<div class="callout" style="border-left-color:#2eb8a0;background:rgba(46,184,160,0.07)"><div class="callout-label" style="color:#2eb8a0">정리 — $HMP \Rightarrow ZL$</div></div>
+<div class="callout" style="border-left-color:#8a70c0;background:rgba(138,112,192,0.07)"><div class="callout-label" style="color:#8a70c0">증명 — 증명</div><button class="collapsible-toggle" onclick="this.nextElementSibling.classList.toggle('open')">▶ 펼치기</button><div class="collapsible-body"><p>"모든 사슬이 상계를 가진다"고 가정하자.</p>
 <p>HMP에 의해 극대 사슬 $C \subseteq A$가 존재한다. 가정에 의해 $C$의 상계 $u \in A$가 존재.</p>
-<p>$u \notin C$이면 $C' = C \cup {u}$도 사슬 ($u$가 $C$의 상계이므로)이 되어 $C$의 극대성에 모순.<br />
+<p>$u \notin C$이면 $C' = C \cup \{u\}$도 사슬 ($u$가 $C$의 상계이므로)이 되어 $C$의 극대성에 모순.<br />
 따라서 $u \in C$이고 $u$는 $C$의 최대원소.</p>
-<p>$u \leq a$인 $a \in A$를 택하면 $C'' = C \cup {a}$도 사슬 → $a \in C$ (극대성) → $a \leq u$ → $a = u$.<br />
-따라서 $u$는 $A$의 극대원소. $\square$</p></div>
+<p>$u \leq a$인 $a \in A$를 택하면 $C'' = C \cup \{a\}$도 사슬 → $a \in C$ (극대성) → $a \leq u$ → $a = u$.<br />
+따라서 $u$는 $A$의 극대원소. $\square$</p><p></div></div></p>
 <p><strong>응용 예시:</strong><br />
 - 선형대수학: 모든 벡터공간은 기저(Hamel basis)를 가진다<br />
 - 대수학: 모든 환에는 극대 아이디얼이 존재한다</p>
 <hr />
 <h2>정렬원리 (WOP)</h2>
 <div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 정렬순서 (Well-Order)</div><p>전순서집합 $(X, \prec)$에서 임의의 공집합이 아닌 부분집합이 최소원소를 가질 때<br />
-$\prec$를 <strong>정렬순서(well-order)</strong>라 한다.</p>
-<p>[!axiom] 정렬원리 (Well-Ordering Principle, WOP)<br />
-임의의 집합은 정렬될 수 있다. 즉, 어떤 집합에도 정렬순서를 부여할 수 있다.</p>
-<p>[!theorem] $ZL \Rightarrow WOP$</p>
-<p>[!proof]- 증명<br />
-집합 $X$에 well-order를 주기 위해<br />
-$A = {(Y, \prec) \mid Y \subseteq X,\; \prec\text{은 } Y\text{의 well-order}}$를 부분순서집합으로 잡는다.</p>
+$\prec$를 <strong>정렬순서(well-order)</strong>라 한다.</p></div>
+<div class="callout" style="border-left-color:#b46464;background:rgba(180,100,100,0.07)"><div class="callout-label" style="color:#b46464">공리 — 정렬원리 (Well-Ordering Principle, WOP)</div><p>임의의 집합은 정렬될 수 있다. 즉, 어떤 집합에도 정렬순서를 부여할 수 있다.</p></div>
+<div class="callout" style="border-left-color:#2eb8a0;background:rgba(46,184,160,0.07)"><div class="callout-label" style="color:#2eb8a0">정리 — $ZL \Rightarrow WOP$</div></div>
+<div class="callout" style="border-left-color:#8a70c0;background:rgba(138,112,192,0.07)"><div class="callout-label" style="color:#8a70c0">증명 — 증명</div><button class="collapsible-toggle" onclick="this.nextElementSibling.classList.toggle('open')">▶ 펼치기</button><div class="collapsible-body"><p>집합 $X$에 well-order를 주기 위해<br />
+$A = \{(Y, \prec) \mid Y \subseteq X,\; \prec\text{은 } Y\text{의 well-order}\}$를 부분순서집합으로 잡는다.</p>
 <p>임의의 사슬 $\mathcal{C} \subseteq A$에 대해<br />
-$Y^<em> = \bigcup_{(Y,\prec)\in\mathcal{C}} Y$에 $\prec^</em>$를 합집합으로 정의하면 $(Y^<em>, \prec^</em>)$는 $\mathcal{C}$의 상계.</p>
+$Y^* = \bigcup_{(Y,\prec)\in\mathcal{C}} Y$에 $\prec^*$를 합집합으로 정의하면 $(Y^*, \prec^*)$는 $\mathcal{C}$의 상계.</p>
 <p>Zorn의 보조정리로 극대원소 $(Y_{\max}, \prec_{\max})$가 존재.</p>
 <p>$Y_{\max} \neq X$이면 $x_0 \in X \setminus Y_{\max}$를 맨 뒤에 추가하여 더 큰 well-order가 생겨 모순.<br />
-따라서 $Y_{\max} = X$. $\square$</p>
-<p>[!theorem] $WOP \Rightarrow AC$</p>
-<p>[!proof]- 증명<br />
-공집합이 아닌 집합족 $\mathcal{F}$가 주어지면, WOP로 $\bigcup \mathcal{F}$에 well-order $\prec$를 부여한다.<br />
-각 $A \in \mathcal{F}$에 대해 $A$의 $\prec$-최소원소 $m_A$를 택하여 $f(A) = m_A$로 정의하면 선택함수. $\square$</p></div>
+따라서 $Y_{\max} = X$. $\square$</p><p></div></div></p>
+<div class="callout" style="border-left-color:#2eb8a0;background:rgba(46,184,160,0.07)"><div class="callout-label" style="color:#2eb8a0">정리 — $WOP \Rightarrow AC$</div></div>
+<div class="callout" style="border-left-color:#8a70c0;background:rgba(138,112,192,0.07)"><div class="callout-label" style="color:#8a70c0">증명 — 증명</div><button class="collapsible-toggle" onclick="this.nextElementSibling.classList.toggle('open')">▶ 펼치기</button><div class="collapsible-body"><p>공집합이 아닌 집합족 $\mathcal{F}$가 주어지면, WOP로 $\bigcup \mathcal{F}$에 well-order $\prec$를 부여한다.<br />
+각 $A \in \mathcal{F}$에 대해 $A$의 $\prec$-최소원소 $m_A$를 택하여 $f(A) = m_A$로 정의하면 선택함수. $\square$</p><p></div></div></p>
 <hr />
 <h2>동치 관계 요약</h2>
 <pre><code>AC

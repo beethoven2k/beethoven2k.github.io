@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MOC — 집합론 — 집합론</title>
-
 <script>
-MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
-  processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea']}};
+MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],
+  displayMath:[['$$','$$'],['\\[','\\]']],
+  processEscapes:true,processEnvironments:true},
+  options:{skipHtmlTags:['script','noscript','style','textarea','pre']}};
 </script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
-
 <style>
 :root{--bg:#07090f;--bg2:#0d1017;--bg3:#131720;--gold:#c8a84b;--gold-dim:#8a7235;
   --teal:#2eb8a0;--teal-dim:#1a6e60;--text:#dcd7cc;--muted:#8a8578;--border:#2a2d38;}
@@ -54,9 +54,10 @@ tr:nth-child(even) td{background:var(--bg2);}
 .callout{border-left:3px solid var(--gold-dim);background:var(--bg2);
   padding:.9rem 1.2rem .9rem 1.4rem;margin:1.4rem 0;border-radius:0 4px 4px 0;}
 .callout-label{font-family:"Courier New",monospace;font-size:.68rem;
-  letter-spacing:.18em;text-transform:uppercase;font-weight:600;margin-bottom:.55rem;}
+  letter-spacing:.18em;text-transform:uppercase;font-weight:600;margin-bottom:.6rem;}
 .callout p{margin-bottom:.4rem;}.callout p:last-child{margin-bottom:0;}
 .callout table{margin:.6rem 0;}
+.callout ul,.callout ol{margin:.4rem 0;}
 .collapsible-toggle{font-family:"Courier New",monospace;font-size:.72rem;
   letter-spacing:.1em;color:var(--muted);background:none;border:none;
   cursor:pointer;padding:0;margin-top:.3rem;display:block;}
@@ -65,8 +66,8 @@ tr:nth-child(even) td{background:var(--bg2);}
 .collapsible-body.open{display:block;}
 .nav-links{display:flex;gap:1.5rem;margin-top:3rem;padding-top:1.5rem;
   border-top:1px solid var(--border);font-family:"Courier New",monospace;font-size:.78rem;}
-.nav-links a{border:1px solid var(--border);padding:.5rem 1rem;
-  color:var(--muted);text-decoration:none;border-bottom:1px solid var(--border);transition:all .2s;}
+.nav-links a{border:1px solid var(--border);padding:.5rem 1rem;color:var(--muted);
+  text-decoration:none;border-bottom:1px solid var(--border);transition:all .2s;}
 .nav-links a:hover{border-color:var(--gold-dim);color:var(--gold);}
 .nav-links .prev::before{content:"← ";}
 .nav-links .next::after{content:" →";}

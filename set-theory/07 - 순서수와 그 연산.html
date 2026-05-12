@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>07 — 순서수와 그 연산 — 집합론</title>
-
 <script>
-MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
-  processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea']}};
+MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],
+  displayMath:[['$$','$$'],['\\[','\\]']],
+  processEscapes:true,processEnvironments:true},
+  options:{skipHtmlTags:['script','noscript','style','textarea','pre']}};
 </script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
-
 <style>
 :root{--bg:#07090f;--bg2:#0d1017;--bg3:#131720;--gold:#c8a84b;--gold-dim:#8a7235;
   --teal:#2eb8a0;--teal-dim:#1a6e60;--text:#dcd7cc;--muted:#8a8578;--border:#2a2d38;}
@@ -54,9 +54,10 @@ tr:nth-child(even) td{background:var(--bg2);}
 .callout{border-left:3px solid var(--gold-dim);background:var(--bg2);
   padding:.9rem 1.2rem .9rem 1.4rem;margin:1.4rem 0;border-radius:0 4px 4px 0;}
 .callout-label{font-family:"Courier New",monospace;font-size:.68rem;
-  letter-spacing:.18em;text-transform:uppercase;font-weight:600;margin-bottom:.55rem;}
+  letter-spacing:.18em;text-transform:uppercase;font-weight:600;margin-bottom:.6rem;}
 .callout p{margin-bottom:.4rem;}.callout p:last-child{margin-bottom:0;}
 .callout table{margin:.6rem 0;}
+.callout ul,.callout ol{margin:.4rem 0;}
 .collapsible-toggle{font-family:"Courier New",monospace;font-size:.72rem;
   letter-spacing:.1em;color:var(--muted);background:none;border:none;
   cursor:pointer;padding:0;margin-top:.3rem;display:block;}
@@ -65,8 +66,8 @@ tr:nth-child(even) td{background:var(--bg2);}
 .collapsible-body.open{display:block;}
 .nav-links{display:flex;gap:1.5rem;margin-top:3rem;padding-top:1.5rem;
   border-top:1px solid var(--border);font-family:"Courier New",monospace;font-size:.78rem;}
-.nav-links a{border:1px solid var(--border);padding:.5rem 1rem;
-  color:var(--muted);text-decoration:none;border-bottom:1px solid var(--border);transition:all .2s;}
+.nav-links a{border:1px solid var(--border);padding:.5rem 1rem;color:var(--muted);
+  text-decoration:none;border-bottom:1px solid var(--border);transition:all .2s;}
 .nav-links a:hover{border-color:var(--gold-dim);color:var(--gold);}
 .nav-links .prev::before{content:"← ";}
 .nav-links .next::after{content:" →";}
@@ -88,42 +89,39 @@ tr:nth-child(even) td{background:var(--bg2);}
 <p>기수(cardinal)가 집합의 <strong>크기</strong>를 측정한다면, 순서수(ordinal)는 정렬집합의 <strong>순서형(order type)</strong>을 포착한다.</p>
 <ul>
 <li>유한 순서수: $0, 1, 2, 3, \ldots$ (자연수와 일치)</li>
-<li>첫 번째 초한 순서수: $\omega = {0, 1, 2, 3, \ldots}$</li>
+<li>첫 번째 초한 순서수: $\omega = \{0, 1, 2, 3, \ldots\}$</li>
 <li>그 다음: $\omega + 1, \omega + 2, \ldots, \omega \cdot 2, \ldots, \omega^2, \ldots, \omega^\omega, \ldots$</li>
 </ul>
 <hr />
 <h2>순서수의 정의</h2>
 <div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 순서수 (Ordinal Number)</div><p>집합 $\alpha$가 다음 두 조건을 만족할 때 <strong>순서수</strong>라 한다:</p>
 <p><strong>(1)</strong> $\alpha$는 원소를 기준으로 <strong>전이적(transitive)</strong>이다: $\beta \in \alpha \Rightarrow \beta \subset \alpha$</p>
-<p><strong>(2)</strong> $\alpha$는 $\in$ 관계에 의해 <strong>정렬집합(well-ordered set)</strong>이다</p>
-<p>[!definition] 후계 순서수와 극한 순서수<br />
-- <strong>후계 순서수(successor ordinal)</strong>: $\alpha + 1 = \alpha \cup {\alpha}$ 형태<br />
-- <strong>극한 순서수(limit ordinal)</strong>: $\omega, \omega^2, \ldots$ 등 후계 순서수가 아닌 순서수</p>
-<p>[!definition] 순서수의 대소<br />
-순서수 $\alpha &lt; \beta \iff \alpha \in \beta$</p></div>
+<p><strong>(2)</strong> $\alpha$는 $\in$ 관계에 의해 <strong>정렬집합(well-ordered set)</strong>이다</p></div>
+<div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 후계 순서수와 극한 순서수</div><ul>
+<li><strong>후계 순서수(successor ordinal)</strong>: $\alpha + 1 = \alpha \cup \{\alpha\}$ 형태</li>
+<li><strong>극한 순서수(limit ordinal)</strong>: $\omega, \omega^2, \ldots$ 등 후계 순서수가 아닌 순서수</li>
+</ul></div>
+<div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 순서수의 대소</div><p>순서수 $\alpha < \beta \iff \alpha \in \beta$</p></div>
 <hr />
 <h2>순서수의 연산</h2>
 <div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 순서수 덧셈</div><p>정렬집합의 순서형을 이어 붙이는 연산.<br />
-$$\alpha + 0 = \alpha, \quad \alpha + (\beta + 1) = (\alpha + \beta) + 1, \quad \alpha + \lambda = \sup_{\beta &lt; \lambda}(\alpha + \beta)$$<br />
-<strong>비가환</strong>: $1 + \omega = \omega \neq \omega + 1$</p>
-<p>[!definition] 순서수 곱셈<br />
-$$\alpha \cdot 0 = 0, \quad \alpha \cdot (\beta + 1) = \alpha \cdot \beta + \alpha, \quad \alpha \cdot \lambda = \sup_{\beta &lt; \lambda}(\alpha \cdot \beta)$$</p>
-<p>[!definition] 순서수 거듭제곱<br />
-$$\alpha^0 = 1, \quad \alpha^{\beta+1} = \alpha^\beta \cdot \alpha, \quad \alpha^\lambda = \sup_{\beta &lt; \lambda} \alpha^\beta$$</p></div>
+$$\alpha + 0 = \alpha, \quad \alpha + (\beta + 1) = (\alpha + \beta) + 1, \quad \alpha + \lambda = \sup_{\beta < \lambda}(\alpha + \beta)$$<br />
+<strong>비가환</strong>: $1 + \omega = \omega \neq \omega + 1$</p></div>
+<div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 순서수 곱셈</div><p>$$\alpha \cdot 0 = 0, \quad \alpha \cdot (\beta + 1) = \alpha \cdot \beta + \alpha, \quad \alpha \cdot \lambda = \sup_{\beta < \lambda}(\alpha \cdot \beta)$$</p></div>
+<div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 순서수 거듭제곱</div><p>$$\alpha^0 = 1, \quad \alpha^{\beta+1} = \alpha^\beta \cdot \alpha, \quad \alpha^\lambda = \sup_{\beta < \lambda} \alpha^\beta$$</p></div>
 <hr />
 <h2>Burali-Forti 역설</h2>
-<div class="callout" style="border-left-color:#2eb8a0;background:rgba(46,184,160,0.07)"><div class="callout-label" style="color:#2eb8a0">정리 — Burali-Forti 역설</div><p>모든 순서수의 모임 $\mathbf{On}$은 <strong>집합이 아니다</strong> (진류, proper class).</p>
-<p>[!proof]- 증명 (개요)<br />
-$\mathbf{On}$이 집합이라고 가정하면, $\mathbf{On}$ 자체가 순서수의 조건을 만족하므로 $\mathbf{On} \in \mathbf{On}$.<br />
+<div class="callout" style="border-left-color:#2eb8a0;background:rgba(46,184,160,0.07)"><div class="callout-label" style="color:#2eb8a0">정리 — Burali-Forti 역설</div><p>모든 순서수의 모임 $\mathbf{On}$은 <strong>집합이 아니다</strong> (진류, proper class).</p></div>
+<div class="callout" style="border-left-color:#8a70c0;background:rgba(138,112,192,0.07)"><div class="callout-label" style="color:#8a70c0">증명 — 증명 (개요)</div><button class="collapsible-toggle" onclick="this.nextElementSibling.classList.toggle('open')">▶ 펼치기</button><div class="collapsible-body"><p>$\mathbf{On}$이 집합이라고 가정하면, $\mathbf{On}$ 자체가 순서수의 조건을 만족하므로 $\mathbf{On} \in \mathbf{On}$.<br />
 그러나 이는 정렬순서의 비반사성에 모순 ($\alpha \notin \alpha$).<br />
-따라서 $\mathbf{On}$은 집합이 아니다. $\square$</p></div>
+따라서 $\mathbf{On}$은 집합이 아니다. $\square$</p><p></div></div></p>
 <p>Russell의 역설과 구조가 유사하다 — 자기포함의 모순. ZFC는 분리 공리로 이를 차단한다.</p>
 <hr />
 <h2>초한귀납법</h2>
 <div class="callout" style="border-left-color:#2eb8a0;background:rgba(46,184,160,0.07)"><div class="callout-label" style="color:#2eb8a0">정리 — 초한귀납법 원리</div><p>모든 순서수 $\alpha$에 대해 성질 $P(\alpha)$가 성립하려면:</p>
 <p><strong>(1)</strong> $P(0)$이 성립하고</p>
 <p><strong>(2)</strong> $P(\alpha)$가 성립하면 $P(\alpha + 1)$이 성립하고 (후계 단계)</p>
-<p><strong>(3)</strong> 극한 순서수 $\lambda$에 대해 모든 $\beta &lt; \lambda$에서 $P(\beta)$가 성립하면 $P(\lambda)$가 성립 (극한 단계)</p></div>
+<p><strong>(3)</strong> 극한 순서수 $\lambda$에 대해 모든 $\beta < \lambda$에서 $P(\beta)$가 성립하면 $P(\lambda)$가 성립 (극한 단계)</p></div>
 <p>이것은 Peano의 수학적 귀납법 (<a href="02 - Peano 공리.html">02 - Peano 공리</a>)을 초한으로 확장한 것이다.</p>
 <hr />
 <h2>미완성 — 채워야 할 내용</h2>

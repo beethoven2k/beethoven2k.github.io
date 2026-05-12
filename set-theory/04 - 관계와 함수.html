@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>04 — 관계와 함수 — 집합론</title>
-
 <script>
-MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
-  processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea']}};
+MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],
+  displayMath:[['$$','$$'],['\\[','\\]']],
+  processEscapes:true,processEnvironments:true},
+  options:{skipHtmlTags:['script','noscript','style','textarea','pre']}};
 </script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
-
 <style>
 :root{--bg:#07090f;--bg2:#0d1017;--bg3:#131720;--gold:#c8a84b;--gold-dim:#8a7235;
   --teal:#2eb8a0;--teal-dim:#1a6e60;--text:#dcd7cc;--muted:#8a8578;--border:#2a2d38;}
@@ -54,9 +54,10 @@ tr:nth-child(even) td{background:var(--bg2);}
 .callout{border-left:3px solid var(--gold-dim);background:var(--bg2);
   padding:.9rem 1.2rem .9rem 1.4rem;margin:1.4rem 0;border-radius:0 4px 4px 0;}
 .callout-label{font-family:"Courier New",monospace;font-size:.68rem;
-  letter-spacing:.18em;text-transform:uppercase;font-weight:600;margin-bottom:.55rem;}
+  letter-spacing:.18em;text-transform:uppercase;font-weight:600;margin-bottom:.6rem;}
 .callout p{margin-bottom:.4rem;}.callout p:last-child{margin-bottom:0;}
 .callout table{margin:.6rem 0;}
+.callout ul,.callout ol{margin:.4rem 0;}
 .collapsible-toggle{font-family:"Courier New",monospace;font-size:.72rem;
   letter-spacing:.1em;color:var(--muted);background:none;border:none;
   cursor:pointer;padding:0;margin-top:.3rem;display:block;}
@@ -65,8 +66,8 @@ tr:nth-child(even) td{background:var(--bg2);}
 .collapsible-body.open{display:block;}
 .nav-links{display:flex;gap:1.5rem;margin-top:3rem;padding-top:1.5rem;
   border-top:1px solid var(--border);font-family:"Courier New",monospace;font-size:.78rem;}
-.nav-links a{border:1px solid var(--border);padding:.5rem 1rem;
-  color:var(--muted);text-decoration:none;border-bottom:1px solid var(--border);transition:all .2s;}
+.nav-links a{border:1px solid var(--border);padding:.5rem 1rem;color:var(--muted);
+  text-decoration:none;border-bottom:1px solid var(--border);transition:all .2s;}
 .nav-links a:hover{border-color:var(--gold-dim);color:var(--gold);}
 .nav-links .prev::before{content:"← ";}
 .nav-links .next::after{content:" →";}
@@ -83,12 +84,10 @@ tr:nth-child(even) td{background:var(--bg2);}
 <p>← <a href="03 - 집합의 개념.html">03 - 집합의 개념</a> | 다음 → <a href="05 - 집합의 크기.html">05 - 집합의 크기</a></p>
 <hr />
 <h2>Cartesian 곱</h2>
-<p>순서쌍 $(a, b) = {{a}, {a, b}}$로 정의한다.</p>
-<div class="callout" style="border-left-color:#6080aa;background:rgba(96,128,170,0.07)"><div class="callout-label" style="color:#6080aa">보조정리 — 순서쌍의 동등</div><p>$(a, b) = (c, d) \Longleftrightarrow a = c$ 이고 $b = d$</p>
-<p>[!definition] Cartesian 곱<br />
-$A \times B = {(a, b) \mid a \in A,\; b \in B}$</p>
-<p>[!theorem] Cartesian 곱의 성질<br />
-<strong>(1)</strong> $A \times (B \cap C) = (A \times B) \cap (A \times C)$<br />
+<p>순서쌍 $(a, b) = \{\{a\}, \{a, b\}\}$로 정의한다.</p>
+<div class="callout" style="border-left-color:#6080aa;background:rgba(96,128,170,0.07)"><div class="callout-label" style="color:#6080aa">보조정리 — 순서쌍의 동등</div><p>$(a, b) = (c, d) \Longleftrightarrow a = c$ 이고 $b = d$</p></div>
+<div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — Cartesian 곱</div><p>$A \times B = \{(a, b) \mid a \in A,\; b \in B\}$</p></div>
+<div class="callout" style="border-left-color:#2eb8a0;background:rgba(46,184,160,0.07)"><div class="callout-label" style="color:#2eb8a0">정리 — Cartesian 곱의 성질</div><p><strong>(1)</strong> $A \times (B \cap C) = (A \times B) \cap (A \times C)$<br />
 <strong>(2)</strong> $A \times (B \cup C) = (A \times B) \cup (A \times C)$<br />
 <strong>(3)</strong> $A \times (B - C) = (A \times B) - (A \times C)$<br />
 <strong>(4)</strong> $(A \times C) \cap (B \times D) = (A \cap B) \times (C \cap D)$</p></div>
@@ -96,89 +95,79 @@ $A \times B = {(a, b) \mid a \in A,\; b \in B}$</p>
 <h2>관계</h2>
 <div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 이항관계 · 역관계 · 정의역 · 치역</div><p>$R \subset A \times B$일 때 $R$을 $A$에서 $B$로의 <strong>관계</strong>라 한다.</p>
 <ul>
-<li><strong>역관계</strong>: $R^{-1} = {(b, a) \mid (a, b) \in R}$</li>
-<li><strong>정의역</strong>: $\mathcal{D}(R) = {a \in A \mid \exists b,\; (a,b) \in R}$</li>
-<li><strong>치역</strong>: $\mathcal{I}(R) = {b \in B \mid \exists a,\; (a,b) \in R}$</li>
-</ul>
-<p>[!definition] 동치관계 (Equivalence Relation)<br />
-반사율 · 대칭율 · 추이율을 만족하는 관계.</p>
+<li><strong>역관계</strong>: $R^{-1} = \{(b, a) \mid (a, b) \in R\}$</li>
+<li><strong>정의역</strong>: $\mathcal{D}(R) = \{a \in A \mid \exists b,\; (a,b) \in R\}$</li>
+<li><strong>치역</strong>: $\mathcal{I}(R) = \{b \in B \mid \exists a,\; (a,b) \in R\}$</li>
+</ul></div>
+<div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 동치관계 (Equivalence Relation)</div><p>반사율 · 대칭율 · 추이율을 만족하는 관계.</p>
 <ul>
 <li>반사율: $\forall x,\; (x,x) \in R$</li>
 <li>대칭율: $(x,y) \in R \Rightarrow (y,x) \in R$</li>
 <li>추이율: $(x,y),(y,z) \in R \Rightarrow (x,z) \in R$</li>
-</ul>
-<p>[!definition] 반대칭성<br />
-$(x, y) \in R \wedge (y, x) \in R \Rightarrow x = y$</p></div>
-<p>항등관계(대각관계): $\Delta_{X} = {(x,x) \mid x \in X}$</p>
-<div class="callout" style="border-left-color:#6080aa;background:rgba(96,128,170,0.07)"><div class="callout-label" style="color:#6080aa">보조정리 — 반대칭성의 동치</div><p>$R$이 반대칭성을 만족 $\iff$ $R \cap R^{-1} \subset \Delta_X$</p>
-<p>[!definition] 동치류 · 몫집합 · 분할<br />
-- <strong>동치류</strong>: $[x] = {y \in X \mid x \sim y}$<br />
-- <strong>몫집합</strong>: $X/R = {[x] \mid x \in X}$<br />
-- <strong>분할</strong>: $A \neq \varnothing$, 서로소, $\bigcup = X$를 만족하는 부분집합들의 모임</p>
-<p>[!lemma] 동치류는 분할을 이룬다<br />
-동치관계 $R$에 대해 $X/R$은 $X$의 분할이다.</p>
-<p>[!theorem] 분할 → 동치관계<br />
-$X$의 분할 $\mathbf{P}$에 대해 $x \tilde{R} y \iff x, y$가 같은 $A \in \mathbf{P}$에 속함으로 정의하면<br />
+</ul></div>
+<div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 반대칭성</div><p>$(x, y) \in R \wedge (y, x) \in R \Rightarrow x = y$</p></div>
+<p>항등관계(대각관계): $\Delta_{X} = \{(x,x) \mid x \in X\}$</p>
+<div class="callout" style="border-left-color:#6080aa;background:rgba(96,128,170,0.07)"><div class="callout-label" style="color:#6080aa">보조정리 — 반대칭성의 동치</div><p>$R$이 반대칭성을 만족 $\iff$ $R \cap R^{-1} \subset \Delta_X$</p></div>
+<div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 동치류 · 몫집합 · 분할</div><ul>
+<li><strong>동치류</strong>: $[x] = \{y \in X \mid x \sim y\}$</li>
+<li><strong>몫집합</strong>: $X/R = \{[x] \mid x \in X\}$</li>
+<li><strong>분할</strong>: $A \neq \varnothing$, 서로소, $\bigcup = X$를 만족하는 부분집합들의 모임</li>
+</ul></div>
+<div class="callout" style="border-left-color:#6080aa;background:rgba(96,128,170,0.07)"><div class="callout-label" style="color:#6080aa">보조정리 — 동치류는 분할을 이룬다</div><p>동치관계 $R$에 대해 $X/R$은 $X$의 분할이다.</p></div>
+<div class="callout" style="border-left-color:#2eb8a0;background:rgba(46,184,160,0.07)"><div class="callout-label" style="color:#2eb8a0">정리 — 분할 → 동치관계</div><p>$X$의 분할 $\mathbf{P}$에 대해 $x \tilde{R} y \iff x, y$가 같은 $A \in \mathbf{P}$에 속함으로 정의하면<br />
 $\tilde{R}$은 동치관계이고 $X/\tilde{R} = \mathbf{P}$이다.</p></div>
 <hr />
 <h2>함수</h2>
 <div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 함수 (Function)</div><p>관계 $f \subset A \times B$가 $\mathcal{D}(f) = A$이고 단일값이면 함수라 한다.<br />
-$(a, b) \in f$를 $f(a) = b$로 쓰고 $f: A \to B$로 나타낸다.</p>
-<p>[!definition] 단사 · 전사 · 전단사<br />
-- <strong>단사(injection)</strong>: $f(x_1) = f(x_2) \Rightarrow x_1 = x_2$<br />
-- <strong>전사(surjection)</strong>: $f(X) = Y$<br />
-- <strong>전단사(bijection)</strong>: 단사 $\wedge$ 전사 = <strong>일대일 대응</strong></p>
-<p>[!definition] 상과 역상<br />
-- $f(A) = {f(x) \mid x \in A}$ — 상(image)<br />
-- $f^{-1}(B) = {x \in X \mid f(x) \in B}$ — 역상(preimage)</p>
-<p>[!theorem] 역상의 집합 연산 보존<br />
-$$f^{-1}!\left(\bigcup_\gamma B_\gamma\right) = \bigcup_\gamma f^{-1}(B_\gamma), \qquad<br />
-f^{-1}!\left(\bigcap_\gamma B_\gamma\right) = \bigcap_\gamma f^{-1}(B_\gamma)$$<br />
-$$f^{-1}(C - D) = f^{-1}(C) - f^{-1}(D)$$</p>
-<p>[!theorem] 상의 집합 연산<br />
-$$f!\left(\bigcup_\gamma A_\gamma\right) = \bigcup_\gamma f(A_\gamma), \qquad<br />
-f!\left(\bigcap_\gamma A_\gamma\right) \subset \bigcap_\gamma f(A_\gamma)$$<br />
-$f$가 단사이면 교집합도 등호.</p>
-<p>[!theorem] 단사함수의 특성 (동치 조건)<br />
-다음은 모두 동치이다:</p>
+$(a, b) \in f$를 $f(a) = b$로 쓰고 $f: A \to B$로 나타낸다.</p></div>
+<div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 단사 · 전사 · 전단사</div><ul>
+<li><strong>단사(injection)</strong>: $f(x_1) = f(x_2) \Rightarrow x_1 = x_2$</li>
+<li><strong>전사(surjection)</strong>: $f(X) = Y$</li>
+<li><strong>전단사(bijection)</strong>: 단사 $\wedge$ 전사 = <strong>일대일 대응</strong></li>
+</ul></div>
+<div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 상과 역상</div><ul>
+<li>$f(A) = \{f(x) \mid x \in A\}$ — 상(image)</li>
+<li>$f^{-1}(B) = \{x \in X \mid f(x) \in B\}$ — 역상(preimage)</li>
+</ul></div>
+<div class="callout" style="border-left-color:#2eb8a0;background:rgba(46,184,160,0.07)"><div class="callout-label" style="color:#2eb8a0">정리 — 역상의 집합 연산 보존</div><p>$$f^{-1}\!\left(\bigcup_\gamma B_\gamma\right) = \bigcup_\gamma f^{-1}(B_\gamma), \qquad
+> f^{-1}\!\left(\bigcap_\gamma B_\gamma\right) = \bigcap_\gamma f^{-1}(B_\gamma)$$<br />
+$$f^{-1}(C - D) = f^{-1}(C) - f^{-1}(D)$$</p></div>
+<div class="callout" style="border-left-color:#2eb8a0;background:rgba(46,184,160,0.07)"><div class="callout-label" style="color:#2eb8a0">정리 — 상의 집합 연산</div><p>$$f\!\left(\bigcup_\gamma A_\gamma\right) = \bigcup_\gamma f(A_\gamma), \qquad
+> f\!\left(\bigcap_\gamma A_\gamma\right) \subset \bigcap_\gamma f(A_\gamma)$$<br />
+$f$가 단사이면 교집합도 등호.</p></div>
+<div class="callout" style="border-left-color:#2eb8a0;background:rgba(46,184,160,0.07)"><div class="callout-label" style="color:#2eb8a0">정리 — 단사함수의 특성 (동치 조건)</div><p>다음은 모두 동치이다:</p>
 <p><strong>(1)</strong> $f$가 단사<br />
 <strong>(2)</strong> $f(A) - f(B) = f(A-B)$ (모든 $A, B \subset X$)<br />
 <strong>(3)</strong> $f(A) \cap f(B) = f(A \cap B)$ (모든 $A, B \subset X$)<br />
 <strong>(4)</strong> $f^{-1}(f(A)) = A$ (모든 $A \subset X$)</p></div>
 <hr />
 <h2>함수의 합성과 역함수</h2>
-<div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 합성 (Composition)</div><p>$$g \circ f: X \to Z, \quad (g \circ f)(x) = g(f(x))$$</p>
-<p>[!theorem] 합성의 결합법칙<br />
-$(h \circ g) \circ f = h \circ (g \circ f)$</p>
-<p>[!theorem] 합성 후 단사·전사 판정<br />
-<strong>(1)</strong> $g \circ f = I_X$인 $g$가 존재 $\Rightarrow$ $f$는 단사<br />
-<strong>(2)</strong> $f \circ h = I_Y$인 $h$가 존재 $\Rightarrow$ $f$는 전사</p>
-<p>[!definition] 역함수<br />
-$f: X \to Y$의 역관계 $f^{-1}$가 함수일 때 $f^{-1}$를 <strong>역함수</strong>라 한다.</p>
-<p>[!theorem] 역함수 존재 ↔ 전단사<br />
-$f^{-1}$ 존재 $\iff$ $f$가 전단사.<br />
-이때 $f^{-1} \circ f = I_X$, $f \circ f^{-1} = I_Y$, $f^{-1}$도 전단사.</p>
-<p>[!theorem] 전단사 합성의 역함수<br />
-$(g \circ f)^{-1} = f^{-1} \circ g^{-1}$</p></div>
+<div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 합성 (Composition)</div><p>$$g \circ f: X \to Z, \quad (g \circ f)(x) = g(f(x))$$</p></div>
+<div class="callout" style="border-left-color:#2eb8a0;background:rgba(46,184,160,0.07)"><div class="callout-label" style="color:#2eb8a0">정리 — 합성의 결합법칙</div><p>$(h \circ g) \circ f = h \circ (g \circ f)$</p></div>
+<div class="callout" style="border-left-color:#2eb8a0;background:rgba(46,184,160,0.07)"><div class="callout-label" style="color:#2eb8a0">정리 — 합성 후 단사·전사 판정</div><p><strong>(1)</strong> $g \circ f = I_X$인 $g$가 존재 $\Rightarrow$ $f$는 단사<br />
+<strong>(2)</strong> $f \circ h = I_Y$인 $h$가 존재 $\Rightarrow$ $f$는 전사</p></div>
+<div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 역함수</div><p>$f: X \to Y$의 역관계 $f^{-1}$가 함수일 때 $f^{-1}$를 <strong>역함수</strong>라 한다.</p></div>
+<div class="callout" style="border-left-color:#2eb8a0;background:rgba(46,184,160,0.07)"><div class="callout-label" style="color:#2eb8a0">정리 — 역함수 존재 ↔ 전단사</div><p>$f^{-1}$ 존재 $\iff$ $f$가 전단사.<br />
+이때 $f^{-1} \circ f = I_X$, $f \circ f^{-1} = I_Y$, $f^{-1}$도 전단사.</p></div>
+<div class="callout" style="border-left-color:#2eb8a0;background:rgba(46,184,160,0.07)"><div class="callout-label" style="color:#2eb8a0">정리 — 전단사 합성의 역함수</div><p>$(g \circ f)^{-1} = f^{-1} \circ g^{-1}$</p></div>
 <hr />
 <h2>부분순서와 격자</h2>
 <div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 부분순서집합 · 전순서집합 · 사슬</div><ul>
 <li><strong>부분순서(partial order)</strong>: 반사·추이·반대칭 만족하는 관계 $\leq$</li>
 <li><strong>전순서(total order)</strong>: 임의의 두 원소가 항상 비교 가능한 부분순서</li>
 <li><strong>사슬(chain)</strong>: 전순서인 부분집합</li>
-</ul>
-<p>[!definition] 상계 · 상한 · 극대원소<br />
-- <strong>상계(upper bound)</strong>: $\forall b \in B,\; b \leq u$인 $u \in A$<br />
-- <strong>상한(supremum)</strong>: $\sup B$ — 최소상계<br />
-- <strong>극대원소(maximal element)</strong>: $m \leq a \Rightarrow m = a$인 $m \in A$</p>
-<p>[!definition] 격자 (Lattice)<br />
-임의의 두 원소 $a, b$에 대해 $\sup{a,b}$ (join $a \vee b$)와 $\inf{a,b}$ (meet $a \wedge b$)가 항상 존재하는 부분순서집합.</p>
+</ul></div>
+<div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 상계 · 상한 · 극대원소</div><ul>
+<li><strong>상계(upper bound)</strong>: $\forall b \in B,\; b \leq u$인 $u \in A$</li>
+<li><strong>상한(supremum)</strong>: $\sup B$ — 최소상계</li>
+<li><strong>극대원소(maximal element)</strong>: $m \leq a \Rightarrow m = a$인 $m \in A$</li>
+</ul></div>
+<div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 격자 (Lattice)</div><p>임의의 두 원소 $a, b$에 대해 $\sup\{a,b\}$ (join $a \vee b$)와 $\inf\{a,b\}$ (meet $a \wedge b$)가 항상 존재하는 부분순서집합.</p>
 <ul>
 <li>$\mathbb{R}$: $a \vee b = \max(a,b)$, $a \wedge b = \min(a,b)$</li>
 <li>$(\mathcal{P}(X), \subseteq)$: $A \vee B = A \cup B$, $A \wedge B = A \cap B$</li>
-</ul>
-<p>[!theorem] 격자의 기본 법칙<br />
-교환법칙, 결합법칙, 항등법칙($a \vee a = a$), 흡수법칙($a \vee (a \wedge b) = a$)이 성립한다.</p></div>
+</ul></div>
+<div class="callout" style="border-left-color:#2eb8a0;background:rgba(46,184,160,0.07)"><div class="callout-label" style="color:#2eb8a0">정리 — 격자의 기본 법칙</div><p>교환법칙, 결합법칙, 항등법칙($a \vee a = a$), 흡수법칙($a \vee (a \wedge b) = a$)이 성립한다.</p></div>
 <div class="nav-links"><a class="prev" href="03 - 집합의 개념.html">03 - 집합의 개념</a><span class="spacer"></span><a class="next" href="05 - 집합의 크기.html">05 - 집합의 크기</a></div>
 </main>
 </body>

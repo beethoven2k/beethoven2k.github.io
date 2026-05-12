@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>02 — Peano 공리 — 집합론</title>
-
 <script>
-MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
-  processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea']}};
+MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],
+  displayMath:[['$$','$$'],['\\[','\\]']],
+  processEscapes:true,processEnvironments:true},
+  options:{skipHtmlTags:['script','noscript','style','textarea','pre']}};
 </script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
-
 <style>
 :root{--bg:#07090f;--bg2:#0d1017;--bg3:#131720;--gold:#c8a84b;--gold-dim:#8a7235;
   --teal:#2eb8a0;--teal-dim:#1a6e60;--text:#dcd7cc;--muted:#8a8578;--border:#2a2d38;}
@@ -54,9 +54,10 @@ tr:nth-child(even) td{background:var(--bg2);}
 .callout{border-left:3px solid var(--gold-dim);background:var(--bg2);
   padding:.9rem 1.2rem .9rem 1.4rem;margin:1.4rem 0;border-radius:0 4px 4px 0;}
 .callout-label{font-family:"Courier New",monospace;font-size:.68rem;
-  letter-spacing:.18em;text-transform:uppercase;font-weight:600;margin-bottom:.55rem;}
+  letter-spacing:.18em;text-transform:uppercase;font-weight:600;margin-bottom:.6rem;}
 .callout p{margin-bottom:.4rem;}.callout p:last-child{margin-bottom:0;}
 .callout table{margin:.6rem 0;}
+.callout ul,.callout ol{margin:.4rem 0;}
 .collapsible-toggle{font-family:"Courier New",monospace;font-size:.72rem;
   letter-spacing:.1em;color:var(--muted);background:none;border:none;
   cursor:pointer;padding:0;margin-top:.3rem;display:block;}
@@ -65,8 +66,8 @@ tr:nth-child(even) td{background:var(--bg2);}
 .collapsible-body.open{display:block;}
 .nav-links{display:flex;gap:1.5rem;margin-top:3rem;padding-top:1.5rem;
   border-top:1px solid var(--border);font-family:"Courier New",monospace;font-size:.78rem;}
-.nav-links a{border:1px solid var(--border);padding:.5rem 1rem;
-  color:var(--muted);text-decoration:none;border-bottom:1px solid var(--border);transition:all .2s;}
+.nav-links a{border:1px solid var(--border);padding:.5rem 1rem;color:var(--muted);
+  text-decoration:none;border-bottom:1px solid var(--border);transition:all .2s;}
 .nav-links a:hover{border-color:var(--gold-dim);color:var(--gold);}
 .nav-links .prev::before{content:"← ";}
 .nav-links .next::after{content:" →";}
@@ -93,24 +94,22 @@ $\mathbb{N}$의 원소를 <strong>자연수(natural)</strong>라 부른다.</p>
 <li><strong>PA5.</strong> $P$가 다음 두 조건을 만족하는 $\mathbb{N}$의 부분집합일 때, $P = \mathbb{N}$이다.</li>
 <li>(i) $1 \in P$</li>
 <li>(ii) $n \in P \Rightarrow n^{+} \in P$</li>
-</ul>
-<p>[!theorem] Peano 구조의 유일성<br />
-두 구조 $(\mathbb{N}, 1, S)$과 $(\mathbb{N}', 1', S')$가 둘 다 Peano 공리를 만족하면,<br />
+</ul></div>
+<div class="callout" style="border-left-color:#2eb8a0;background:rgba(46,184,160,0.07)"><div class="callout-label" style="color:#2eb8a0">정리 — Peano 구조의 유일성</div><p>두 구조 $(\mathbb{N}, 1, S)$과 $(\mathbb{N}', 1', S')$가 둘 다 Peano 공리를 만족하면,<br />
 $f : \mathbb{N} \to \mathbb{N}'$ 중 오직 하나의 전단사 함수가 존재하여<br />
 $$f(1) = 1', \qquad f(S(n)) = S'(f(n)) \quad (\forall n \in \mathbb{N})$$<br />
-따라서 두 구조는 동형이다.</p>
-<p>[!proof]- 증명<br />
-<strong>(1) $f$의 재귀적 정의 및 존재</strong></p>
+따라서 두 구조는 동형이다.</p></div>
+<div class="callout" style="border-left-color:#8a70c0;background:rgba(138,112,192,0.07)"><div class="callout-label" style="color:#8a70c0">증명 — 증명</div><button class="collapsible-toggle" onclick="this.nextElementSibling.classList.toggle('open')">▶ 펼치기</button><div class="collapsible-body"><p><strong>(1) $f$의 재귀적 정의 및 존재</strong></p>
 <p>$f(1) = 1'$, 그리고 $f(S(n)) := S'(f(n))$으로 정의한다.<br />
-집합 $A = {n \in \mathbb{N} \mid f(n)\text{이 정의됨}}$을 잡으면 $1 \in A$이고 $n \in A \Rightarrow S(n) \in A$이므로 PA5에 의해 $A = \mathbb{N}$.</p>
+집합 $A = \{n \in \mathbb{N} \mid f(n)\text{이 정의됨}\}$을 잡으면 $1 \in A$이고 $n \in A \Rightarrow S(n) \in A$이므로 PA5에 의해 $A = \mathbb{N}$.</p>
 <p><strong>(2) 역함수 $g$의 정의</strong></p>
 <p>같은 방식으로 $g : \mathbb{N}' \to \mathbb{N}$을 $g(1') = 1$, $g(S'(x')) := S(g(x'))$으로 재귀 정의한다.</p>
-<p><strong>(3) $g \circ f = \mathrm{id}<em>{\mathbb{N}}$ 및 $f \circ g = \mathrm{id}</em>{\mathbb{N}'}$</strong></p>
+<p><strong>(3) $g \circ f = \mathrm{id}_{\mathbb{N}}$ 및 $f \circ g = \mathrm{id}_{\mathbb{N}'}$</strong></p>
 <p>기저: $g(f(1)) = g(1') = 1$.<br />
 귀납단계: $g(f(S(n))) = g(S'(f(n))) = S(g(f(n))) = S(n)$ (귀납 가정 사용).<br />
-따라서 $g \circ f = \mathrm{id}<em>{\mathbb{N}}$. 동일 절차로 $f \circ g = \mathrm{id}</em>{\mathbb{N}'}$.</p>
+따라서 $g \circ f = \mathrm{id}_{\mathbb{N}}$. 동일 절차로 $f \circ g = \mathrm{id}_{\mathbb{N}'}$.</p>
 <p><strong>(4) 유일성</strong></p>
-<p>$h : \mathbb{N} \to \mathbb{N}'$이 같은 조건을 만족하면 귀납법으로 모든 $n$에 대해 $h(n) = f(n)$. $\square$</p></div>
+<p>$h : \mathbb{N} \to \mathbb{N}'$이 같은 조건을 만족하면 귀납법으로 모든 $n$에 대해 $h(n) = f(n)$. $\square$</p><p></div></div></p>
 <hr />
 <h2>수학적귀납법</h2>
 <p>Peano 공리 PA5는 수학적 귀납법의 공리적 근거이다.</p>
@@ -118,48 +117,40 @@ $$f(1) = 1', \qquad f(S(n)) = S'(f(n)) \quad (\forall n \in \mathbb{N})$$<br />
 <div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 수학적귀납법</div><p><strong>Peano 공리(요약)</strong>: $0$의 존재, 각 수의 후계자 존재, $0$은 어떤 수의 후계자가 아니다, 서로 다른 수는 서로 다른 후계자, 그리고 귀납 공리.</p>
 <p><strong>수학적 귀납법</strong>: $P(0)$을 보이고, $\forall k\,(P(k) \Rightarrow P(k+1))$을 보이면 $\forall n\, P(n)$이 성립한다.</p></div>
 <p><strong>왜 수학적 귀납법이 증명이 되는가?</strong></p>
-<p>성질 $P(n)$이 성립하는 수들의 집합 $X = {n \in \mathbb{N} : P(n)}$을 생각하자.<br />
+<p>성질 $P(n)$이 성립하는 수들의 집합 $X = \{n \in \mathbb{N} : P(n)\}$을 생각하자.<br />
 $P(0)$과 귀납단계를 보였다면 $0 \in X$이고 $n \in X \Rightarrow n+1 \in X$이므로,<br />
 PA5(귀납 공리)에 의해 $X = \mathbb{N}$. 따라서 모든 자연수에 대해 $P(n)$이 성립한다.</p>
 <hr />
 <h2>자연수의 덧셈</h2>
 <div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 자연수의 덧셈</div><p>임의의 $x, y \in \mathbb{N}$에 대하여, 덧셈을 귀납적으로 정의한다:<br />
-$$1 + x := x^{+}, \quad x + 1 := x^{+}, \quad x^{+} + y := (x + y)^{+}$$</p>
-<p>[!theorem] 덧셈의 기본 법칙<br />
-임의의 $x, y, z \in \mathbb{N}$에 대하여:</p>
+$$1 + x := x^{+}, \quad x + 1 := x^{+}, \quad x^{+} + y := (x + y)^{+}$$</p></div>
+<div class="callout" style="border-left-color:#2eb8a0;background:rgba(46,184,160,0.07)"><div class="callout-label" style="color:#2eb8a0">정리 — 덧셈의 기본 법칙</div><p>임의의 $x, y, z \in \mathbb{N}$에 대하여:</p>
 <p><strong>(1)</strong> $x + (y + z) = (x + y) + z$ — 결합법칙</p>
 <p><strong>(2)</strong> $x + y = y + x$ — 교환법칙</p>
-<p><strong>(3)</strong> $x + z = y + z \Rightarrow x = y$ — 소거법칙</p>
-<p>[!definition] 자연수의 대소 관계<br />
-임의의 $x, y \in \mathbb{N}$에 대하여, $x = y + z$를 만족하는 $z \in \mathbb{N}$이 존재할 때 $x &gt; y$라 한다.</p>
-<p>[!theorem] 전순서 및 삼일률<br />
-<strong>(1)</strong> $x &gt; y$이고 $y &gt; z$이면 $x &gt; z$ — 추이율</p>
+<p><strong>(3)</strong> $x + z = y + z \Rightarrow x = y$ — 소거법칙</p></div>
+<div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 자연수의 대소 관계</div><p>임의의 $x, y \in \mathbb{N}$에 대하여, $x = y + z$를 만족하는 $z \in \mathbb{N}$이 존재할 때 $x > y$라 한다.</p></div>
+<div class="callout" style="border-left-color:#2eb8a0;background:rgba(46,184,160,0.07)"><div class="callout-label" style="color:#2eb8a0">정리 — 전순서 및 삼일률</div><p><strong>(1)</strong> $x > y$이고 $y > z$이면 $x > z$ — 추이율</p>
 <p><strong>(2)</strong> 임의의 $x, y \in \mathbb{N}$에 대해 다음 중 단 한 가지만 성립한다 — 삼일률<br />
-$$x &gt; y, \quad x = y, \quad x &lt; y$$</p>
-<p>[!lemma] 최소원소의 존재<br />
-공집합이 아닌 $\mathbb{N}$의 부분집합 $A$는 최소원소를 가진다.</p>
-<p>[!definition] 위로 유계<br />
-공집합이 아닌 $\mathbb{N}$의 부분집합 $A$에 대하여, 모든 $m \in A$에 대해 $m &lt; k_0$를 만족하는 $k_0 \in \mathbb{N}$가 존재하면 $A$가 <strong>위로 유계</strong>라고 한다.</p></div>
+$$x > y, \quad x = y, \quad x < y$$</p></div>
+<div class="callout" style="border-left-color:#6080aa;background:rgba(96,128,170,0.07)"><div class="callout-label" style="color:#6080aa">보조정리 — 최소원소의 존재</div><p>공집합이 아닌 $\mathbb{N}$의 부분집합 $A$는 최소원소를 가진다.</p></div>
+<div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 위로 유계</div><p>공집합이 아닌 $\mathbb{N}$의 부분집합 $A$에 대하여, 모든 $m \in A$에 대해 $m < k_0$를 만족하는 $k_0 \in \mathbb{N}$가 존재하면 $A$가 <strong>위로 유계</strong>라고 한다.</p></div>
 <hr />
 <h2>자연수의 곱셈</h2>
 <div class="callout" style="border-left-color:#c8a84b;background:rgba(200,168,75,0.07)"><div class="callout-label" style="color:#c8a84b">정의 — 자연수의 곱셈</div><p>임의의 $x, y \in \mathbb{N}$에 대하여, 곱셈을 귀납적으로 정의한다:<br />
-$$1 \cdot x := x, \quad x \cdot 1 := x, \quad x^{+} \cdot y := x \cdot y + y$$</p>
-<p>[!theorem] 곱셈의 기본 법칙<br />
-임의의 $x, y, z \in \mathbb{N}$에 대하여:</p>
+$$1 \cdot x := x, \quad x \cdot 1 := x, \quad x^{+} \cdot y := x \cdot y + y$$</p></div>
+<div class="callout" style="border-left-color:#2eb8a0;background:rgba(46,184,160,0.07)"><div class="callout-label" style="color:#2eb8a0">정리 — 곱셈의 기본 법칙</div><p>임의의 $x, y, z \in \mathbb{N}$에 대하여:</p>
 <p><strong>(1)</strong> $x(yz) = (xy)z$ — 결합법칙</p>
 <p><strong>(2)</strong> $xy = yx$ — 교환법칙</p>
 <p><strong>(3)</strong> $xz = yz \Rightarrow x = y$ — 소거법칙</p>
-<p><strong>(4)</strong> $x(y+z) = xy + xz$ — 분배법칙</p>
-<p>[!theorem] 나눗셈 알고리즘<br />
-임의의 $m, l \in \mathbb{N}$에 대하여 $1 \leq m \leq l$일 때,<br />
-$$l = mn \quad \text{또는} \quad l = mn + r, \quad 1 \leq r &lt; m$$<br />
-을 만족하는 $n, r \in \mathbb{N}$이 <strong>유일하게</strong> 존재한다.</p>
-<p>[!proof]- 증명 (나눗셈 알고리즘)<br />
-<strong>존재성</strong>: $A = {k \in \mathbb{N} \mid mk \leq l}$로 정의하면 $1 \in A$이므로 공집합이 아니다.<br />
-$A$의 최대원소 $n$이 존재하고, $mn \leq l &lt; mn^{+} = mn + m$.<br />
-$l \neq mn$이면 $l = mn + r,\; 1 \leq r &lt; m$인 $r$이 존재한다.</p>
-<p><strong>유일성</strong>: $n \neq n'$이라 가정하면 $n &lt; n'$ 또는 $n' &lt; n$인데,<br />
-어느 경우든 $mn^{+} \leq mn' \leq l = mn + r &lt; mn + m = mn^{+}$가 되어 모순. $\square$</p></div>
+<p><strong>(4)</strong> $x(y+z) = xy + xz$ — 분배법칙</p></div>
+<div class="callout" style="border-left-color:#2eb8a0;background:rgba(46,184,160,0.07)"><div class="callout-label" style="color:#2eb8a0">정리 — 나눗셈 알고리즘</div><p>임의의 $m, l \in \mathbb{N}$에 대하여 $1 \leq m \leq l$일 때,<br />
+$$l = mn \quad \text{또는} \quad l = mn + r, \quad 1 \leq r < m$$<br />
+을 만족하는 $n, r \in \mathbb{N}$이 <strong>유일하게</strong> 존재한다.</p></div>
+<div class="callout" style="border-left-color:#8a70c0;background:rgba(138,112,192,0.07)"><div class="callout-label" style="color:#8a70c0">증명 — 증명 (나눗셈 알고리즘)</div><button class="collapsible-toggle" onclick="this.nextElementSibling.classList.toggle('open')">▶ 펼치기</button><div class="collapsible-body"><p><strong>존재성</strong>: $A = \{k \in \mathbb{N} \mid mk \leq l\}$로 정의하면 $1 \in A$이므로 공집합이 아니다.<br />
+$A$의 최대원소 $n$이 존재하고, $mn \leq l < mn^{+} = mn + m$.<br />
+$l \neq mn$이면 $l = mn + r,\; 1 \leq r < m$인 $r$이 존재한다.</p>
+<p><strong>유일성</strong>: $n \neq n'$이라 가정하면 $n < n'$ 또는 $n' < n$인데,<br />
+어느 경우든 $mn^{+} \leq mn' \leq l = mn + r < mn + m = mn^{+}$가 되어 모순. $\square$</p><p></div></div></p>
 <div class="nav-links"><a class="prev" href="01 - 수리논리학의 기초.html">01 - 수리논리학의 기초</a><span class="spacer"></span><a class="next" href="03 - 집합의 개념.html">03 - 집합의 개념</a></div>
 </main>
 </body>
