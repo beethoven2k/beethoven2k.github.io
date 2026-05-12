@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notes — 수학 공부</title>
+<style>
+  :root {
+    --bg:       #07090f;
+    --bg2:      #0d1017;
+    --bg3:      #131720;
+    --gold:     #c8a84b;
+    --gold-dim: #8a7235;
+    --teal:     #2eb8a0;
+    --teal-dim: #1a6e60;
+    --text:     #dcd7cc;
+    --muted:    #8a8578;
+    --border:   #2a2d38;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.1rem 3rem;
+    background: rgba(7,9,15,0.97);
+    border-bottom: 1px solid var(--border);
+    font-family: "Courier New", monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+  }
+  nav .logo { color: var(--gold); text-decoration: none; font-size: 1rem; }
+  nav ul { list-style: none; display: flex; gap: 2.5rem; }
+  nav a { color: var(--muted); text-decoration: none; text-transform: uppercase; transition: color 0.2s; }
+  nav a:hover, nav a.active { color: var(--gold); }
+
+  /* WRAP */
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 2rem; }
+
+  /* HEADER */
+  .page-header {
+    padding: 8rem 0 4rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .sec-label {
+    font-family: "Courier New", monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+  .page-header h1 {
+    font-size: 2.4rem;
+    font-weight: 400;
+    color: #f0ece0;
+    margin-bottom: 0.6rem;
+  }
+  .page-header p {
+    color: var(--muted);
+    font-size: 0.97rem;
+    max-width: 520px;
+  }
+  .rule { width: 48px; height: 1px; background: var(--gold); margin: 1rem 0; }
+
+  /* CATEGORY TABS */
+  .tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    margin: 3rem 0 2.5rem;
+    font-family: "Courier New", monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    overflow-x: auto;
+  }
+  .tab-btn {
+    padding: 0.7rem 1.4rem;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    font-family: inherit;
+    font-size: inherit;
+    letter-spacing: inherit;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  /* PDF LIST */
+  .pdf-section { display: none; }
+  .pdf-section.active { display: block; }
+
+  .pdf-list { display: flex; flex-direction: column; }
+
+  .pdf-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.4rem 0;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  .pdf-item:first-child { border-top: 1px solid var(--border); }
+  .pdf-item:hover { background: rgba(200,168,75,0.025); padding-left: 0.5rem; }
+
+  .pdf-meta { display: flex; flex-direction: column; gap: 0.3rem; }
+  .pdf-title {
+    font-size: 0.97rem;
+    color: var(--text);
+    font-weight: 400;
+  }
+  .pdf-info {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .pdf-date {
+    font-family: "Courier New", monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+  .pdf-size {
+    font-family: "Courier New", monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+  .pdf-tag {
+    font-family: "Courier New", monospace;
+    font-size: 0.63rem;
+    padding: 0.15rem 0.55rem;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+  .pdf-tag.set    { border-color: rgba(200,168,75,0.4);  color: var(--gold-dim); }
+  .pdf-tag.linear { border-color: rgba(138,112,192,0.4); color: #7a60b0; }
+  .pdf-tag.calc   { border-color: rgba(46,184,160,0.4);  color: var(--teal-dim); }
+
+  .dl-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1.1rem;
+    font-family: "Courier New", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid var(--gold-dim);
+    color: var(--gold);
+    background: transparent;
+    white-space: nowrap;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .dl-btn:hover { background: rgba(200,168,75,0.1); border-color: var(--gold); }
+  .dl-btn::before { content: "↓ "; }
+
+  /* EMPTY STATE */
+  .empty {
+    padding: 4rem 0;
+    text-align: center;
+    font-family: "Courier New", monospace;
+    font-size: 0.8rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    line-height: 2;
+  }
+
+  /* FOOTER */
+  footer {
+    margin-top: 6rem;
+    padding: 2.5rem 0;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-family: "Courier New", monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+  }
+
+  @media (max-width: 600px) {
+    nav { padding: 1rem 1.2rem; }
+    nav ul { gap: 1.2rem; }
+    .page-header { padding: 7rem 0 3rem; }
+    .pdf-item { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">∂ / ∂x</a>
+  <ul>
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#topics">Topics</a></li>
+    <li><a href="index.html#set-theory">집합론</a></li>
+    <li><a href="notes.html" class="active">Notes</a></li>
+    <li><a href="index.html#equations">Equations</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+  <div class="page-header">
+    <div class="sec-label">Study Notes</div>
+    <h1>공부 노트</h1>
+    <div class="rule"></div>
+    <p>수업 노트, 문제 풀이, 정리 자료를 PDF로 공유합니다. 분야별로 정리되어 있습니다.</p>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('all', this)">전체</button>
+    <button class="tab-btn" onclick="switchTab('set', this)">집합론</button>
+    <button class="tab-btn" onclick="switchTab('linear', this)">선형대수학</button>
+    <button class="tab-btn" onclick="switchTab('calc', this)">다변수미적분학</button>
+  </div>
+
+  <!-- 전체 -->
+  <div class="pdf-section active" id="tab-all">
+    <div class="pdf-list" id="list-all">
+      <!-- PDF 항목 예시 — 실제 파일 업로드 후 href 수정 -->
+
+      <div class="pdf-item">
+        <div class="pdf-meta">
+          <div class="pdf-title">집합론 — 수리논리학의 기초 정리</div>
+          <div class="pdf-info">
+            <span class="pdf-date">2025.05.09</span>
+            <span class="pdf-size">— KB</span>
+            <span class="pdf-tag set">집합론</span>
+          </div>
+        </div>
+        <a class="dl-btn" href="pdf/집합론-수리논리학의기초.pdf" download>Download</a>
+      </div>
+
+      <div class="pdf-item">
+        <div class="pdf-meta">
+          <div class="pdf-title">선형대수학 — 벡터공간과 선형변환 요약</div>
+          <div class="pdf-info">
+            <span class="pdf-date">2025.05.04</span>
+            <span class="pdf-size">— KB</span>
+            <span class="pdf-tag linear">선형대수학</span>
+          </div>
+        </div>
+        <a class="dl-btn" href="pdf/선형대수-벡터공간.pdf" download>Download</a>
+      </div>
+
+      <div class="pdf-item">
+        <div class="pdf-meta">
+          <div class="pdf-title">다변수미적분학 — 편미분과 그래디언트</div>
+          <div class="pdf-info">
+            <span class="pdf-date">2025.04.28</span>
+            <span class="pdf-size">— KB</span>
+            <span class="pdf-tag calc">다변수미적분학</span>
+          </div>
+        </div>
+        <a class="dl-btn" href="pdf/다변수-편미분.pdf" download>Download</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 집합론 -->
+  <div class="pdf-section" id="tab-set">
+    <div class="pdf-list">
+      <div class="pdf-item">
+        <div class="pdf-meta">
+          <div class="pdf-title">집합론 — 수리논리학의 기초 정리</div>
+          <div class="pdf-info">
+            <span class="pdf-date">2025.05.09</span>
+            <span class="pdf-size">— KB</span>
+            <span class="pdf-tag set">집합론</span>
+          </div>
+        </div>
+        <a class="dl-btn" href="pdf/집합론-수리논리학의기초.pdf" download>Download</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 선형대수학 -->
+  <div class="pdf-section" id="tab-linear">
+    <div class="pdf-list">
+      <div class="pdf-item">
+        <div class="pdf-meta">
+          <div class="pdf-title">선형대수학 — 벡터공간과 선형변환 요약</div>
+          <div class="pdf-info">
+            <span class="pdf-date">2025.05.04</span>
+            <span class="pdf-size">— KB</span>
+            <span class="pdf-tag linear">선형대수학</span>
+          </div>
+        </div>
+        <a class="dl-btn" href="pdf/선형대수-벡터공간.pdf" download>Download</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 다변수미적분학 -->
+  <div class="pdf-section" id="tab-calc">
+    <div class="pdf-list">
+      <div class="pdf-item">
+        <div class="pdf-meta">
+          <div class="pdf-title">다변수미적분학 — 편미분과 그래디언트</div>
+          <div class="pdf-info">
+            <span class="pdf-date">2025.04.28</span>
+            <span class="pdf-size">— KB</span>
+            <span class="pdf-tag calc">다변수미적분학</span>
+          </div>
+        </div>
+        <a class="dl-btn" href="pdf/다변수-편미분.pdf" download>Download</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>© 2025 · beethoven2k.github.io</footer>
+
+<script>
+function switchTab(id, btn) {
+  document.querySelectorAll('.pdf-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
