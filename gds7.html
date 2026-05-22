@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>기대수 7기 — beethoven2k</title>
+<style>
+  :root {
+    --bg:#07090f; --bg2:#0d1017; --bg3:#131720;
+    --gold:#c8a84b; --gold-dim:#8a7235;
+    --teal:#2eb8a0; --teal-dim:#1a6e60;
+    --text:#dcd7cc; --muted:#8a8578; --border:#2a2d38;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif;
+    line-height: 1.85; min-height: 100vh;
+  }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.1rem 3rem;
+    background: rgba(7,9,15,0.97);
+    border-bottom: 1px solid var(--border);
+    font-family: "Courier New", monospace;
+    font-size: 0.78rem; letter-spacing: 0.12em;
+  }
+  nav .logo { color: var(--gold); text-decoration: none; font-size: 1rem; }
+  nav ul { list-style: none; display: flex; gap: 2rem; align-items: center; }
+  nav a { color: var(--muted); text-decoration: none; text-transform: uppercase; transition: color 0.2s; }
+  nav a:hover { color: var(--gold); }
+  nav a.active { color: var(--gold); }
+  nav .btn-gds {
+    color: var(--bg);
+    background: var(--gold);
+    border: 1px solid var(--gold);
+    padding: 0.35rem 0.9rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: background 0.2s;
+  }
+  nav .btn-gds:hover { background: #dbbf60; color: var(--bg); }
+  nav .btn-gds.active { background: var(--gold-dim); border-color: var(--gold-dim); }
+  @media(max-width:700px){ nav { padding: 1rem 1.2rem; } nav ul { gap: 1rem; font-size: .65rem; } }
+
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 2rem; }
+
+  .page-header {
+    padding: 8rem 0 3rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .sec-label {
+    font-family: "Courier New", monospace;
+    font-size: 0.7rem; letter-spacing: 0.25em;
+    color: var(--gold-dim); text-transform: uppercase; margin-bottom: 0.6rem;
+  }
+  .page-header h1 {
+    font-size: 2.4rem; font-weight: 400; color: #f0ece0; margin-bottom: 0.4rem;
+  }
+  .page-header .subtitle {
+    font-family: "Courier New", monospace;
+    font-size: 0.78rem; color: var(--muted); letter-spacing: 0.1em; margin-bottom: 1rem;
+  }
+  .page-header p { color: var(--muted); font-size: 0.95rem; max-width: 560px; word-break: keep-all; }
+  .rule { width: 48px; height: 1px; background: var(--gold); margin: 1rem 0; }
+
+  /* 주차별 섹션 */
+  .week-section { padding: 3rem 0; border-bottom: 1px solid var(--border); }
+  .week-section:last-child { border-bottom: none; }
+  .week-header {
+    display: flex; align-items: baseline; gap: 1.2rem;
+    margin-bottom: 1.4rem;
+  }
+  .week-num {
+    font-family: "Courier New", monospace;
+    font-size: 0.72rem; letter-spacing: 0.15em;
+    color: var(--gold-dim); text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .week-title {
+    font-size: 1.1rem; font-weight: 400; color: #e8e4d8;
+  }
+  .week-date {
+    font-family: "Courier New", monospace;
+    font-size: 0.68rem; color: var(--muted);
+  }
+
+  /* PDF 목록 */
+  .pdf-list { display: flex; flex-direction: column; }
+  .pdf-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  .pdf-item:last-child { border-bottom: none; }
+  .pdf-item:hover { background: rgba(200,168,75,0.025); padding-left: 0.4rem; }
+  .pdf-meta { display: flex; flex-direction: column; gap: 0.25rem; }
+  .pdf-title { font-size: 0.95rem; color: var(--text); }
+  .pdf-info {
+    display: flex; gap: 0.8rem; align-items: center;
+    font-family: "Courier New", monospace; font-size: 0.68rem; color: var(--muted);
+  }
+  .dl-btn {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.45rem 1rem;
+    font-family: "Courier New", monospace; font-size: 0.7rem;
+    letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
+    border: 1px solid var(--gold-dim); color: var(--gold);
+    background: transparent; white-space: nowrap; transition: all 0.2s; flex-shrink: 0;
+  }
+  .dl-btn:hover { background: rgba(200,168,75,0.1); border-color: var(--gold); }
+  .dl-btn::before { content: "↓ "; }
+
+  /* 빈 상태 */
+  .empty {
+    padding: 2.5rem 0;
+    font-family: "Courier New", monospace; font-size: 0.78rem;
+    color: var(--muted); letter-spacing: 0.1em;
+  }
+
+  footer {
+    padding: 2.5rem 0; border-top: 1px solid var(--border);
+    text-align: center; font-family: "Courier New", monospace;
+    font-size: 0.7rem; color: var(--muted); letter-spacing: 0.12em;
+  }
+  @media(max-width:600px){
+    .pdf-item { grid-template-columns: 1fr; }
+    .page-header { padding: 7rem 0 2.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">∂ / ∂x</a>
+  <ul>
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="pyeonlin.html">편린</a></li>
+    <li><a href="index.html#topics">Topics</a></li>
+    <li><a href="index.html#set-theory">집합론</a></li>
+    <li><a href="notes.html">Notes</a></li>
+    <li><a href="index.html#equations">아름다운방정식</a></li>
+    <li><a href="gds7.html" class="btn-gds active">기대수 7기</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+  <div class="page-header">
+    <div class="sec-label">Study Group</div>
+    <h1>기대수 7기</h1>
+    <div class="subtitle">기초부터 대학원 수학까지 — 수학의 즐거움</div>
+    <div class="rule"></div>
+    <p>매주 올라오는 발제문, 풀이, 정리 자료를 모아두는 공간입니다. 함께 공부한 흔적들.</p>
+  </div>
+
+  <div style="padding-bottom: 5rem;">
+
+    <!-- 주차별 섹션 — 아래 형식으로 추가 -->
+
+    <div class="week-section">
+      <div class="week-header">
+        <span class="week-num">Week 01</span>
+        <span class="week-title">주제 미입력</span>
+        <span class="week-date">—</span>
+      </div>
+      <div class="empty">아직 업로드된 자료가 없습니다.</div>
+    </div>
+
+    <!--
+    추가 예시:
+    <div class="week-section">
+      <div class="week-header">
+        <span class="week-num">Week 02</span>
+        <span class="week-title">집합론 — ZFC 공리계</span>
+        <span class="week-date">2026.05.18</span>
+      </div>
+      <div class="pdf-list">
+        <div class="pdf-item">
+          <div class="pdf-meta">
+            <div class="pdf-title">발제문 — ZFC 공리계 정리</div>
+            <div class="pdf-info"><span>발제자: beethoven2k</span></div>
+          </div>
+          <a class="dl-btn" href="pdf/gds7/week02-zfc.pdf" download>Download</a>
+        </div>
+      </div>
+    </div>
+    -->
+
+  </div>
+</div>
+
+<footer>© 2025 · beethoven2k.github.io</footer>
+
+</body>
+</html>
