@@ -119,6 +119,41 @@
   .dl-btn:hover { background: rgba(200,168,75,0.1); border-color: var(--gold); }
   .dl-btn::before { content: "↓ "; }
 
+  /* 집합론 교재 버튼 */
+  .resource-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+  .resource-btn {
+    display: flex; flex-direction: column; gap: 0.35rem;
+    padding: 1.2rem 1.4rem;
+    border: 1px solid var(--border);
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .resource-btn:hover {
+    border-color: var(--gold-dim);
+    background: rgba(200,168,75,0.04);
+    padding-left: 1.8rem;
+  }
+  .res-title {
+    font-size: 1rem; color: #f0ece0;
+    font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  }
+  .res-sub {
+    font-family: "Courier New", monospace;
+    font-size: 0.68rem; color: var(--muted); letter-spacing: 0.06em;
+  }
+  .res-dl {
+    font-family: "Courier New", monospace;
+    font-size: 0.7rem; color: var(--gold);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-top: 0.5rem;
+  }
+  @media(max-width:600px){ .resource-grid { grid-template-columns: 1fr; } }
+
   /* 빈 상태 */
   .empty {
     padding: 2.5rem 0;
@@ -229,6 +264,25 @@
           <a class="dl-btn" href="pdf/gds7/01_노트_04_집합의_정의와_역설.pdf" download>Download</a>
         </div>
 
+      </div>
+    </div>
+
+    <div class="week-section">
+      <div class="week-header">
+        <span class="week-num">자료</span>
+        <span class="week-title">집합론 — 교재 및 워크북</span>
+      </div>
+      <div class="resource-grid">
+        <a class="resource-btn" href="pdf/gds7/수학의_언어.pdf" download>
+          <span class="res-title">수학의 언어</span>
+          <span class="res-sub">Mathematics as a Language</span>
+          <span class="res-dl">↓ Download</span>
+        </a>
+        <a class="resource-btn" href="pdf/gds7/논리학_워크북.pdf" download>
+          <span class="res-title">논리학 워크북</span>
+          <span class="res-sub">Logic Workbook</span>
+          <span class="res-dl">↓ Download</span>
+        </a>
       </div>
     </div>
 
