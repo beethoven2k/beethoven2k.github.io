@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Human Being — 편린</title>
+<style>
+  :root {
+    --bg:#07090f; --bg2:#0d1017; --bg3:#131720;
+    --gold:#c8a84b; --gold-dim:#8a7235;
+    --teal:#2eb8a0;
+    --text:#dcd7cc; --muted:#8a8578; --border:#2a2d38;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif;
+    line-height: 2; min-height: 100vh;
+  }
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(7,9,15,0.97);
+    border-bottom: 1px solid var(--border);
+    padding: .85rem 2rem;
+    display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
+  }
+  nav a.logo { color: var(--gold); text-decoration: none; font-size: 1rem; font-family:"Courier New",monospace; }
+  nav ul { list-style: none; display: flex; gap: 2rem; }
+  nav ul a { color: var(--muted); text-decoration: none; text-transform: uppercase;
+    font-size: .75rem; letter-spacing: .12em; font-family:"Courier New",monospace; transition: color .2s; }
+  nav ul a:hover, nav ul a.active { color: var(--gold); }
+  @media(max-width:640px){ nav ul { gap: 1rem; font-size: .65rem; } }
+
+  article { max-width: 640px; margin: 5rem auto 8rem; padding: 0 1.5rem; }
+  .post-header { margin-bottom: 3rem; }
+  .post-meta {
+    font-family: "Courier New", monospace;
+    font-size: 0.7rem; color: var(--muted);
+    letter-spacing: 0.1em; margin-bottom: 1.4rem;
+    display: flex; gap: 1.4rem; flex-wrap: wrap;
+  }
+  h1 { font-size: 2rem; font-weight: 400; color: #f0ece0; line-height: 1.3; margin-bottom: 1.2rem; }
+  .post-lead {
+    font-size: 1rem; color: var(--muted); font-style: italic; line-height: 1.9;
+    border-left: 2px solid var(--gold-dim); padding-left: 1.2rem; word-break: keep-all;
+  }
+  .post-body p {
+    margin-bottom: 1.7rem; font-size: 1rem; color: var(--text);
+    line-height: 2.05; word-break: keep-all;
+  }
+  .post-body strong { color: #f0ece0; }
+  .post-body em { color: var(--gold-dim); font-style: italic; }
+  .post-body hr { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+  .post-body blockquote {
+    border-left: 2px solid var(--gold-dim); padding: 0.7rem 1.4rem;
+    margin: 2rem 0; color: var(--muted); font-style: italic; line-height: 1.85; word-break: keep-all;
+  }
+  .post-tags {
+    display: flex; gap: 0.6rem; flex-wrap: wrap;
+    margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border);
+  }
+  .post-tag {
+    font-family: "Courier New", monospace; font-size: 0.65rem;
+    padding: 0.2rem 0.6rem; border: 1px solid var(--border); color: var(--muted); letter-spacing: 0.06em;
+  }
+  .post-nav {
+    display: flex; justify-content: space-between;
+    margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border);
+    font-family: "Courier New", monospace; font-size: 0.75rem;
+  }
+  .post-nav a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .post-nav a:hover { color: var(--gold); }
+  .post-nav .prev::before { content: "← "; }
+  .post-nav .next::after  { content: " →"; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="logo">∂ / ∂x</a>
+  <ul>
+    <li><a href="../index.html#about">About</a></li>
+    <li><a href="../pyeonlin.html" class="active">편린</a></li>
+    <li><a href="../index.html#topics">Topics</a></li>
+    <li><a href="../index.html#set-theory">집합론</a></li>
+    <li><a href="../notes.html">Notes</a></li>
+    <li><a href="../index.html#equations">아름다운방정식</a></li>
+  </ul>
+</nav>
+
+<article>
+  <header class="post-header">
+    <div class="post-meta">
+      <span>2026.05.25</span>
+      <span>일요일</span>
+    </div>
+    <h1>Human Being</h1>
+    <p class="post-lead">
+      나는 왜 끊임없이 무언가를 해야만 안심이 될까?
+    </p>
+  </header>
+
+  <div class="post-body">
+
+    <p>인간을 영어로 뭐라고 부르는지 떠올려보면, 참 묘한 기분이 듭니다. <em>'Human being'</em>. 인간은 그 단어 자체에 '존재하다(being)'라는 의미를 품고 있지요. 그저 존재하는 것만으로도 설명이 끝나는 것이 바로 우리입니다.</p>
+
+    <p>하지만 우리의 현실은 어떤가요? 어쩌면 우리는 <em>'Human being'</em>이 아니라 <em>'Human doing'</em>으로 살아가고 있는지도 모르겠습니다. 끊임없이 무언가를 행하고(doing), 성과를 내고, 나의 쓸모를 증명해야만 세상에 내 자리가 생기는 것 같은 불안감 속에서 말이지요. 아무것도 하지 않고 쉬는 날이면 왠지 모를 죄책감이 밀려오고, 남들보다 뒤처지는 것은 아닐까 조바심이 나는 것도 우리가 스스로를 'being'이 아닌 'doing'으로 바라보고 있기 때문일 것입니다.</p>
+
+    <p>최근 <strong>〈모두가 자신의 무가치함과 싸우고 있다〉</strong>라는 문장에 한참을 머물렀습니다. 맞아요. 겉으로는 다들 멀쩡해 보이고 제 몫을 다하며 살아가는 것 같지만, 사실 우리는 각자의 내면에서 남몰래 치열하게 '무가치함'이라는 유령과 싸우고 있습니다.</p>
+
+    <p>이 싸움은 때론 너무나도 외롭고 가혹해서, 어떤 날에는 스스로 지옥의 문고리를 몇 번이고 잡았다 놓기를 반복하는 사람들도 있습니다. 그 깊은 어둠 속에서는 '도와달라'는 절박한 목소리조차 세상이 매겨놓은 '가치'라는 기준에 함몰되어 버리곤 합니다. 나의 쓸모없음을 들킬까 봐 차마 입을 떼기조차 어렵고, 있는 힘껏 외쳐보아도 차가운 세상의 벽에 부딪혀 가닿지 않는 경우가 너무나도 많지요.</p>
+
+    <p>그럼에도 불구하고, 우리는 함께 살아갑니다. 우리는 모두 찰나의 '지금'이라는 순간을 나란히 숨 쉬며 살아가는 인간이니까요. 가만히 서로를 들여다보면, 나는 누군가에게 기대고 싶은 '너'이며, 지금 힘겨워하는 '너'는 언젠가 남몰래 아파했던 '나'의 모습이기도 합니다.</p>
+
+    <p>그렇기에 우리는 더욱 <em>'Being'</em>이어야 하지 않을까요. 모두가 각자의 무가치함과 처절하게 싸우며 이 순간을 버텨내고 있음을 알기에, 무언가를 증명해 내야만(doing) 가치 있는 사람이 된다는 서늘한 강박에서 이제는 서로를 놓아주어야 합니다.</p>
+
+    <p>나의 가치, 그리고 당신의 가치는 세상이 결재해 주는 서류나 번듯한 결과물에 있지 않습니다. 오늘 하루도 지옥의 문고리 앞에서 발길을 돌려 묵묵히 지금을 살아내고 있는 그 존재(being) 자체에 있습니다.</p>
+
+    <p>무가치함과 싸우느라 지친 밤, 스스로에게 그리고 당신에게 꼭 말해주고 싶습니다. 우리는 무언가를 억지로 증명하지 않아도, 그저 지금 여기 함께 있는 것만으로도 이미 훌륭한 <em>'Human being'</em>이라고요. 우리, 가끔은 그저 온전히 존재하는 기쁨을 서로의 곁에서 다정하게 누려보는 것은 어떨까요?</p>
+
+  </div>
+
+  <div style="margin-top:2.5rem; aspect-ratio:16/9; width:100%;">
+    <iframe
+      src="https://www.youtube.com/embed/YbcUWkVIPlA"
+      title="YouTube video"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+      style="width:100%; height:100%; border:none;">
+    </iframe>
+  </div>
+
+  <div class="post-tags">
+    <span class="post-tag">사색</span>
+    <span class="post-tag">존재</span>
+    <span class="post-tag">가치</span>
+    <span class="post-tag">위로</span>
+  </div>
+
+  <div class="post-nav">
+    <a class="prev" href="006-지금이계절.html">지금, 이 계절</a>
+    <span></span>
+  </div>
+</article>
+
+</body>
+</html>
