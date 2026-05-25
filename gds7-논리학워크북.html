@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>논리학 워크북 — 기대수 7기</title>
+<style>
+  :root {
+    --bg:#07090f; --bg2:#0d1017; --bg3:#131720;
+    --gold:#c8a84b; --gold-dim:#8a7235;
+    --teal:#2eb8a0; --teal-dim:#1a6e60;
+    --text:#dcd7cc; --muted:#8a8578; --border:#2a2d38;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif;
+    line-height: 1.85; min-height: 100vh;
+  }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.1rem 3rem;
+    background: rgba(7,9,15,0.97);
+    border-bottom: 1px solid var(--border);
+    font-family: "Courier New", monospace;
+    font-size: 0.78rem; letter-spacing: 0.12em;
+  }
+  nav .logo { color: var(--gold); text-decoration: none; font-size: 1rem; }
+  nav ul { list-style: none; display: flex; gap: 2rem; align-items: center; }
+  nav a { color: var(--muted); text-decoration: none; text-transform: uppercase; transition: color 0.2s; }
+  nav a:hover { color: var(--gold); }
+  nav a.active { color: var(--gold); }
+  nav .btn-gds {
+    color: var(--bg); background: var(--gold);
+    border: 1px solid var(--gold); padding: 0.35rem 0.9rem;
+    font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; transition: background 0.2s;
+  }
+  nav .btn-gds:hover { background: #dbbf60; color: var(--bg); }
+  @media(max-width:700px){ nav { padding: 1rem 1.2rem; } nav ul { gap: 1rem; font-size: .65rem; } }
+
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 2rem; }
+
+  .page-header {
+    padding: 8rem 0 3rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .breadcrumb {
+    font-family: "Courier New", monospace;
+    font-size: 0.68rem; color: var(--muted); letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+  }
+  .breadcrumb a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .breadcrumb a:hover { color: var(--gold); }
+  .breadcrumb span { margin: 0 0.5rem; }
+  .sec-label {
+    font-family: "Courier New", monospace;
+    font-size: 0.7rem; letter-spacing: 0.25em;
+    color: var(--gold-dim); text-transform: uppercase; margin-bottom: 0.6rem;
+  }
+  .page-header h1 {
+    font-size: 2.4rem; font-weight: 400; color: #f0ece0; margin-bottom: 0.4rem;
+  }
+  .page-header .subtitle {
+    font-family: "Courier New", monospace;
+    font-size: 0.78rem; color: var(--muted); letter-spacing: 0.1em; margin-bottom: 1rem;
+  }
+  .rule { width: 48px; height: 1px; background: var(--gold); margin: 1rem 0; }
+  .page-header p { color: var(--muted); font-size: 0.95rem; max-width: 560px; word-break: keep-all; }
+
+  .empty-state {
+    padding: 6rem 0;
+    display: flex; flex-direction: column; align-items: center; gap: 1.2rem;
+    text-align: center;
+  }
+  .empty-symbol {
+    font-family: "Courier New", monospace;
+    font-size: 1.8rem; color: var(--gold-dim);
+    letter-spacing: 0.1em;
+  }
+  .empty-state p {
+    font-family: "Courier New", monospace;
+    font-size: 0.78rem; color: var(--muted);
+    letter-spacing: 0.08em; line-height: 1.9;
+  }
+
+  footer {
+    padding: 2.5rem 0; border-top: 1px solid var(--border);
+    text-align: center; font-family: "Courier New", monospace;
+    font-size: 0.7rem; color: var(--muted); letter-spacing: 0.12em;
+  }
+  @media(max-width:600px){ .page-header { padding: 7rem 0 2.5rem; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">∂ / ∂x</a>
+  <ul>
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="pyeonlin.html">편린</a></li>
+    <li><a href="index.html#topics">Topics</a></li>
+    <li><a href="index.html#set-theory">집합론</a></li>
+    <li><a href="notes.html">Notes</a></li>
+    <li><a href="index.html#equations">아름다운방정식</a></li>
+    <li><a href="gds7.html" class="btn-gds">기대수 7기</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+  <div class="page-header">
+    <div class="breadcrumb">
+      <a href="gds7.html">기대수 7기</a>
+      <span>›</span>
+      집합론
+      <span>›</span>
+      논리학 워크북
+    </div>
+    <div class="sec-label">집합론 — 워크북</div>
+    <h1>논리학 워크북</h1>
+    <div class="subtitle">Logic Workbook</div>
+    <div class="rule"></div>
+    <p>명제논리, 술어논리, 증명 전략을 직접 손으로 풀며 익히는 연습 자료들입니다.</p>
+  </div>
+
+  <div class="empty-state">
+    <div class="empty-symbol">∅</div>
+    <p>자료가 준비되는 대로 올라올 예정입니다.</p>
+  </div>
+</div>
+
+<footer>© 2025 · beethoven2k.github.io</footer>
+
+</body>
+</html>
