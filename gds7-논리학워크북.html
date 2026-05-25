@@ -70,28 +70,45 @@
   .rule { width: 48px; height: 1px; background: var(--gold); margin: 1rem 0; }
   .page-header p { color: var(--muted); font-size: 0.95rem; max-width: 560px; word-break: keep-all; }
 
-  .empty-state {
-    padding: 6rem 0;
-    display: flex; flex-direction: column; align-items: center; gap: 1.2rem;
-    text-align: center;
+  .pdf-list { display: flex; flex-direction: column; padding: 3rem 0 6rem; }
+  .pdf-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
   }
-  .empty-symbol {
-    font-family: "Courier New", monospace;
-    font-size: 1.8rem; color: var(--gold-dim);
-    letter-spacing: 0.1em;
+  .pdf-item:first-child { border-top: 1px solid var(--border); }
+  .pdf-item:last-child { border-bottom: none; }
+  .pdf-item:hover { background: rgba(200,168,75,0.025); padding-left: 0.4rem; }
+  .pdf-meta { display: flex; flex-direction: column; gap: 0.25rem; }
+  .pdf-title { font-size: 0.95rem; color: var(--text); }
+  .pdf-info {
+    display: flex; gap: 0.8rem; align-items: center;
+    font-family: "Courier New", monospace; font-size: 0.68rem; color: var(--muted);
   }
-  .empty-state p {
-    font-family: "Courier New", monospace;
-    font-size: 0.78rem; color: var(--muted);
-    letter-spacing: 0.08em; line-height: 1.9;
+  .dl-btn {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.45rem 1rem;
+    font-family: "Courier New", monospace; font-size: 0.7rem;
+    letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
+    border: 1px solid var(--gold-dim); color: var(--gold);
+    background: transparent; white-space: nowrap; transition: all 0.2s; flex-shrink: 0;
   }
+  .dl-btn:hover { background: rgba(200,168,75,0.1); border-color: var(--gold); }
+  .dl-btn::before { content: "↓ "; }
 
   footer {
     padding: 2.5rem 0; border-top: 1px solid var(--border);
     text-align: center; font-family: "Courier New", monospace;
     font-size: 0.7rem; color: var(--muted); letter-spacing: 0.12em;
   }
-  @media(max-width:600px){ .page-header { padding: 7rem 0 2.5rem; } }
+  @media(max-width:600px){
+    .pdf-item { grid-template-columns: 1fr; }
+    .page-header { padding: 7rem 0 2.5rem; }
+  }
 </style>
 </head>
 <body>
@@ -125,9 +142,48 @@
     <p>명제논리, 술어논리, 증명 전략을 직접 손으로 풀며 익히는 연습 자료들입니다.</p>
   </div>
 
-  <div class="empty-state">
-    <div class="empty-symbol">∅</div>
-    <p>자료가 준비되는 대로 올라올 예정입니다.</p>
+  <div class="pdf-list">
+
+    <div class="pdf-item">
+      <div class="pdf-meta">
+        <div class="pdf-title">논리학 워크북 #01 · 논리와 진리표</div>
+        <div class="pdf-info">
+          <span>집합론의 언어를 손으로 직접 구성하기</span>
+        </div>
+      </div>
+      <a class="dl-btn" href="pdf/gds7/01_logic_workbook.pdf" download>Download</a>
+    </div>
+
+    <div class="pdf-item">
+      <div class="pdf-meta">
+        <div class="pdf-title">논리학 워크북 #02 · 증명의 방법</div>
+        <div class="pdf-info">
+          <span>직접증명 · 대우법 · 귀류법</span>
+        </div>
+      </div>
+      <a class="dl-btn" href="pdf/gds7/03_proof_workbook.pdf" download>Download</a>
+    </div>
+
+    <div class="pdf-item">
+      <div class="pdf-meta">
+        <div class="pdf-title">집합론 워크북 #03 · 집합의 언어와 기본 연산</div>
+        <div class="pdf-info">
+          <span>논리에서 집합으로 — 원소 추적법의 완성</span>
+        </div>
+      </div>
+      <a class="dl-btn" href="pdf/gds7/02_set_workbook.pdf" download>Download</a>
+    </div>
+
+    <div class="pdf-item">
+      <div class="pdf-meta">
+        <div class="pdf-title">집합론 워크북 #04 · 수학적 귀납법</div>
+        <div class="pdf-info">
+          <span>약한 귀납법 · 강한 귀납법 · 정렬 원리</span>
+        </div>
+      </div>
+      <a class="dl-btn" href="pdf/gds7/04_induction_workbook.pdf" download>Download</a>
+    </div>
+
   </div>
 </div>
 
