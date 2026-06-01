@@ -396,10 +396,11 @@ MathJax = {
     letter-spacing: 0.06em;
     flex-shrink: 0;
   }
-  .note-badge.analysis  { border-color: rgba(200,168,75,0.4); color: var(--gold-dim); }
-  .note-badge.algebra   { border-color: rgba(46,184,160,0.4); color: var(--teal-dim); }
+  .note-badge.analysis  { border-color: rgba(200,168,75,0.4);  color: var(--gold-dim); }
+  .note-badge.algebra   { border-color: rgba(46,184,160,0.4);  color: var(--teal-dim); }
   .note-badge.topology  { border-color: rgba(180,100,100,0.4); color: #9a5555; }
   .note-badge.geometry  { border-color: rgba(120,150,200,0.4); color: #6080aa; }
+  .note-badge.ode       { border-color: rgba(212,120,90,0.4);  color: #b05a3a; }
   .note-arrow {
     color: var(--text-muted);
     font-size: 0.8rem;
@@ -819,133 +820,31 @@ init();
 draw();
 window.addEventListener('resize', init);
 
-/* ── RECENT NOTES: GitHub API 자동 로딩 ───────────────────── */
-const REPO = 'beethoven2k/beethoven2k.github.io';
-const API  = 'https://api.github.com/repos/' + REPO;
-
-async function fetchDir(path) {
-  try {
-    const r = await fetch(`${API}/contents/${path}`);
-    if (!r.ok) return [];
-    return await r.json();
-  } catch { return []; }
-}
-
-function cleanTitle(name, ext) {
-  return name
-    .replace(ext, '')
-    .replace(/^\d+\s*-\s*/, '')
-    .replace(/_/g, ' ')
-    .trim();
-}
-
-function formatDate(iso) {
-  return iso ? iso.slice(0, 10).replace(/-/g, '.') : '';
-}
-
+/* ── RECENT NOTES: notes-data.json 로딩 ───────────────────── */
 async function loadRecentNotes() {
   const container = document.getElementById('recent-notes-list');
   if (!container) return;
 
-  // 1) 디렉토리 목록 병렬 조회
-  const [setFiles, linearFiles, calcFiles, recentCommits] = await Promise.all([
-    fetchDir('set-theory'),
-    fetchDir('pdf/%EC%84%A0%ED%98%95%EB%8C%80%EC%88%98%ED%95%99'),
-    fetchDir('pdf/%EB%8B%A4%EB%B3%80%EC%88%98%EB%AF%B8%EC%A0%81%EB%B6%84%ED%95%99'),
-    fetch(`${API}/commits?per_page=30`).then(r => r.ok ? r.json() : []).catch(() => []),
-  ]);
+  try {
+    const r = await fetch('notes-data.json');
+    if (!r.ok) throw new Error();
+    const items = await r.json();
 
-  // 2) 커밋에서 최근 변경 파일 추적
-  const recentFiles = new Map(); // filename → date
-  for (const c of recentCommits) {
-    const date = c.commit?.author?.date?.slice(0, 10) || '';
-    try {
-      const detail = await fetch(c.url).then(r => r.json());
-      for (const f of detail.files || []) {
-        if (!recentFiles.has(f.filename)) {
-          recentFiles.set(f.filename, date);
-        }
-      }
-    } catch {}
-    if (recentFiles.size >= 30) break;
-  }
+    container.innerHTML = items.slice(0, 6).map(item => `
+      <div class="note-item">
+        <span class="note-date">${item.date || '—'}</span>
+        <a href="${item.href}" class="note-title">
+          ${item.title}
+          <span class="note-badge ${item.cls}">${item.badge}</span>
+        </a>
+        <span class="note-arrow">→</span>
+      </div>
+    `).join('');
 
-  // 3) 항목 생성
-  const items = [];
-
-  // 집합론 HTML
-  (setFiles || [])
-    .filter(f => f.type === 'file' && f.name.endsWith('.html'))
-    .sort((a, b) => b.name.localeCompare(a.name))
-    .forEach(f => {
-      const date = recentFiles.get(f.path) || recentFiles.get('set-theory/' + f.name) || '';
-      items.push({
-        title: cleanTitle(f.name, '.html'),
-        href:  'set-theory/' + f.name,
-        badge: '집합론',
-        cls:   'analysis',
-        date,
-        sort:  f.name,
-      });
-    });
-
-  // 선형대수학 PDF
-  (linearFiles || [])
-    .filter(f => f.type === 'file' && f.name.endsWith('.pdf'))
-    .forEach(f => {
-      const date = recentFiles.get(f.path) || '';
-      items.push({
-        title: cleanTitle(f.name, '.pdf'),
-        href:  'notes.html',
-        badge: '선형대수학',
-        cls:   'algebra',
-        date,
-        sort:  f.name,
-      });
-    });
-
-  // 다변수미적분학 PDF
-  (calcFiles || [])
-    .filter(f => f.type === 'file' && f.name.endsWith('.pdf'))
-    .forEach(f => {
-      const date = recentFiles.get(f.path) || '';
-      items.push({
-        title: cleanTitle(f.name, '.pdf'),
-        href:  'notes.html',
-        badge: '다변수미적분학',
-        cls:   'topology',
-        date,
-        sort:  f.name,
-      });
-    });
-
-  // 4) 날짜 기준 정렬 (날짜 없으면 이름 역순)
-  items.sort((a, b) => {
-    if (a.date && b.date) return b.date.localeCompare(a.date);
-    if (a.date) return -1;
-    if (b.date) return 1;
-    return b.sort.localeCompare(a.sort);
-  });
-
-  // 5) 렌더링 (최대 6개)
-  if (items.length === 0) {
+    container.classList.add('visible');
+  } catch {
     container.innerHTML = '<div style="font-family:\'Courier New\',monospace;font-size:0.78rem;color:var(--text-muted);padding:2rem 0;">기록이 없습니다.</div>';
-    return;
   }
-
-  container.innerHTML = items.slice(0, 6).map(item => `
-    <div class="note-item">
-      <span class="note-date">${item.date || '—'}</span>
-      <a href="${item.href}" class="note-title">
-        ${item.title}
-        <span class="note-badge ${item.cls}">${item.badge}</span>
-      </a>
-      <span class="note-arrow">→</span>
-    </div>
-  `).join('');
-
-  // fadeup 재적용
-  container.classList.add('visible');
 }
 
 loadRecentNotes();
