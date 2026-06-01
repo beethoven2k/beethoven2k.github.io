@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>집합론 노트 — 수학 공부 기록</title>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$','$'],['\\(','\\)']],
+    displayMath: [['$$','$$'],['\\[','\\]']],
+    processEscapes: true
+  },
+  options: { skipHtmlTags: ['script','noscript','style','textarea'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<style>
+  :root {
+    --bg:        #07090f;
+    --bg2:       #0d1017;
+    --bg3:       #131720;
+    --gold:      #c8a84b;
+    --gold-dim:  #8a7235;
+    --teal:      #2eb8a0;
+    --teal-dim:  #1a6e60;
+    --text:      #dcd7cc;
+    --text-muted:#8a8578;
+    --border:    #2a2d38;
+    --border-gold: rgba(200,168,75,0.25);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  #canvas-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.07;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.1rem 3rem;
+    background: linear-gradient(to bottom, rgba(7,9,15,0.95), transparent);
+    font-family: "Courier New", monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+  }
+  nav .logo {
+    color: var(--gold);
+    font-size: 1rem;
+    text-decoration: none;
+  }
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2.5rem;
+  }
+  nav a {
+    color: var(--text-muted);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  nav a:hover { color: var(--gold); }
+  nav .btn-gds {
+    color: var(--bg);
+    background: var(--gold);
+    border: 1px solid var(--gold);
+    padding: 0.35rem 0.9rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+  }
+  nav .btn-gds:hover { background: #dbbf60; color: var(--bg); }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* ── PAGE HEADER ──────────────────────────────────────────── */
+  #page-header {
+    padding-top: 10rem;
+    padding-bottom: 4rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .page-breadcrumb {
+    font-family: "Courier New", monospace;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    letter-spacing: 0.15em;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .page-breadcrumb a {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .page-breadcrumb a:hover { color: var(--gold); }
+
+  .sec-label {
+    font-family: "Courier New", monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+  h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 400;
+    line-height: 1.15;
+    color: #f0ece0;
+    margin-bottom: 1rem;
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  .page-desc {
+    font-size: 1rem;
+    color: var(--text-muted);
+    max-width: 560px;
+    line-height: 1.85;
+  }
+  .rule {
+    width: 48px;
+    height: 1px;
+    background: var(--gold);
+    margin: 1.2rem 0 0;
+  }
+
+  /* ── NOTES ────────────────────────────────────────────────── */
+  #notes-section {
+    padding: 5rem 0;
+  }
+
+  .notes-intro {
+    margin-bottom: 2rem;
+    padding: 1rem 1.4rem;
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    background: var(--bg2);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .notes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .note-item {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    align-items: baseline;
+    padding: 1.15rem 0;
+    border-bottom: 1px solid var(--border);
+    gap: 1.5rem;
+    transition: background 0.15s;
+  }
+  .note-item:first-child { border-top: 1px solid var(--border); }
+  .note-item:hover { background: rgba(200,168,75,0.025); }
+
+  .note-date {
+    font-family: "Courier New", monospace;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+  .note-title {
+    font-size: 0.95rem;
+    color: var(--text);
+    text-decoration: none;
+    transition: color 0.2s;
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
+  }
+  .note-title:hover { color: var(--gold); }
+  .note-badge {
+    font-family: "Courier New", monospace;
+    font-size: 0.62rem;
+    padding: 0.15rem 0.5rem;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    white-space: nowrap;
+    letter-spacing: 0.06em;
+    flex-shrink: 0;
+  }
+  .note-badge.analysis { border-color: rgba(200,168,75,0.4); color: var(--gold-dim); }
+  .note-arrow {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+  }
+
+  /* ── FOOTER ───────────────────────────────────────────────── */
+  footer {
+    padding: 3rem 0;
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+  footer .f-sig {
+    font-family: "Courier New", monospace;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    letter-spacing: 0.15em;
+  }
+  footer .f-quote {
+    font-style: italic;
+    color: var(--gold-dim);
+    font-size: 0.85rem;
+    margin-top: 0.7rem;
+  }
+
+  .fadeup {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fadeup.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 640px) {
+    nav { padding: 1rem 1.2rem; }
+    nav ul { gap: 1.5rem; }
+    .note-item { grid-template-columns: 1fr; gap: 0.3rem; }
+    .note-arrow { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="canvas-bg"></canvas>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="logo">∂ / ∂x</a>
+  <ul>
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="pyeonlin.html">편린</a></li>
+    <li><a href="index.html#topics">Topics</a></li>
+    <li><a href="notes.html">Notes</a></li>
+    <li><a href="index.html#equations">아름다운방정식</a></li>
+    <li><a href="gds7.html" class="btn-gds">기대수 7기</a></li>
+  </ul>
+</nav>
+
+<!-- PAGE HEADER -->
+<section id="page-header">
+  <div class="wrap">
+    <div class="page-breadcrumb fadeup">
+      <a href="index.html">홈</a>
+      <span>›</span>
+      <a href="index.html#topics">공부하는 분야</a>
+      <span>›</span>
+      <span>집합론</span>
+    </div>
+    <div class="sec-label fadeup">Set Theory</div>
+    <h1 class="fadeup">집합론 노트<br><em>Set Theory</em></h1>
+    <p class="page-desc fadeup">
+      ZFC 공리계를 시작으로 순서쌍, 관계, 함수, 서수·기수의 순서로 쌓아가는 기록. 수학 전체의 언어적 토대를 탐색한다.
+    </p>
+    <div class="rule fadeup"></div>
+  </div>
+</section>
+
+<!-- NOTES -->
+<section id="notes-section">
+  <div class="wrap">
+    <div class="notes-intro fadeup">
+      집합론 기록들. ZFC 공리계를 시작으로 순서쌍, 관계, 함수, 서수·기수의 순서로 쌓아가고 있다.
+    </div>
+
+    <div class="notes-list fadeup">
+
+      <div class="note-item">
+        <span class="note-date">MOC</span>
+        <a href="set-theory/00 - MOC - 집합론.html" class="note-title">
+          00 · 집합론 전체 목차 (Map of Content)
+          <span class="note-badge analysis">집합론</span>
+        </a>
+        <span class="note-arrow">→</span>
+      </div>
+
+      <div class="note-item">
+        <span class="note-date">Ch. 01</span>
+        <a href="set-theory/01 - 수리논리학의 기초.html" class="note-title">
+          수리논리학의 기초
+          <span class="note-badge analysis">집합론</span>
+        </a>
+        <span class="note-arrow">→</span>
+      </div>
+
+      <div class="note-item">
+        <span class="note-date">Ch. 02</span>
+        <a href="set-theory/02 - Peano 공리.html" class="note-title">
+          Peano 공리
+          <span class="note-badge analysis">집합론</span>
+        </a>
+        <span class="note-arrow">→</span>
+      </div>
+
+      <div class="note-item">
+        <span class="note-date">Ch. 03</span>
+        <a href="set-theory/03 - 집합의 개념.html" class="note-title">
+          집합의 개념
+          <span class="note-badge analysis">집합론</span>
+        </a>
+        <span class="note-arrow">→</span>
+      </div>
+
+      <div class="note-item">
+        <span class="note-date">Ch. 04</span>
+        <a href="set-theory/04 - 관계와 함수.html" class="note-title">
+          관계와 함수
+          <span class="note-badge analysis">집합론</span>
+        </a>
+        <span class="note-arrow">→</span>
+      </div>
+
+      <div class="note-item">
+        <span class="note-date">Ch. 05</span>
+        <a href="set-theory/05 - 집합의 크기.html" class="note-title">
+          집합의 크기
+          <span class="note-badge analysis">집합론</span>
+        </a>
+        <span class="note-arrow">→</span>
+      </div>
+
+      <div class="note-item">
+        <span class="note-date">Ch. 06</span>
+        <a href="set-theory/06 - 선택공리와 동치명제.html" class="note-title">
+          선택공리와 동치명제
+          <span class="note-badge analysis">집합론</span>
+        </a>
+        <span class="note-arrow">→</span>
+      </div>
+
+      <div class="note-item">
+        <span class="note-date">Ch. 07</span>
+        <a href="set-theory/07 - 순서수와 그 연산.html" class="note-title">
+          순서수와 그 연산
+          <span class="note-badge analysis">집합론</span>
+        </a>
+        <span class="note-arrow">→</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="f-sig">© 2025 · built with LaTeX, love, and sleepless nights</div>
+    <div class="f-quote">"Mathematics is the art of giving the same name to different things." — Henri Poincaré</div>
+  </div>
+</footer>
+
+<script>
+/* ── CANVAS: floating math symbols ────────────────────────── */
+const canvas = document.getElementById('canvas-bg');
+const ctx = canvas.getContext('2d');
+const symbols = [
+  'ε','δ','∂','∇','∫','∑','∞','φ','λ','π','Ω','Γ','α','β','θ',
+  '∈','⊂','∀','∃','∅','ℕ','ℝ','ℤ','ℚ','ZFC','∪','∩','⊆','℘','×'
+];
+let particles = [];
+
+function resize() {
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+function init() {
+  resize();
+  particles = Array.from({ length: 45 }, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    vx: (Math.random() - 0.5) * 0.18,
+    vy: (Math.random() - 0.5) * 0.18,
+    sym: symbols[Math.floor(Math.random() * symbols.length)],
+    size: 11 + Math.random() * 11,
+    opacity: 0.2 + Math.random() * 0.55,
+    rot: Math.random() * 0.3 - 0.15,
+    angle: Math.random() * Math.PI * 2,
+  }));
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = '#c8a84b';
+  particles.forEach(p => {
+    p.x  += p.vx;
+    p.y  += p.vy;
+    p.angle += p.rot * 0.01;
+    if (p.x < -40)  p.x = canvas.width + 40;
+    if (p.x > canvas.width + 40)  p.x = -40;
+    if (p.y < -40)  p.y = canvas.height + 40;
+    if (p.y > canvas.height + 40) p.y = -40;
+    ctx.save();
+    ctx.globalAlpha = p.opacity;
+    ctx.font = `italic ${p.size}px "Palatino Linotype", Georgia, serif`;
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.angle);
+    ctx.fillText(p.sym, 0, 0);
+    ctx.restore();
+  });
+  requestAnimationFrame(draw);
+}
+
+init();
+draw();
+window.addEventListener('resize', init);
+
+/* ── INTERSECTION OBSERVER: fade up ───────────────────────── */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.fadeup').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
