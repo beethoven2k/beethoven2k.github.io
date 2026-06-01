@@ -151,6 +151,7 @@
   .pdf-tag.set    { border-color: rgba(200,168,75,0.4);  color: var(--gold-dim); }
   .pdf-tag.linear { border-color: rgba(138,112,192,0.4); color: #7a60b0; }
   .pdf-tag.calc   { border-color: rgba(46,184,160,0.4);  color: var(--teal-dim); }
+  .pdf-tag.ode    { border-color: rgba(212,120,90,0.4);  color: #b05a3a; }
 
   .dl-btn {
     display: inline-flex;
@@ -231,6 +232,7 @@
     <button class="tab-btn" onclick="switchTab('set', this)">집합론</button>
     <button class="tab-btn" onclick="switchTab('linear', this)">선형대수학</button>
     <button class="tab-btn" onclick="switchTab('calc', this)">다변수미적분학</button>
+    <button class="tab-btn" onclick="switchTab('ode', this)">미분방정식</button>
   </div>
 
   <!-- 전체 -->
@@ -547,6 +549,12 @@
       </div>
 
     </div>
+  </div>
+
+
+  <!-- 미분방정식 -->
+  <div class="pdf-section" id="tab-ode">
+    <div class="empty">아직 업로드된 미분방정식 PDF가 없습니다.</div>
   </div>
 
 </div>
