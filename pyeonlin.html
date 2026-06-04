@@ -20,6 +20,8 @@
   }
   html[data-theme="light"] h1,
   html[data-theme="light"] .post-title { color: var(--text); }
+  html[data-theme="light"] .btn-gds { color: var(--text); }
+  html[data-theme="light"] .btn-gds:hover { color: var(--text); }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
@@ -43,6 +45,12 @@
   nav ul { list-style: none; display: flex; gap: 2.5rem; }
   nav a { color: var(--muted); text-decoration: none; text-transform: uppercase; transition: color 0.2s; }
   nav a:hover, nav a.active { color: var(--gold); }
+  nav .btn-gds {
+    color: var(--bg); background: var(--gold);
+    border: 1px solid var(--gold); padding: 0.35rem 0.9rem;
+    font-size: 0.72rem; letter-spacing: 0.08em;
+  }
+  nav .btn-gds:hover { background: #dbbf60; color: var(--bg); }
 
   .wrap { max-width: 860px; margin: 0 auto; padding: 0 2rem; }
 
@@ -177,7 +185,7 @@
     <li><a href="index.html#topics">Topics</a></li>
     <li><a href="notes.html">Notes</a></li>
     <li><a href="index.html#equations">아름다운방정식</a></li>
-    <li><a href="gds7.html" style="color:var(--bg);background:var(--gold);border:1px solid var(--gold);padding:0.35rem 0.9rem;font-size:0.72rem;">기대수 7기</a></li>
+    <li><a href="gds7.html" class="btn-gds">기대수 7기</a></li>
   </ul>
   <button id="theme-toggle" aria-label="테마 전환">LIGHT</button>
 </nav>
