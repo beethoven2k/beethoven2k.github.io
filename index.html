@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>수학 공부 홈페이지</title>
+<script>document.documentElement.dataset.theme = localStorage.getItem('theme') || 'dark';</script>
 <script>
 MathJax = {
   tex: {
@@ -525,6 +526,51 @@ MathJax = {
   }
   .fadeup.visible { opacity: 1; transform: none; }
 
+  /* ── LIGHT THEME VARIABLES ─────────────────────────────────── */
+  html[data-theme="light"] {
+    --bg:          #f5f0e8;
+    --bg2:         #ece7da;
+    --bg3:         #e2ddd0;
+    --gold:        #8b6914;
+    --gold-dim:    #6a4f0f;
+    --teal:        #1a7a6a;
+    --teal-dim:    #0e5045;
+    --text:        #1a1612;
+    --text-muted:  #6b6357;
+    --border:      #cac3b4;
+    --border-gold: rgba(139,105,20,0.25);
+  }
+
+  html[data-theme="light"] h1,
+  html[data-theme="light"] h2,
+  html[data-theme="light"] .topic-card h3,
+  html[data-theme="light"] .profile-info h3 { color: #1a1612; }
+
+  html[data-theme="light"] .eq-display { color: #2a2218; }
+
+  html[data-theme="light"] nav {
+    background: linear-gradient(to bottom, rgba(245,240,232,0.97), transparent);
+  }
+
+  /* ── THEME TOGGLE BUTTON ────────────────────────────────────── */
+  #theme-toggle {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-family: "Courier New", monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    padding: 0.3rem 0.7rem;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  #theme-toggle:hover {
+    color: var(--gold);
+    border-color: var(--gold-dim);
+  }
+
   @media (max-width: 640px) {
     nav { padding: 1rem 1.2rem; }
     nav ul { gap: 1.5rem; }
@@ -550,6 +596,7 @@ MathJax = {
     <li><a href="#equations">아름다운방정식</a></li>
     <li><a href="gds7.html" class="btn-gds">기대수 7기</a></li>
   </ul>
+  <button id="theme-toggle" aria-label="테마 전환">LIGHT</button>
 </nav>
 
 <!-- HERO -->
@@ -772,6 +819,7 @@ const symbols = [
   'f(z)','d/dx','[a,b]','‖x‖','⟨u,v⟩','χ(M)','2πi'
 ];
 let particles = [];
+let particleColor = '#c8a84b';
 
 function resize() {
   canvas.width  = window.innerWidth;
@@ -795,8 +843,6 @@ function init() {
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.font = 'italic 14px "Palatino Linotype", Georgia, serif';
-  ctx.fillStyle = '#c8a84b';
   particles.forEach(p => {
     p.x  += p.vx;
     p.y  += p.vy;
@@ -807,6 +853,7 @@ function draw() {
     if (p.y > canvas.height + 40) p.y = -40;
     ctx.save();
     ctx.globalAlpha = p.opacity;
+    ctx.fillStyle = particleColor;
     ctx.font = `italic ${p.size}px "Palatino Linotype", Georgia, serif`;
     ctx.translate(p.x, p.y);
     ctx.rotate(p.angle);
@@ -819,6 +866,31 @@ function draw() {
 init();
 draw();
 window.addEventListener('resize', init);
+
+/* ── THEME TOGGLE ──────────────────────────────────────────── */
+const themeBtn = document.getElementById('theme-toggle');
+
+function applyTheme(theme) {
+  document.documentElement.dataset.theme = theme;
+  localStorage.setItem('theme', theme);
+  if (theme === 'dark') {
+    themeBtn.textContent = 'LIGHT';
+    particleColor = '#c8a84b';
+  } else {
+    themeBtn.textContent = 'DARK';
+    particleColor = '#8b6914';
+  }
+  const chart = document.querySelector('#github img');
+  if (chart) {
+    const color = theme === 'dark' ? 'c8a84b' : '8b6914';
+    chart.src = `https://ghchart.rshah.org/${color}/beethoven2k`;
+  }
+}
+
+applyTheme(localStorage.getItem('theme') || 'dark');
+themeBtn.addEventListener('click', () => {
+  applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+});
 
 /* ── RECENT NOTES: notes-data.json 로딩 ───────────────────── */
 async function loadRecentNotes() {
