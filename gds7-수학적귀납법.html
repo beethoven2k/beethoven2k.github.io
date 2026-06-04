@@ -1,15 +1,22 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>수학적 귀납법 — 기대수 7기</title>
+<script>document.documentElement.dataset.theme = localStorage.getItem('theme') || 'dark';</script>
 <style>
   :root {
     --bg:#07090f; --bg2:#0d1017; --bg3:#131720;
     --gold:#c8a84b; --gold-dim:#8a7235;
     --teal:#2eb8a0; --teal-dim:#1a6e60;
     --text:#dcd7cc; --muted:#8a8578; --border:#2a2d38;
+  }
+  html[data-theme="light"] {
+    --bg:#f5f0e8; --bg2:#ece7da; --bg3:#e2ddd0;
+    --gold:#8b6914; --gold-dim:#6a4f0f;
+    --teal:#1a7a6a; --teal-dim:#0e5045;
+    --text:#1a1612; --muted:#6b6357; --border:#cac3b4;
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
@@ -23,7 +30,7 @@
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     display: flex; justify-content: space-between; align-items: center;
     padding: 1.1rem 3rem;
-    background: rgba(7,9,15,0.97);
+    background: var(--bg);
     border-bottom: 1px solid var(--border);
     font-family: "Courier New", monospace;
     font-size: 0.78rem; letter-spacing: 0.12em;
@@ -109,6 +116,13 @@
     .pdf-item { grid-template-columns: 1fr; }
     .page-header { padding: 7rem 0 2.5rem; }
   }
+  #theme-toggle {
+    background: none; border: 1px solid var(--border);
+    color: var(--muted); font-family: "Courier New", monospace;
+    font-size: 0.68rem; letter-spacing: 0.1em;
+    padding: 0.3rem 0.7rem; cursor: pointer; transition: all 0.2s;
+  }
+  #theme-toggle:hover { border-color: var(--gold); color: var(--gold); }
 </style>
 </head>
 <body>
@@ -123,6 +137,7 @@
     <li><a href="index.html#equations">아름다운방정식</a></li>
     <li><a href="gds7.html" class="btn-gds">기대수 7기</a></li>
   </ul>
+  <button id="theme-toggle" aria-label="테마 전환">LIGHT</button>
 </nav>
 
 <div class="wrap">
@@ -168,5 +183,17 @@
 
 <footer>© 2025 · beethoven2k.github.io</footer>
 
+<script>
+const themeBtn = document.getElementById('theme-toggle');
+function applyTheme(t) {
+  document.documentElement.dataset.theme = t;
+  localStorage.setItem('theme', t);
+  themeBtn.textContent = t === 'dark' ? 'LIGHT' : 'DARK';
+}
+applyTheme(localStorage.getItem('theme') || 'dark');
+themeBtn.addEventListener('click', () => {
+  applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+});
+</script>
 </body>
 </html>

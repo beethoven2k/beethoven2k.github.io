@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>집합론 노트 — 수학 공부 기록</title>
+<script>document.documentElement.dataset.theme = localStorage.getItem('theme') || 'dark';</script>
 <script>
 MathJax = {
   tex: {
@@ -28,6 +29,19 @@ MathJax = {
     --text-muted:#8a8578;
     --border:    #2a2d38;
     --border-gold: rgba(200,168,75,0.25);
+  }
+  html[data-theme="light"] {
+    --bg:          #f5f0e8;
+    --bg2:         #ece7da;
+    --bg3:         #e2ddd0;
+    --gold:        #8b6914;
+    --gold-dim:    #6a4f0f;
+    --teal:        #1a7a6a;
+    --teal-dim:    #0e5045;
+    --text:        #1a1612;
+    --text-muted:  #6b6357;
+    --border:      #cac3b4;
+    --border-gold: rgba(139,105,20,0.25);
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -57,7 +71,8 @@ MathJax = {
     justify-content: space-between;
     align-items: center;
     padding: 1.1rem 3rem;
-    background: linear-gradient(to bottom, rgba(7,9,15,0.95), transparent);
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
     font-family: "Courier New", monospace;
     font-size: 0.8rem;
     letter-spacing: 0.12em;
@@ -248,6 +263,13 @@ MathJax = {
     .note-item { grid-template-columns: 1fr; gap: 0.3rem; }
     .note-arrow { display: none; }
   }
+  #theme-toggle {
+    background: none; border: 1px solid var(--border);
+    color: var(--text-muted); font-family: "Courier New", monospace;
+    font-size: 0.68rem; letter-spacing: 0.1em;
+    padding: 0.3rem 0.7rem; cursor: pointer; transition: all 0.2s;
+  }
+  #theme-toggle:hover { border-color: var(--gold); color: var(--gold); }
 </style>
 </head>
 <body>
@@ -265,6 +287,7 @@ MathJax = {
     <li><a href="index.html#equations">아름다운방정식</a></li>
     <li><a href="gds7.html" class="btn-gds">기대수 7기</a></li>
   </ul>
+  <button id="theme-toggle" aria-label="테마 전환">LIGHT</button>
 </nav>
 
 <!-- PAGE HEADER -->
@@ -446,6 +469,17 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0.12 });
 
 document.querySelectorAll('.fadeup').forEach(el => observer.observe(el));
+
+const themeBtn = document.getElementById('theme-toggle');
+function applyTheme(t) {
+  document.documentElement.dataset.theme = t;
+  localStorage.setItem('theme', t);
+  themeBtn.textContent = t === 'dark' ? 'LIGHT' : 'DARK';
+}
+applyTheme(localStorage.getItem('theme') || 'dark');
+themeBtn.addEventListener('click', () => {
+  applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+});
 </script>
 </body>
 </html>

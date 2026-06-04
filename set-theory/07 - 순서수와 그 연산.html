@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>07 — 순서수와 그 연산 — 집합론</title>
+<script>document.documentElement.dataset.theme = localStorage.getItem('theme') || 'dark';</script>
 <script>
 MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],
   displayMath:[['$$','$$'],['\\[','\\]']],
@@ -14,11 +15,13 @@ MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],
 <style>
 :root{--bg:#07090f;--bg2:#0d1017;--bg3:#131720;--gold:#c8a84b;--gold-dim:#8a7235;
   --teal:#2eb8a0;--teal-dim:#1a6e60;--text:#dcd7cc;--muted:#8a8578;--border:#2a2d38;}
+html[data-theme="light"]{--bg:#f5f0e8;--bg2:#ece7da;--bg3:#e2ddd0;--gold:#8b6914;--gold-dim:#6a4f0f;
+  --teal:#1a7a6a;--teal-dim:#0e5045;--text:#1a1612;--muted:#6b6357;--border:#cac3b4;}
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{background:var(--bg);color:var(--text);
   font-family:"Palatino Linotype","Book Antiqua",Georgia,serif;line-height:1.85;min-height:100vh;}
-nav{position:sticky;top:0;z-index:50;background:rgba(7,9,15,0.97);
+nav{position:sticky;top:0;z-index:50;background:var(--bg);
   border-bottom:1px solid var(--border);padding:.85rem 2rem;
   display:flex;align-items:center;gap:1.5rem;}
 .back{font-family:"Courier New",monospace;font-size:.75rem;letter-spacing:.12em;
@@ -72,12 +75,17 @@ tr:nth-child(even) td{background:var(--bg2);}
 .nav-links .prev::before{content:"← ";}
 .nav-links .next::after{content:" →";}
 .nav-links .spacer{flex:1;}
+#theme-toggle{background:none;border:1px solid var(--border);color:var(--muted);
+  font-family:"Courier New",monospace;font-size:.68rem;letter-spacing:.1em;
+  padding:.3rem .7rem;cursor:pointer;transition:all .2s;margin-left:auto;}
+#theme-toggle:hover{border-color:var(--gold);color:var(--gold);}
 </style>
 </head>
 <body>
 <nav>
   <a class="back" href="../index.html">홈으로</a>
   <span class="nav-title">07 — 순서수와 그 연산</span>
+  <button id="theme-toggle" aria-label="테마 전환">LIGHT</button>
 </nav>
 <main>
 <h1>07 — 순서수와 그 연산</h1>
@@ -134,5 +142,17 @@ $$\alpha + 0 = \alpha, \quad \alpha + (\beta + 1) = (\alpha + \beta) + 1, \quad 
 </ul>
 <div class="nav-links"><a class="prev" href="06 - 선택공리와 동치명제.html">06 - 선택공리와 동치명제</a><span class="spacer"></span></div>
 </main>
+<script>
+const themeBtn = document.getElementById('theme-toggle');
+function applyTheme(t) {
+  document.documentElement.dataset.theme = t;
+  localStorage.setItem('theme', t);
+  themeBtn.textContent = t === 'dark' ? 'LIGHT' : 'DARK';
+}
+applyTheme(localStorage.getItem('theme') || 'dark');
+themeBtn.addEventListener('click', () => {
+  applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+});
+</script>
 </body>
 </html>
