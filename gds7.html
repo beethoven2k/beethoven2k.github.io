@@ -188,6 +188,51 @@
     padding: 0.3rem 0.7rem; cursor: pointer; transition: all 0.2s;
   }
   #theme-toggle:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* 허브 카드 */
+  .hub-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 3.5rem;
+    padding-bottom: 6rem;
+  }
+  .hub-card {
+    display: flex; flex-direction: column; gap: 0.5rem;
+    padding: 2.2rem 2rem;
+    border: 1px solid var(--border);
+    text-decoration: none;
+    transition: all 0.25s;
+  }
+  .hub-card:hover {
+    border-color: var(--gold-dim);
+    background: rgba(200,168,75,0.04);
+    padding-left: 2.5rem;
+  }
+  .hub-num {
+    font-family: "Courier New", monospace;
+    font-size: 0.65rem; letter-spacing: 0.3em;
+    color: var(--gold-dim); margin-bottom: 0.4rem;
+  }
+  .hub-title {
+    font-size: 1.45rem; font-weight: 400; color: #f0ece0;
+    font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  }
+  .hub-sub {
+    font-family: "Courier New", monospace;
+    font-size: 0.68rem; color: var(--muted); letter-spacing: 0.1em;
+  }
+  .hub-desc {
+    font-size: 0.88rem; color: var(--muted);
+    line-height: 1.65; margin-top: 0.6rem;
+    word-break: keep-all;
+  }
+  .hub-arrow {
+    font-family: "Courier New", monospace;
+    font-size: 0.75rem; color: var(--gold);
+    letter-spacing: 0.08em; margin-top: 1.2rem;
+  }
+  @media(max-width:640px){ .hub-grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -232,32 +277,21 @@
     <p>매주 올라오는 발제문, 풀이, 정리 자료를 모아두는 공간입니다. 함께 공부한 흔적들.</p>
   </div>
 
-  <div style="padding-bottom: 5rem;">
-
-    <div class="week-section">
-      <div class="week-header">
-        <span class="week-num">자료</span>
-        <span class="week-title">집합론 — 노트 및 워크북</span>
-      </div>
-      <div class="resource-grid">
-        <a class="resource-btn" href="gds7-수학의언어.html">
-          <span class="res-title">수학의 언어</span>
-          <span class="res-sub">Mathematics as a Language</span>
-          <span class="res-dl">→ 자료 보기</span>
-        </a>
-        <a class="resource-btn" href="gds7-논리학워크북.html">
-          <span class="res-title">논리학 워크북</span>
-          <span class="res-sub">Logic Workbook</span>
-          <span class="res-dl">→ 자료 보기</span>
-        </a>
-        <a class="resource-btn" href="gds7-수학적귀납법.html">
-          <span class="res-title">수학적 귀납법</span>
-          <span class="res-sub">Mathematical Induction</span>
-          <span class="res-dl">→ 자료 보기</span>
-        </a>
-      </div>
-    </div>
-
+  <div class="hub-grid">
+    <a class="hub-card" href="gds7-탐구대화.html">
+      <span class="hub-num">01</span>
+      <span class="hub-title">탐구 대화</span>
+      <span class="hub-sub">Dialogue</span>
+      <span class="hub-desc">대화를 통해 탐구한 수학적 개념과 질문들. 질문과 답변, 생각의 흐름을 담은 자료들.</span>
+      <span class="hub-arrow">→ 보기</span>
+    </a>
+    <a class="hub-card" href="gds7-정리자료.html">
+      <span class="hub-num">02</span>
+      <span class="hub-title">정리 자료</span>
+      <span class="hub-sub">Notes &amp; Workbooks</span>
+      <span class="hub-desc">노트, 워크북, 발제문 등 정리된 학습 자료. 집합론 전반을 다룬 구조화된 내용들.</span>
+      <span class="hub-arrow">→ 보기</span>
+    </a>
   </div>
 </div>
 

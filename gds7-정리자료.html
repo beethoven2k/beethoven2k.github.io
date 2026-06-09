@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>수학의 언어 — 기대수 7기</title>
+<title>정리 자료 — 기대수 7기</title>
 <script>document.documentElement.dataset.theme = localStorage.getItem('theme') || 'dark';</script>
 <style>
   :root {
@@ -18,7 +18,9 @@
     --teal:#1a7a6a; --teal-dim:#0e5045;
     --text:#1a1612; --muted:#6b6357; --border:#cac3b4;
   }
-  html[data-theme="light"] h1 { color: var(--text); }
+  html[data-theme="light"] h1,
+  html[data-theme="light"] .week-title,
+  html[data-theme="light"] .res-title { color: var(--text); }
   html[data-theme="light"] .btn-gds { color: var(--text); }
   html[data-theme="light"] .btn-gds:hover { color: var(--text); }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -49,6 +51,7 @@
     font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; transition: background 0.2s;
   }
   nav .btn-gds:hover { background: #dbbf60; color: var(--bg); }
+  nav .btn-gds.active { background: var(--gold-dim); border-color: var(--gold-dim); }
   @media(max-width:700px){ nav { padding: 1rem 1.2rem; } nav ul { gap: 1rem; font-size: .65rem; } }
 
   .wrap { max-width: 860px; margin: 0 auto; padding: 0 2rem; }
@@ -80,35 +83,54 @@
   .rule { width: 48px; height: 1px; background: var(--gold); margin: 1rem 0; }
   .page-header p { color: var(--muted); font-size: 0.95rem; max-width: 560px; word-break: keep-all; }
 
-  .pdf-list { display: flex; flex-direction: column; padding: 3rem 0 6rem; }
-  .pdf-item {
+  /* 주차별 섹션 */
+  .week-section { padding: 3rem 0; border-bottom: 1px solid var(--border); }
+  .week-section:last-child { border-bottom: none; }
+  .week-header {
+    display: flex; align-items: baseline; gap: 1.2rem;
+    margin-bottom: 1.4rem;
+  }
+  .week-num {
+    font-family: "Courier New", monospace;
+    font-size: 0.72rem; letter-spacing: 0.15em;
+    color: var(--gold-dim); text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .week-title { font-size: 1.1rem; font-weight: 400; color: #e8e4d8; }
+
+  /* 자료 버튼 */
+  .resource-grid {
     display: grid;
-    grid-template-columns: 1fr auto;
-    align-items: center;
-    gap: 1.5rem;
-    padding: 1rem 0;
-    border-bottom: 1px solid var(--border);
-    transition: background 0.15s;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-top: 0.5rem;
   }
-  .pdf-item:first-child { border-top: 1px solid var(--border); }
-  .pdf-item:last-child { border-bottom: none; }
-  .pdf-item:hover { background: rgba(200,168,75,0.025); padding-left: 0.4rem; }
-  .pdf-meta { display: flex; flex-direction: column; gap: 0.25rem; }
-  .pdf-title { font-size: 0.95rem; color: var(--text); }
-  .pdf-info {
-    display: flex; gap: 0.8rem; align-items: center;
-    font-family: "Courier New", monospace; font-size: 0.68rem; color: var(--muted);
+  .resource-btn {
+    display: flex; flex-direction: column; gap: 0.35rem;
+    padding: 1.2rem 1.4rem;
+    border: 1px solid var(--border);
+    text-decoration: none;
+    transition: all 0.2s;
   }
-  .dl-btn {
-    display: inline-flex; align-items: center; gap: 0.4rem;
-    padding: 0.45rem 1rem;
-    font-family: "Courier New", monospace; font-size: 0.7rem;
-    letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
-    border: 1px solid var(--gold-dim); color: var(--gold);
-    background: transparent; white-space: nowrap; transition: all 0.2s; flex-shrink: 0;
+  .resource-btn:hover {
+    border-color: var(--gold-dim);
+    background: rgba(200,168,75,0.04);
+    padding-left: 1.8rem;
   }
-  .dl-btn:hover { background: rgba(200,168,75,0.1); border-color: var(--gold); }
-  .dl-btn::before { content: "↓ "; }
+  .res-title {
+    font-size: 1rem; color: #f0ece0;
+    font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  }
+  .res-sub {
+    font-family: "Courier New", monospace;
+    font-size: 0.68rem; color: var(--muted); letter-spacing: 0.06em;
+  }
+  .res-dl {
+    font-family: "Courier New", monospace;
+    font-size: 0.7rem; color: var(--gold);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-top: 0.5rem;
+  }
 
   footer {
     padding: 2.5rem 0; border-top: 1px solid var(--border);
@@ -116,7 +138,6 @@
     font-size: 0.7rem; color: var(--muted); letter-spacing: 0.12em;
   }
   @media(max-width:600px){
-    .pdf-item { grid-template-columns: 1fr; }
     .page-header { padding: 7rem 0 2.5rem; }
   }
   #theme-toggle {
@@ -148,59 +169,39 @@
     <div class="breadcrumb">
       <a href="gds7.html">기대수 7기</a>
       <span>›</span>
-      <a href="gds7-정리자료.html">정리 자료</a>
-      <span>›</span>
-      수학의 언어
+      정리 자료
     </div>
-    <div class="sec-label">정리 자료 — 교재</div>
-    <h1>수학의 언어</h1>
-    <div class="subtitle">Mathematics as a Language</div>
+    <div class="sec-label">기대수 7기 — 02</div>
+    <h1>정리 자료</h1>
+    <div class="subtitle">Notes &amp; Workbooks</div>
     <div class="rule"></div>
-    <p>수학적 진술의 구조, 공리와 정의의 탄생, 집합의 언어까지 — 수학이 어떤 방식으로 세계를 기술하는지를 다룬 자료들입니다.</p>
+    <p>노트, 워크북, 발제문 등 정리된 학습 자료. 집합론 전반을 다룬 구조화된 내용들입니다.</p>
   </div>
 
-  <div class="pdf-list">
-
-    <div class="pdf-item">
-      <div class="pdf-meta">
-        <div class="pdf-title">수학적 진술의 위계</div>
-        <div class="pdf-info">
-          <span>Axiom부터 Conjecture까지 — 증명 의무와 논리적 지위</span>
-        </div>
+  <div style="padding-bottom: 5rem;">
+    <div class="week-section">
+      <div class="week-header">
+        <span class="week-num">집합론</span>
+        <span class="week-title">노트 및 워크북</span>
       </div>
-      <a class="dl-btn" href="pdf/gds7/정리자료/01_노트_01_수학적_진술의_위계.pdf" download>Download</a>
-    </div>
-
-    <div class="pdf-item">
-      <div class="pdf-meta">
-        <div class="pdf-title">공리의 탄생</div>
-        <div class="pdf-info">
-          <span>자명한 진리에서 선택된 규칙으로 — 역사편</span>
-        </div>
+      <div class="resource-grid">
+        <a class="resource-btn" href="gds7-수학의언어.html">
+          <span class="res-title">수학의 언어</span>
+          <span class="res-sub">Mathematics as a Language</span>
+          <span class="res-dl">→ 자료 보기</span>
+        </a>
+        <a class="resource-btn" href="gds7-논리학워크북.html">
+          <span class="res-title">논리학 워크북</span>
+          <span class="res-sub">Logic Workbook</span>
+          <span class="res-dl">→ 자료 보기</span>
+        </a>
+        <a class="resource-btn" href="gds7-수학적귀납법.html">
+          <span class="res-title">수학적 귀납법</span>
+          <span class="res-sub">Mathematical Induction</span>
+          <span class="res-dl">→ 자료 보기</span>
+        </a>
       </div>
-      <a class="dl-btn" href="pdf/gds7/정리자료/01_노트_02_공리의_탄생.pdf" download>Download</a>
     </div>
-
-    <div class="pdf-item">
-      <div class="pdf-meta">
-        <div class="pdf-title">정의의 탄생</div>
-        <div class="pdf-info">
-          <span>직관에서 엄밀성으로 — 수학이 언어를 다듬어온 과정</span>
-        </div>
-      </div>
-      <a class="dl-btn" href="pdf/gds7/정리자료/01_노트_03_정의의_탄생.pdf" download>Download</a>
-    </div>
-
-    <div class="pdf-item">
-      <div class="pdf-meta">
-        <div class="pdf-title">집합의 정의와 역설</div>
-        <div class="pdf-info">
-          <span>역설에서 ZFC로, 그리고 우리가 실제로 다루는 집합으로</span>
-        </div>
-      </div>
-      <a class="dl-btn" href="pdf/gds7/정리자료/01_노트_04_집합의_정의와_역설.pdf" download>Download</a>
-    </div>
-
   </div>
 </div>
 
