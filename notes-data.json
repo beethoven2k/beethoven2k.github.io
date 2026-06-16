@@ -1,4 +1,10 @@
 [
+  {"date":"2026-06-16","title":"정보기하 — Prerequisites","href":"pdf/정보기하/Info geometry prerequisites.pdf","badge":"정보기하","cls":"ig"},
+  {"date":"2026-06-16","title":"정보기하 — Vol.1 Calculus","href":"pdf/정보기하/Info geometry vol1 calculus.pdf","badge":"정보기하","cls":"ig"},
+  {"date":"2026-06-16","title":"정보기하 — Vol.2 Linear Algebra","href":"pdf/정보기하/Info geometry vol2 linear algebra.pdf","badge":"정보기하","cls":"ig"},
+  {"date":"2026-06-16","title":"정보기하 — Vol.3 Differential Geometry","href":"pdf/정보기하/Info geometry vol3 diff geometry.pdf","badge":"정보기하","cls":"ig"},
+  {"date":"2026-06-16","title":"정보기하 — Vol.4 Probability","href":"pdf/정보기하/Info geometry vol4 probability.pdf","badge":"정보기하","cls":"ig"},
+  {"date":"2026-06-16","title":"정보기하 — Vol.5 Statistical Manifold","href":"pdf/정보기하/Info geometry vol5 statistical manifold.pdf","badge":"정보기하","cls":"ig"},
   {"date":"2026-06-14","title":"디스커션 워크북","href":"pdf/gds7/탐구대화/0614_디스커션_워크북.pdf","badge":"기대수 7기","cls":"analysis"},
   {"date":"2026-06-13","title":"DE 04 — 비분리 ODE","href":"pdf/미분방정식/01_DE_04_비분리ODE.pdf","badge":"미분방정식","cls":"ode"},
   {"date":"2026-06-13","title":"DE 03 — 노트 0104 피드백","href":"pdf/미분방정식/02_DE_03_노트0104_피드백.pdf","badge":"미분방정식","cls":"ode"},
