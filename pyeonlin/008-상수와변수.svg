@@ -1,0 +1,97 @@
+<svg width="860" height="400" viewBox="0 0 860 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg-glow" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#0d1017"/>
+      <stop offset="100%" stop-color="#07090f"/>
+    </radialGradient>
+    <clipPath id="canvas">
+      <rect width="860" height="400"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background -->
+  <rect width="860" height="400" fill="#07090f"/>
+  <rect width="860" height="400" fill="url(#bg-glow)" opacity="0.6"/>
+
+  <!-- Subtle star field (physical constants as distant lights) -->
+  <circle cx="88"  cy="52"  r="1"   fill="#c8a84b" opacity="0.45"/>
+  <circle cx="152" cy="88"  r="0.8" fill="#c8a84b" opacity="0.3"/>
+  <circle cx="48"  cy="170" r="1.2" fill="#c8a84b" opacity="0.2"/>
+  <circle cx="728" cy="42"  r="1"   fill="#c8a84b" opacity="0.4"/>
+  <circle cx="792" cy="98"  r="0.8" fill="#c8a84b" opacity="0.3"/>
+  <circle cx="62"  cy="330" r="1"   fill="#c8a84b" opacity="0.25"/>
+  <circle cx="808" cy="355" r="0.9" fill="#c8a84b" opacity="0.3"/>
+  <circle cx="238" cy="28"  r="0.7" fill="#dcd7cc" opacity="0.18"/>
+  <circle cx="618" cy="378" r="0.7" fill="#dcd7cc" opacity="0.18"/>
+  <circle cx="340" cy="18"  r="0.6" fill="#dcd7cc" opacity="0.15"/>
+  <circle cx="510" cy="388" r="0.6" fill="#dcd7cc" opacity="0.15"/>
+
+  <!-- Fan of lines (y = a·x for various a) — all clipped to canvas -->
+  <g clip-path="url(#canvas)">
+
+    <!-- a = 0.3  (very gentle, very faint) -->
+    <line x1="0"   y1="329" x2="860" y2="71"  stroke="#8a7235" stroke-width="0.6" opacity="0.22"/>
+    <!-- a = 0.8  (gentle, faint) -->
+    <line x1="180" y1="400" x2="680" y2="0"   stroke="#8a7235" stroke-width="0.8" opacity="0.32"/>
+    <!-- a = 3.0  (steep, faint) -->
+    <line x1="363" y1="400" x2="497" y2="0"   stroke="#8a7235" stroke-width="0.7" opacity="0.28"/>
+
+    <!-- Negative slope mirror lines (dim) -->
+    <!-- a = -0.3 -->
+    <line x1="0"   y1="71"  x2="860" y2="329" stroke="#2a2d38" stroke-width="0.6" opacity="0.55"/>
+    <!-- a = -0.8 -->
+    <line x1="180" y1="0"   x2="680" y2="400" stroke="#2a2d38" stroke-width="0.8" opacity="0.45"/>
+    <!-- a = -1.5 (symmetric to main) -->
+    <line x1="297" y1="0"   x2="563" y2="400" stroke="#2a2d38" stroke-width="0.8" opacity="0.35"/>
+
+    <!-- Main line: y = ax  (a = 1.5), in gold -->
+    <line x1="297" y1="400" x2="563" y2="0"   stroke="#c8a84b" stroke-width="2" opacity="0.93"/>
+
+    <!-- Parallel line: y = ax + b  (a = 1.5, b shifted up 70px), in teal dashed -->
+    <line x1="250" y1="400" x2="517" y2="0"   stroke="#2eb8a0" stroke-width="1.5" opacity="0.82" stroke-dasharray="8,5"/>
+
+  </g>
+
+  <!-- Coordinate axes (on top of lines) -->
+  <!-- y-axis -->
+  <line x1="430" y1="18"  x2="430" y2="382" stroke="#2a2d38" stroke-width="0.8"/>
+  <!-- x-axis -->
+  <line x1="18"  y1="200" x2="842" y2="200" stroke="#2a2d38" stroke-width="0.8"/>
+
+  <!-- Axis arrowheads -->
+  <polygon points="430,12 426,22 434,22" fill="#2a2d38"/>
+  <polygon points="848,200 838,196 838,204" fill="#2a2d38"/>
+
+  <!-- Axis labels -->
+  <text x="436" y="14" font-family="'Courier New',monospace" font-size="10" fill="#8a8578" opacity="0.6">y</text>
+  <text x="845" y="204" font-family="'Courier New',monospace" font-size="10" fill="#8a8578" opacity="0.6">x</text>
+
+  <!-- Origin point (gold) -->
+  <circle cx="430" cy="200" r="3.5" fill="#c8a84b" opacity="0.92"/>
+  <circle cx="430" cy="200" r="8"   fill="none" stroke="#c8a84b" stroke-width="0.7" opacity="0.3"/>
+
+  <!-- Teal y-intercept dot: where y=ax+b crosses the y-axis, at (430, 130) -->
+  <circle cx="430" cy="130" r="2.5" fill="#2eb8a0" opacity="0.75"/>
+
+  <!-- b-offset indicator: vertical bracket between y=130 (teal intercept) and y=200 (origin) -->
+  <line x1="422" y1="130" x2="422" y2="200" stroke="#2eb8a0" stroke-width="0.9" opacity="0.65" stroke-dasharray="3,2"/>
+  <line x1="419" y1="130" x2="425" y2="130" stroke="#2eb8a0" stroke-width="0.9" opacity="0.65"/>
+  <line x1="419" y1="200" x2="425" y2="200" stroke="#2eb8a0" stroke-width="0.9" opacity="0.65"/>
+  <text x="410" y="169" font-family="'Courier New',monospace" font-size="11" fill="#2eb8a0" opacity="0.72" text-anchor="middle" font-style="italic">b</text>
+
+  <!-- Label: y = ax — placed just past the top end of gold line -->
+  <text x="570" y="18" font-family="'Courier New',monospace" font-size="12.5" fill="#c8a84b" opacity="0.92" letter-spacing="0.05em">y = ax</text>
+
+  <!-- Label: y = ax + b — placed along the teal line in upper region -->
+  <!-- Teal line at x=480: y = 130 - 1.5*(480-430) = 130-75 = 55 -->
+  <text x="486" y="50" font-family="'Courier New',monospace" font-size="11" fill="#2eb8a0" opacity="0.85" letter-spacing="0.04em">y = ax + b</text>
+
+  <!-- Small annotation labels for the fan lines -->
+  <!-- Near bottom-left where fan lines converge -->
+  <text x="192" y="395" font-family="'Courier New',monospace" font-size="8.5" fill="#8a7235" opacity="0.5" letter-spacing="0.05em">a₂</text>
+  <text x="305" y="395" font-family="'Courier New',monospace" font-size="8.5" fill="#8a7235" opacity="0.55" letter-spacing="0.05em">a₁</text>
+  <text x="368" y="395" font-family="'Courier New',monospace" font-size="8.5" fill="#8a7235" opacity="0.4" letter-spacing="0.05em">a₃</text>
+
+  <!-- Bottom caption -->
+  <text x="430" y="392" font-family="'Courier New',monospace" font-size="8" fill="#8a8578" opacity="0.35" text-anchor="middle" letter-spacing="0.2em">CONSTANTS DEFINE THE STAGE · VARIABLES WRITE THE STORY</text>
+</svg>
