@@ -1,0 +1,85 @@
+<svg width="860" height="400" viewBox="0 0 860 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg" cx="68%" cy="18%" r="65%">
+      <stop offset="0%" stop-color="#0d1117"/>
+      <stop offset="100%" stop-color="#07090f"/>
+    </radialGradient>
+    <clipPath id="canvas">
+      <rect width="860" height="400"/>
+    </clipPath>
+    <!-- Rain pattern 1: main drops -->
+    <pattern id="rain1" x="0" y="0" width="55" height="65" patternUnits="userSpaceOnUse">
+      <line x1="22" y1="0" x2="30" y2="30" stroke="#7aaabf" stroke-width="0.8"/>
+    </pattern>
+    <!-- Rain pattern 2: offset secondary drops -->
+    <pattern id="rain2" x="28" y="33" width="55" height="65" patternUnits="userSpaceOnUse">
+      <line x1="22" y1="0" x2="29" y2="25" stroke="#8abbd0" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="860" height="400" fill="#07090f"/>
+  <rect width="860" height="400" fill="url(#bg)" opacity="0.82"/>
+
+  <!-- Rain -->
+  <g clip-path="url(#canvas)">
+    <rect width="860" height="400" fill="url(#rain1)" opacity="0.22"/>
+    <rect width="860" height="400" fill="url(#rain2)" opacity="0.13"/>
+  </g>
+
+  <!-- Moon glow (upper right) -->
+  <circle cx="718" cy="70" r="58" fill="#c8a84b" opacity="0.03"/>
+  <circle cx="718" cy="70" r="36" fill="#c8a84b" opacity="0.05"/>
+  <circle cx="718" cy="70" r="20" fill="#c8a84b" opacity="0.1"/>
+  <circle cx="718" cy="70" r="10" fill="#c8a84b" opacity="0.22"/>
+  <circle cx="718" cy="70" r="4"  fill="#c8a84b" opacity="0.55"/>
+  <!-- Crescent mask: dark offset circle to reveal crescent -->
+  <circle cx="731" cy="63" r="20" fill="#07090f"/>
+
+  <!-- Wind curves sweeping left to right -->
+  <g clip-path="url(#canvas)">
+
+    <!-- Far-background gusts, very faint -->
+    <path d="M -50 78  C 200 66  400 82  560 72  S 780 62  910 70"
+          fill="none" stroke="#3a5a78" stroke-width="0.7" opacity="0.18"/>
+    <path d="M -50 125 C 180 112 395 128 555 118 S 770 108 910 116"
+          fill="none" stroke="#3a5a78" stroke-width="0.9" opacity="0.22"/>
+    <path d="M -50 335 C 200 322 395 338 555 328 S 760 318 910 325"
+          fill="none" stroke="#3a5a78" stroke-width="0.8" opacity="0.18"/>
+    <path d="M -50 370 C 160 358 385 374 555 364 S 775 354 910 362"
+          fill="none" stroke="#3a5a78" stroke-width="0.6" opacity="0.15"/>
+
+    <!-- Mid-strength gusts -->
+    <path d="M -50 192 C 195 178 395 195 555 185 S 762 175 910 183"
+          fill="none" stroke="#4a6a8a" stroke-width="1.4" opacity="0.35"/>
+    <path d="M -50 278 C 175 264 388 280 555 270 S 755 260 910 268"
+          fill="none" stroke="#4a6a8a" stroke-width="1.2" opacity="0.3"/>
+    <path d="M -50 160 C 210 147 402 163 555 153 S 764 143 910 151"
+          fill="none" stroke="#4a6a8a" stroke-width="1.0" opacity="0.26"/>
+
+    <!-- Strong foreground gusts -->
+    <path d="M -50 226 C 205 210 405 228 555 218 S 758 208 910 216"
+          fill="none" stroke="#5a7a9a" stroke-width="2.2" opacity="0.5"/>
+    <path d="M -50 248 C 190 233 400 250 555 240 S 752 230 910 238"
+          fill="none" stroke="#6a8aaa" stroke-width="1.8" opacity="0.42"/>
+    <path d="M -50 310 C 185 296 390 312 555 302 S 756 292 910 300"
+          fill="none" stroke="#5a7a9a" stroke-width="1.5" opacity="0.36"/>
+
+    <!-- Main gust — the strongest sweep -->
+    <path d="M -50 237 C 225 221 408 239 555 229 S 756 219 910 227"
+          fill="none" stroke="#7a9abf" stroke-width="3.2" opacity="0.58"/>
+
+  </g>
+
+  <!-- Key lyric: centered, lower third -->
+  <text x="430" y="348"
+        font-family="'Palatino Linotype','Book Antiqua',Georgia,serif"
+        font-size="15.5" fill="#dcd7cc" opacity="0.58"
+        text-anchor="middle" letter-spacing="0.13em">나만 혼자 이렇게 달라져 있다</text>
+
+  <!-- Bottom caption -->
+  <text x="430" y="392"
+        font-family="'Courier New',monospace"
+        font-size="7.5" fill="#8a8578" opacity="0.3"
+        text-anchor="middle" letter-spacing="0.22em">WIND BLOWS · TEARS FALL · THE WORLD STAYS THE SAME</text>
+</svg>
