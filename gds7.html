@@ -233,6 +233,20 @@
     letter-spacing: 0.08em; margin-top: 1.2rem;
   }
   @media(max-width:640px){ .hub-grid { grid-template-columns: 1fr; } }
+
+  /* 유튜브 버튼 */
+  .yt-btn-row { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 0.8rem; }
+  .yt-btn {
+    font-family: 'Courier New', monospace;
+    font-size: 0.7rem; letter-spacing: 0.1em;
+    padding: 0.3rem 0.8rem; border: 1px solid;
+    text-decoration: none; text-transform: uppercase;
+    transition: background 0.2s, color 0.2s;
+  }
+  .yt-btn-gold { color: var(--gold); border-color: var(--gold-dim); }
+  .yt-btn-gold:hover { background: var(--gold); color: var(--bg); }
+  .yt-btn-teal { color: var(--teal); border-color: var(--teal-dim); }
+  .yt-btn-teal:hover { background: var(--teal); color: var(--bg); }
 </style>
 </head>
 <body>
@@ -255,21 +269,13 @@
     <div class="sec-label">Study Group</div>
     <h1>기대수 7기</h1>
     <div class="subtitle">기초부터 대학원 수학까지</div>
-    <div style="display:flex; gap:0.6rem; flex-wrap:wrap; margin-top:0.8rem;">
+    <div class="yt-btn-row">
       <a href="https://www.youtube.com/@enjoyingmath9346" target="_blank" rel="noopener"
-         style="font-family:'Courier New',monospace; font-size:0.7rem; letter-spacing:0.1em;
-                color:var(--gold); border:1px solid var(--gold-dim); padding:0.3rem 0.8rem;
-                text-decoration:none; text-transform:uppercase; transition:background 0.2s, color 0.2s;"
-         onmouseover="this.style.background='var(--gold)';this.style.color='var(--bg)'"
-         onmouseout="this.style.background='';this.style.color='var(--gold)'">
+         class="yt-btn yt-btn-gold">
         ▶ 수학의 즐거움
       </a>
       <a href="https://www.youtube.com/watch?v=2tbHVPZ3RDw&list=PLrpn1bohMVkIlOes5SRdUUo5laHJ4GMC5" target="_blank" rel="noopener"
-         style="font-family:'Courier New',monospace; font-size:0.7rem; letter-spacing:0.1em;
-                color:var(--teal); border:1px solid var(--teal-dim); padding:0.3rem 0.8rem;
-                text-decoration:none; text-transform:uppercase; transition:background 0.2s, color 0.2s;"
-         onmouseover="this.style.background='var(--teal)';this.style.color='var(--bg)'"
-         onmouseout="this.style.background='';this.style.color='var(--teal)'">
+         class="yt-btn yt-btn-teal">
         ▶ 기대수 7기 플리
       </a>
     </div>
