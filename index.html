@@ -3,605 +3,234 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>수학 공부 홈페이지</title>
+<title>편린 — beethoven2k</title>
 <script>document.documentElement.dataset.theme = localStorage.getItem('theme') || 'dark';</script>
-<script>
-MathJax = {
-  tex: {
-    inlineMath: [['$','$'],['\\(','\\)']],
-    displayMath: [['$$','$$'],['\\[','\\]']],
-    processEscapes: true
-  },
-  options: { skipHtmlTags: ['script','noscript','style','textarea'] }
-};
-</script>
-<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
 <style>
   :root {
-    --bg:        #07090f;
-    --bg2:       #0d1017;
-    --bg3:       #131720;
-    --gold:      #c8a84b;
-    --gold-dim:  #8a7235;
-    --teal:      #2eb8a0;
-    --teal-dim:  #1a6e60;
-    --accent:    #5a9fd4;
-    --text:      #dcd7cc;
-    --text-muted:#8a8578;
-    --border:    #2a2d38;
-    --border-gold: rgba(200,168,75,0.25);
+    --bg:       #07090f;
+    --bg2:      #0d1017;
+    --bg3:      #131720;
+    --gold:     #c8a84b;
+    --gold-dim: #8a7235;
+    --teal:     #2eb8a0;
+    --text:     #dcd7cc;
+    --muted:    #8a8578;
+    --border:   #2a2d38;
   }
+  html[data-theme="light"] {
+    --bg:#f5f0e8; --bg2:#ece7da; --bg3:#e2ddd0;
+    --gold:#8b6914; --gold-dim:#6a4f0f;
+    --teal:#1a7a6a;
+    --text:#1a1612; --muted:#6b6357; --border:#cac3b4;
+  }
+  html[data-theme="light"] .hero-hanja,
+  html[data-theme="light"] .hero-title { color: var(--text); }
+  html[data-theme="light"] .post-title  { color: var(--text); }
+  html[data-theme="light"] nav          { background: var(--bg); }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   html { scroll-behavior: smooth; }
-
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
-    line-height: 1.75;
+    font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif;
+    line-height: 1.85;
+    min-height: 100vh;
     overflow-x: hidden;
   }
 
-  /* ── MATH CANVAS BACKGROUND ────────────────────────────── */
+  /* ── CANVAS ───────────────────────────────────────────── */
   #canvas-bg {
     position: fixed;
     inset: 0;
     z-index: 0;
     pointer-events: none;
-    opacity: 0.07;
+    opacity: 0.055;
   }
 
   /* ── NAV ───────────────────────────────────────────────── */
   nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
     padding: 1.1rem 3rem;
     background: var(--bg);
     border-bottom: 1px solid var(--border);
     font-family: "Courier New", monospace;
-    font-size: 0.8rem;
-    letter-spacing: 0.12em;
+    font-size: 0.78rem; letter-spacing: 0.12em;
   }
-  nav .logo {
-    color: var(--gold);
-    font-size: 1rem;
-    text-decoration: none;
+  nav .logo { color: var(--gold); text-decoration: none; font-size: 1rem; }
+  nav ul { list-style: none; display: flex; gap: 2.5rem; }
+  nav a { color: var(--muted); text-decoration: none; text-transform: uppercase; transition: color 0.2s; }
+  nav a:hover, nav a.active { color: var(--gold); }
+  #theme-toggle {
+    background: none; border: 1px solid var(--border);
+    color: var(--muted); font-family: "Courier New", monospace;
+    font-size: 0.68rem; letter-spacing: 0.1em;
+    padding: 0.3rem 0.7rem; cursor: pointer; transition: all 0.2s;
+    white-space: nowrap;
   }
-  nav ul {
-    list-style: none;
-    display: flex;
-    gap: 2.5rem;
-  }
-  nav a {
-    color: var(--text-muted);
-    text-decoration: none;
-    text-transform: uppercase;
-    transition: color 0.2s;
-  }
-  nav a:hover { color: var(--gold); }
-  nav .btn-gds {
-    color: var(--bg);
-    background: var(--gold);
-    border: 1px solid var(--gold);
-    padding: 0.35rem 0.9rem;
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
-  }
-  nav .btn-gds:hover { background: #dbbf60; color: var(--bg); }
+  #theme-toggle:hover { border-color: var(--gold); color: var(--gold); }
 
-  /* ── WRAPPER ───────────────────────────────────────────── */
+  /* ── WRAP ──────────────────────────────────────────────── */
   .wrap {
-    position: relative;
-    z-index: 1;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0 2rem;
+    position: relative; z-index: 1;
+    max-width: 860px; margin: 0 auto; padding: 0 2rem;
   }
 
   /* ── HERO ──────────────────────────────────────────────── */
-  #hero {
+  .hero {
     min-height: 100vh;
-    display: flex;
-    align-items: center;
-    padding-top: 5rem;
+    display: flex; align-items: center;
+    border-bottom: 1px solid var(--border);
   }
-  .hero-inner { max-width: 680px; }
-
-  .hero-tag {
+  .hero-inner {
+    padding: 8rem 0 5rem;
+    max-width: 580px;
+  }
+  .hero-label {
     font-family: "Courier New", monospace;
-    font-size: 0.75rem;
-    letter-spacing: 0.2em;
-    color: var(--teal);
-    text-transform: uppercase;
-    margin-bottom: 1.4rem;
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
+    font-size: 0.68rem; letter-spacing: 0.3em;
+    color: var(--gold-dim); text-transform: uppercase;
+    margin-bottom: 1.6rem;
+    display: flex; align-items: center; gap: 0.9rem;
   }
-  .hero-tag::before {
+  .hero-label::before {
     content: '';
-    display: block;
-    width: 32px;
-    height: 1px;
-    background: var(--teal);
+    display: block; width: 28px; height: 1px;
+    background: var(--gold-dim);
   }
-
-  h1 {
-    font-size: clamp(2.6rem, 6vw, 4.2rem);
+  .hero-title {
+    font-size: clamp(3.5rem, 9vw, 6.5rem);
     font-weight: 400;
-    line-height: 1.12;
-    letter-spacing: -0.01em;
     color: #f0ece0;
-    margin-bottom: 1.2rem;
+    letter-spacing: 0.06em;
+    line-height: 1.05;
+    margin-bottom: 0.5rem;
   }
-  h1 em {
-    font-style: italic;
-    color: var(--gold);
-  }
-
-  .hero-desc {
-    font-size: 1.05rem;
-    color: var(--text-muted);
-    max-width: 520px;
-    margin-bottom: 2.4rem;
-    line-height: 1.85;
-  }
-
-  .hero-links {
-    display: flex;
-    gap: 1.2rem;
-    flex-wrap: wrap;
-  }
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.6rem 1.5rem;
+  .hero-hanja {
     font-family: "Courier New", monospace;
-    font-size: 0.78rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    text-decoration: none;
-    transition: all 0.2s;
-    border: 1px solid;
+    font-size: 0.78rem; color: var(--muted);
+    letter-spacing: 0.15em;
+    margin-bottom: 1.8rem;
   }
-  .btn-gold {
-    color: var(--bg);
-    background: var(--gold);
-    border-color: var(--gold);
+  .rule { width: 48px; height: 1px; background: var(--gold); margin-bottom: 1.6rem; }
+  .hero-desc {
+    font-size: 0.95rem;
+    color: var(--muted);
+    line-height: 1.9;
+    max-width: 420px;
+    word-break: keep-all;
   }
-  .btn-gold:hover { background: #dbbf60; }
-  .btn-outline {
-    color: var(--text-muted);
-    background: transparent;
-    border-color: var(--border);
-  }
-  .btn-outline:hover { border-color: var(--gold-dim); color: var(--text); }
+
+  .hero-section { position: relative; }
 
   .scroll-hint {
     position: absolute;
-    bottom: 2.5rem;
-    left: 50%;
+    bottom: 2.5rem; left: 50%;
     transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
     font-family: "Courier New", monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.25em;
-    color: var(--gold-dim);
-    text-transform: uppercase;
+    font-size: 0.62rem; letter-spacing: 0.25em;
+    color: var(--gold-dim); text-transform: uppercase;
     animation: bobble 2.4s ease-in-out infinite;
-    cursor: default;
+    z-index: 1;
   }
-  .scroll-hint .scroll-mouse {
-    width: 22px;
-    height: 34px;
-    border: 1.5px solid var(--gold-dim);
-    border-radius: 11px;
-    display: flex;
-    justify-content: center;
-    padding-top: 5px;
+  .scroll-mouse {
+    width: 20px; height: 30px;
+    border: 1.5px solid var(--gold-dim); border-radius: 10px;
+    display: flex; justify-content: center; padding-top: 5px;
   }
-  .scroll-hint .scroll-wheel {
-    width: 3px;
-    height: 7px;
-    background: var(--gold);
-    border-radius: 2px;
+  .scroll-wheel {
+    width: 2px; height: 6px;
+    background: var(--gold); border-radius: 2px;
     animation: wheel 2.4s ease-in-out infinite;
   }
   @keyframes wheel {
-    0%, 100% { transform: translateY(0); opacity: 1; }
-    50% { transform: translateY(5px); opacity: 0.3; }
+    0%,100% { transform: translateY(0); opacity: 1; }
+    50%      { transform: translateY(4px); opacity: 0.3; }
   }
   @keyframes bobble {
-    0%, 100% { transform: translateX(-50%) translateY(0); }
-    50% { transform: translateX(-50%) translateY(6px); }
+    0%,100% { transform: translateX(-50%) translateY(0); }
+    50%      { transform: translateX(-50%) translateY(6px); }
   }
 
-  /* ── SECTION COMMON ────────────────────────────────────── */
-  section { padding: 6rem 0; }
+  /* ── POST LIST ─────────────────────────────────────────── */
+  .post-section { padding: 4rem 0 7rem; }
 
   .sec-label {
     font-family: "Courier New", monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.25em;
-    color: var(--gold-dim);
-    text-transform: uppercase;
-    margin-bottom: 0.6rem;
-  }
-  h2 {
-    font-size: 1.9rem;
-    font-weight: 400;
-    color: #f0ece0;
-    margin-bottom: 0.4rem;
-  }
-  .rule {
-    width: 48px;
-    height: 1px;
-    background: var(--gold);
-    margin: 1rem 0 2.8rem;
+    font-size: 0.68rem; letter-spacing: 0.25em;
+    color: var(--gold-dim); text-transform: uppercase;
+    margin-bottom: 2.5rem;
   }
 
-  /* ── ABOUT ─────────────────────────────────────────────── */
-  .about-text { width: 100%; }
-  .about-text p { color: var(--text-muted); margin-bottom: 1.1rem; font-size: 0.97rem; }
-  .about-text strong { color: var(--text); }
-
-  .about-stats {
+  .post-item {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.2rem;
-    margin-top: 2.8rem;
-  }
-  .stat-item {
-    padding: 1.6rem 1.8rem;
-    border: 1px solid var(--border);
-    border-top: 3px solid var(--gold-dim);
-    background: var(--bg2);
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  .stat-item .stat-num {
-    font-size: 2.2rem;
-    color: var(--gold);
-    font-family: "Courier New", monospace;
-    line-height: 1;
-  }
-  .stat-item .stat-label {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    letter-spacing: 0.06em;
-  }
-  @media (max-width: 500px) {
-    .about-stats { grid-template-columns: 1fr; }
-  }
-
-  /* ── MATH TOPICS ───────────────────────────────────────── */
-  #topics { background: var(--bg2); }
-
-  .topics-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 1.4rem;
-  }
-  .topic-card {
-    padding: 1.6rem;
-    border: 1px solid var(--border);
-    background: var(--bg);
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.25s, transform 0.25s;
-    cursor: default;
-  }
-  .topic-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 3px; height: 100%;
-    background: var(--card-accent, var(--gold));
-  }
-  .topic-card:hover {
-    border-color: var(--card-accent, var(--gold-dim));
-    transform: translateY(-3px);
-  }
-  .topic-card .tc-symbol {
-    font-size: 1.5rem;
-    margin-bottom: 0.9rem;
-    font-family: "Courier New", monospace;
-    color: var(--card-accent, var(--gold));
-    opacity: 0.7;
-    display: block;
-    line-height: 1;
-  }
-  .topic-card h3 {
-    font-size: 1.05rem;
-    font-weight: 400;
-    color: #f0ece0;
-    margin-bottom: 0.2rem;
-  }
-  .topic-card .tc-sub {
-    font-family: "Courier New", monospace;
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    letter-spacing: 0.1em;
-    margin-bottom: 0.3rem;
-  }
-  .topic-card .tc-status {
-    font-family: "Courier New", monospace;
-    font-size: 0.65rem;
-    color: var(--teal);
-    letter-spacing: 0.08em;
-    margin-bottom: 0.85rem;
-  }
-  .topic-card p {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    line-height: 1.7;
-  }
-  .tc-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 1rem;
-  }
-  .tc-tag {
-    font-family: "Courier New", monospace;
-    font-size: 0.65rem;
-    padding: 0.2rem 0.55rem;
-    border: 1px solid var(--border);
-    color: var(--text-muted);
-    letter-spacing: 0.08em;
-  }
-
-  /* ── NOTES / POSTS ─────────────────────────────────────── */
-  .notes-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-  .note-item {
-    display: grid;
-    grid-template-columns: 80px 1fr auto;
-    align-items: baseline;
-    padding: 1.15rem 0;
+    grid-template-columns: 100px 1fr;
+    gap: 2rem;
+    padding: 2rem 0;
     border-bottom: 1px solid var(--border);
-    gap: 1.5rem;
-    transition: background 0.15s;
+    align-items: start;
+    transition: background 0.15s, padding-left 0.2s;
   }
-  .note-item:first-child { border-top: 1px solid var(--border); }
-  .note-item:hover { background: rgba(200,168,75,0.025); }
+  .post-item:first-child { border-top: 1px solid var(--border); }
+  .post-item:hover { background: rgba(200,168,75,0.02); padding-left: 0.5rem; }
 
-  .note-date {
+  .post-date {
     font-family: "Courier New", monospace;
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    white-space: nowrap;
+    font-size: 0.72rem; color: var(--muted);
+    letter-spacing: 0.08em;
+    padding-top: 0.2rem; line-height: 1.6;
   }
-  .note-title {
-    font-size: 0.95rem;
-    color: var(--text);
+  .post-title {
+    font-size: 1.15rem; font-weight: 400;
+    color: #f0ece0;
     text-decoration: none;
-    transition: color 0.2s;
-    display: flex;
-    align-items: baseline;
-    gap: 0.7rem;
+    display: block; margin-bottom: 0.5rem;
+    transition: color 0.2s; line-height: 1.45;
   }
-  .note-title:hover { color: var(--gold); }
-  .note-badge {
+  .post-title:hover { color: var(--gold); }
+  .post-excerpt {
+    font-size: 0.88rem; color: var(--muted);
+    line-height: 1.75;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .post-tags {
+    display: flex; gap: 0.5rem; margin-top: 0.7rem; flex-wrap: wrap;
+  }
+  .post-tag {
     font-family: "Courier New", monospace;
     font-size: 0.62rem;
-    padding: 0.15rem 0.5rem;
+    padding: 0.15rem 0.55rem;
     border: 1px solid var(--border);
-    color: var(--text-muted);
-    white-space: nowrap;
-    letter-spacing: 0.06em;
-    flex-shrink: 0;
-  }
-  .note-badge.analysis  { border-color: rgba(200,168,75,0.4);  color: var(--gold-dim); }
-  .note-badge.algebra   { border-color: rgba(46,184,160,0.4);  color: var(--teal-dim); }
-  .note-badge.topology  { border-color: rgba(180,100,100,0.4); color: #9a5555; }
-  .note-badge.geometry  { border-color: rgba(120,150,200,0.4); color: #6080aa; }
-  .note-badge.ode       { border-color: rgba(212,120,90,0.4);  color: #b05a3a; }
-  .note-badge.ig        { border-color: rgba(90,159,212,0.4);  color: var(--accent); }
-  .note-arrow {
-    color: var(--text-muted);
-    font-size: 0.8rem;
-  }
-
-  /* ── EQUATIONS SHOWCASE ─────────────────────────────────── */
-  #equations { background: var(--bg2); }
-  .eq-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.4rem;
-  }
-  .eq-card {
-    padding: 1.6rem 1.8rem;
-    border: 1px solid var(--border);
-    background: var(--bg);
-    position: relative;
-    overflow: hidden;
-  }
-  .eq-card::after {
-    content: '';
-    position: absolute;
-    bottom: 0; right: 0;
-    width: 60px; height: 60px;
-    background: radial-gradient(circle at bottom right, rgba(200,168,75,0.06), transparent);
-  }
-  .eq-name {
-    font-family: "Courier New", monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.2em;
-    color: var(--gold-dim);
-    text-transform: uppercase;
-    margin-bottom: 0.8rem;
-  }
-  .eq-display {
-    font-size: 1rem;
-    color: #e8e0c8;
-    line-height: 2;
-    text-align: center;
-    padding: 0.5rem 0;
-  }
-  .eq-desc {
-    margin-top: 0.8rem;
-    font-size: 0.82rem;
-    color: var(--text-muted);
-    line-height: 1.65;
-  }
-
-  /* ── GITHUB ACTIVITY ────────────────────────────────────── */
-  .activity-bar {
-    display: flex;
-    align-items: flex-end;
-    gap: 3px;
-    height: 48px;
-  }
-  .ab-col { display: flex; flex-direction: column; gap: 3px; }
-  .ab-cell {
-    width: 12px; height: 12px;
-    background: var(--border);
-    border-radius: 2px;
-  }
-  .ab-cell.l1 { background: rgba(200,168,75,0.2); }
-  .ab-cell.l2 { background: rgba(200,168,75,0.45); }
-  .ab-cell.l3 { background: rgba(200,168,75,0.7); }
-  .ab-cell.l4 { background: rgba(200,168,75,0.95); }
-
-  .profile-row {
-    display: flex;
-    align-items: center;
-    gap: 2.5rem;
-    margin-bottom: 2.5rem;
-    flex-wrap: wrap;
-  }
-  .profile-avatar {
-    width: 80px; height: 80px;
-    border-radius: 50%;
-    background: var(--bg3);
-    border: 2px solid var(--gold-dim);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    flex-shrink: 0;
-  }
-  .profile-info h3 { font-size: 1.1rem; font-weight: 400; color: #f0ece0; }
-  .profile-info .handle {
-    font-family: "Courier New", monospace;
-    font-size: 0.78rem;
-    color: var(--text-muted);
-    margin-top: 0.2rem;
-  }
-  .profile-info .bio {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    margin-top: 0.5rem;
+    color: var(--muted); letter-spacing: 0.06em;
   }
 
   /* ── FOOTER ─────────────────────────────────────────────── */
   footer {
-    padding: 3rem 0;
+    position: relative; z-index: 1;
+    padding: 2.5rem 0;
     border-top: 1px solid var(--border);
     text-align: center;
-  }
-  footer .f-sig {
     font-family: "Courier New", monospace;
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    letter-spacing: 0.15em;
+    font-size: 0.7rem; color: var(--muted);
+    letter-spacing: 0.12em;
   }
-  footer .f-quote {
-    font-style: italic;
-    color: var(--gold-dim);
-    font-size: 0.85rem;
+  .f-counter {
     margin-top: 0.7rem;
+    font-size: 0.65rem; letter-spacing: 0.2em;
   }
-  footer .f-counter {
-    margin-top: 1.2rem;
-    font-family: "Courier New", monospace;
-    font-size: 0.68rem;
-    color: var(--muted);
-    letter-spacing: 0.2em;
-  }
-  footer .f-counter .gc-label {
-    color: var(--gold-dim);
-    margin-right: 0.5rem;
-  }
+  .gc-label { color: var(--gold-dim); margin-right: 0.5rem; }
 
-  /* ── UTILITY ────────────────────────────────────────────── */
-  .fadeup {
-    opacity: 0;
-    transform: translateY(18px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-  .fadeup.visible { opacity: 1; transform: none; }
-
-  /* ── LIGHT THEME VARIABLES ─────────────────────────────────── */
-  html[data-theme="light"] {
-    --bg:          #f5f0e8;
-    --bg2:         #ece7da;
-    --bg3:         #e2ddd0;
-    --gold:        #8b6914;
-    --gold-dim:    #6a4f0f;
-    --teal:        #1a7a6a;
-    --teal-dim:    #0e5045;
-    --accent:      #2b6fa0;
-    --text:        #1a1612;
-    --text-muted:  #6b6357;
-    --border:      #cac3b4;
-    --border-gold: rgba(139,105,20,0.25);
-  }
-
-  html[data-theme="light"] h1,
-  html[data-theme="light"] h2,
-  html[data-theme="light"] .topic-card h3,
-  html[data-theme="light"] .profile-info h3 { color: #1a1612; }
-
-  html[data-theme="light"] .eq-display { color: #2a2218; }
-
-  html[data-theme="light"] nav {
-    background: var(--bg);
-  }
-  html[data-theme="light"] .btn-gds { color: var(--text); }
-  html[data-theme="light"] .btn-gds:hover { color: var(--text); }
-
-  /* ── THEME TOGGLE BUTTON ────────────────────────────────────── */
-  #theme-toggle {
-    background: none;
-    border: 1px solid var(--border);
-    color: var(--text-muted);
-    font-family: "Courier New", monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.1em;
-    padding: 0.3rem 0.7rem;
-    cursor: pointer;
-    transition: color 0.2s, border-color 0.2s;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-  #theme-toggle:hover {
-    color: var(--gold);
-    border-color: var(--gold-dim);
-  }
-
-  @media (max-width: 640px) {
+  /* ── RESPONSIVE ────────────────────────────────────────── */
+  @media (max-width: 600px) {
     nav { padding: 1rem 1.2rem; }
-    nav ul { gap: 1.5rem; }
-    .about-grid { grid-template-columns: 1fr; }
-    .eq-grid { grid-template-columns: 1fr; }
-    .note-item { grid-template-columns: 1fr; gap: 0.3rem; }
-    .note-arrow { display: none; }
+    nav ul { gap: 1.2rem; }
+    .post-item { grid-template-columns: 1fr; gap: 0.4rem; }
+    .hero-inner { padding: 7rem 0 4rem; }
   }
 </style>
 </head>
@@ -611,32 +240,23 @@ MathJax = {
 
 <!-- NAV -->
 <nav>
-  <a href="#" class="logo">∂ / ∂x</a>
+  <a href="index.html" class="logo">片鱗</a>
   <ul>
-    <li><a href="#about">About</a></li>
-    <li><a href="pyeonlin.html">편린</a></li>
-    <li><a href="#topics">Topics</a></li>
-    <li><a href="notes.html">Notes</a></li>
-    <li><a href="#equations">아름다운방정식</a></li>
-    <li><a href="gds7.html" class="btn-gds">기대수 7기</a></li>
+    <li><a href="index.html" class="active">편린</a></li>
   </ul>
-  <button id="theme-toggle" aria-label="테마 전환">LIGHT</button>
+  <button id="theme-toggle" type="button" aria-label="테마 전환">LIGHT</button>
 </nav>
 
 <!-- HERO -->
-<section id="hero" style="position:relative;">
+<section class="hero-section">
   <div class="wrap">
-    <div class="hero-inner fadeup">
-      <div class="hero-tag">수학 공부 기록</div>
-      <h1>불완전한 공리 위에서,<br><em>그래도 안온하게.</em></h1>
-      <p class="hero-desc">
-        집합론, 선형대수학, 다변수미적분학—<br>
-        수학의 즐거움 「기초부터 대학원수학까지 7기」와 함께 쌓아가는 기록.
-      </p>
-      <div class="hero-links">
-        <a href="notes.html" class="btn btn-gold">공부 노트 보기</a>
-        <a href="#notes" class="btn btn-outline">최근 기록</a>
-        <a href="https://www.youtube.com/@enjoyingmath9346" target="_blank" class="btn btn-outline">수학의 즐거움 ↗</a>
+    <div class="hero">
+      <div class="hero-inner">
+        <div class="hero-label">personal writing</div>
+        <h1 class="hero-title">편린</h1>
+        <div class="hero-hanja">片鱗 — 한 조각의 비늘, 전체를 가늠케 하는 단편</div>
+        <div class="rule"></div>
+        <p class="hero-desc">수학도, 일도, 삶도 아닌 — 그냥 나의 이야기.<br>정제되지 않은 채로 남겨두는 기록들.</p>
       </div>
     </div>
   </div>
@@ -646,226 +266,157 @@ MathJax = {
   </div>
 </section>
 
-<!-- ABOUT -->
-<section id="about">
+<!-- POST LIST -->
+<section class="post-section">
   <div class="wrap">
-    <div class="sec-label">About</div>
-    <h2>공부하는 이유</h2>
-    <div class="rule"></div>
-    <div class="fadeup">
-      <div class="about-text">
-        <p>수학이라는 게 제게는 참 묘한 의미가 있어요. 예전에 학교에서 아이들을 가르칠 때도 그랬고, 지금 운수업 현장에서 치열하게 하루를 보낼 때도 마찬가지였죠. 세상은 늘 내 마음 같지 않고 복잡하게 흘러가지만, 그 안에서 수학만큼은 변하지 않는 명확한 질서를 보여주거든요. 그 논리적인 흐름을 하나씩 따라가다 보면 마음이 참 안온해져요. 나만의 단단한 안식처를 세우는 기분이랄까요.</p>
-        <p>사실 제가 요즘 최적운송이론이나 반도체, 양자 컴퓨팅 같은 수학을 파고드는 건, 거창한 전문가라서가 아니에요. 오히려 그 반대죠. 그쪽 분야로 나아가고 싶은 간절한 마음이 있거든요. 기술의 겉모습만 흉내 내는 게 아니라, 그 밑바닥에 흐르는 본질을 내 손으로 직접 만져보고 싶어서 묵묵히 기초를 다지고 있는 중입니다. 언젠가 그 기술의 세계로 건너갈 튼튼한 다리를 수학으로 놓고 있는 셈이에요.</p>
-        <p>무엇보다 저는 수학을 공부하면서 좀 더 괜찮은 남자, 괜찮은 어른이 되고 싶다는 생각을 많이 해요. 감정에 쉽게 휘둘리지 않고, 이성적인 질서로 스스로를 다스릴 줄 아는 사람 말이죠. 제 딸에게는 세상을 논리적이면서도 따뜻하게 바라보는 아빠의 뒷모습을 보여주고 싶고, 함께 공부하는 동료들에게는 <strong>"가르치는 사람"이 아닌 "곁에서 같이 고민하는 동반자"</strong>가 되고 싶습니다.</p>
-        <p>그래서 오늘도 저는 LaTeX을 켜고 정교하게 수식을 적어 내려갑니다. 이 기록들이 저를 더 깊이 있는 어른으로 만들어줄 거라 믿으면서요. 화려한 성취도 좋지만, 저는 수학이라는 정직한 언어로 내 삶을 매일 조금씩 더 단단하고 안온하게 일궈가는 지금의 제 모습이 참 좋습니다.</p>
-      </div>
-      <div class="about-stats">
-        <div class="stat-item">
-          <div class="stat-num">∞</div>
-          <div class="stat-label">공부할 내용</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-num">4</div>
-          <div class="stat-label">현재 진행 중인 분야</div>
-        </div>
-        <div class="stat-item" onclick="location.href='gds7.html'" style="cursor:pointer; transition: border-color 0.2s, transform 0.2s;" onmouseover="this.style.borderTopColor='var(--gold)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderTopColor='var(--gold-dim)';this.style.transform='none'">
-          <div class="stat-num">GDS 7기</div>
-          <div class="stat-label">수학의 즐거움 디스커션 그룹</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-num">2025</div>
-          <div class="stat-label">공부 시작 연도</div>
+    <div class="sec-label">기록 — 009 → 001</div>
+
+    <div class="post-item">
+      <div class="post-date">2026.06.19<br>금요일</div>
+      <div class="post-body">
+        <a href="pyeonlin/009-바람이분다.html" class="post-title">바람이 분다</a>
+        <p class="post-excerpt">세상은 어제와 같고 시간은 흐르고 있고, 나만 혼자 이렇게 달라져 있다. 이소라의 「바람이 분다」가 내 안에서 다시 울렸다.</p>
+        <div class="post-tags">
+          <span class="post-tag">노래</span>
+          <span class="post-tag">이별</span>
+          <span class="post-tag">이소라</span>
+          <span class="post-tag">가사</span>
         </div>
       </div>
     </div>
-  </div>
-</section>
 
-<!-- TOPICS -->
-<section id="topics">
-  <div class="wrap">
-    <div class="sec-label">Study Topics</div>
-    <h2>공부하는 분야</h2>
-    <div class="rule"></div>
-    <div class="topics-grid fadeup">
-
-      <a href="set-theory-notes.html" style="text-decoration:none;">
-      <div class="topic-card" style="--card-accent: #c8a84b;">
-        <span class="tc-symbol">∈</span>
-        <h3>집합론</h3>
-        <div class="tc-sub">Set Theory</div>
-        <div class="tc-status">● 진행 중</div>
-        <p>수학 전체의 언어적 토대. ZFC 공리계 위에서 수, 함수, 관계가 어떻게 정의되는지 탐색하고 있다.</p>
-        <div class="tc-tags">
-          <span class="tc-tag">ZFC 공리계</span>
-          <span class="tc-tag">서수·기수</span>
-          <span class="tc-tag">선택 공리</span>
+    <div class="post-item">
+      <div class="post-date">2026.06.18<br>수요일</div>
+      <div class="post-body">
+        <a href="pyeonlin/008-상수와변수.html" class="post-title">상수의 배경, 변수의 무대: 고정된 이름이 세계를 뒤흔들 때</a>
+        <p class="post-excerpt">상수는 직접 움직이지 않지만, x와 y가 맺는 규칙을 정의한다. 변하지 않음으로써 오히려 가장 강력하게 변화를 지배하는 것들에 대하여.</p>
+        <div class="post-tags">
+          <span class="post-tag">사색</span>
+          <span class="post-tag">수학</span>
+          <span class="post-tag">상수와 변수</span>
+          <span class="post-tag">삶의 철학</span>
         </div>
-      </div>
-      </a>
-
-      <div class="topic-card" style="--card-accent: #8a70c0;">
-        <span class="tc-symbol">Ax</span>
-        <h3>선형대수학</h3>
-        <div class="tc-sub">Linear Algebra</div>
-        <div class="tc-status">● 진행 중</div>
-        <p>벡터공간과 선형변환의 구조론. 고유값 분해와 내적공간이 분석학·물리학과 만나는 접점을 살피고 있다.</p>
-        <div class="tc-tags">
-          <span class="tc-tag">선형 변환</span>
-          <span class="tc-tag">고유값·고유벡터</span>
-          <span class="tc-tag">내적 공간</span>
-        </div>
-      </div>
-
-      <div class="topic-card" style="--card-accent: #2eb8a0;">
-        <span class="tc-symbol">∂</span>
-        <h3>다변수미적분학</h3>
-        <div class="tc-sub">Multivariable Calculus</div>
-        <div class="tc-status">● 진행 중</div>
-        <p>편미분, 다중적분, 벡터장의 언어. 스토크스 정리로 나아가기 위한 계산적·기하적 감각을 쌓는 중이다.</p>
-        <div class="tc-tags">
-          <span class="tc-tag">편미분·그래디언트</span>
-          <span class="tc-tag">다중적분</span>
-          <span class="tc-tag">발산·회전</span>
-        </div>
-      </div>
-
-      <div class="topic-card" style="--card-accent: #d4785a;">
-        <span class="tc-symbol">dy/dx</span>
-        <h3>미분방정식</h3>
-        <div class="tc-sub">Differential Equations</div>
-        <div class="tc-status">● 진행 중</div>
-        <p>변화율과 그 관계식으로 세계를 기술하는 언어. ODE에서 PDE로, 해의 존재·유일성에서 정성적 분석으로 나아간다.</p>
-        <div class="tc-tags">
-          <span class="tc-tag">ODE</span>
-          <span class="tc-tag">PDE</span>
-          <span class="tc-tag">존재·유일성 정리</span>
-        </div>
-      </div>
-
-      <a href="info-geometry.html" style="text-decoration:none;">
-      <div class="topic-card" style="--card-accent: #5a9fd4;">
-        <span class="tc-symbol">g<sub>ij</sub></span>
-        <h3>정보기하</h3>
-        <div class="tc-sub">Information Geometry</div>
-        <div class="tc-status">● 진행 중</div>
-        <p>통계적 모델의 공간을 다양체로 보고 Fisher 정보 행렬을 리만 계량으로 삼는 기하학. 기초 미분기하와 통계학의 교차점을 탐색한다.</p>
-        <div class="tc-tags">
-          <span class="tc-tag">Fisher 정보 계량</span>
-          <span class="tc-tag">통계 다양체</span>
-          <span class="tc-tag">자연경사</span>
-        </div>
-      </div>
-      </a>
-
-    </div>
-  </div>
-</section>
-
-<!-- NOTES -->
-<section id="notes">
-  <div class="wrap">
-    <div class="sec-label">Recent Notes</div>
-    <h2>최근 기록</h2>
-    <div class="rule"></div>
-    <div class="notes-list fadeup" id="recent-notes-list">
-      <div style="font-family:'Courier New',monospace;font-size:0.78rem;color:var(--text-muted);padding:2rem 0;letter-spacing:0.1em;">
-        불러오는 중 ...
       </div>
     </div>
-  </div>
-</section>
 
-<!-- EQUATIONS -->
-<section id="equations">
-  <div class="wrap">
-    <div class="sec-label">Beautiful Equations</div>
-    <h2>아름다운 수식들</h2>
-    <div class="rule"></div>
-    <div class="eq-grid fadeup">
-
-      <div class="eq-card">
-        <div class="eq-name">Stokes' Theorem</div>
-        <div class="eq-display">$$\iint_M d\omega = \oint_{\partial M} \omega$$</div>
-        <p class="eq-desc">미적분학의 기본정리, 그린 정리, 발산 정리를 하나의 언어로 통합한다. $\omega$는 미분형식이고, $d$는 외미분이다.</p>
-      </div>
-
-      <div class="eq-card">
-        <div class="eq-name">Gauss–Bonnet Theorem</div>
-        <div class="eq-display">$$\iint_M K\, dA = 2\pi\,\chi(M)$$</div>
-        <p class="eq-desc">곡면의 총 가우스 곡률은 위상적 불변량인 오일러 지표로만 결정된다. 기하가 위상에 얽매이는 순간.</p>
-      </div>
-
-      <div class="eq-card">
-        <div class="eq-name">Cauchy Integral Formula</div>
-        <div class="eq-display">$$f(a) = \frac{1}{2\pi i}\oint_{\gamma} \frac{f(z)}{z-a}\,dz$$</div>
-        <p class="eq-desc">정칙 함수의 값이 경계 위의 적분으로 완전히 결정된다는 사실—복소 해석학의 핵심적인 경직성.</p>
-      </div>
-
-      <div class="eq-card">
-        <div class="eq-name">First Isomorphism Theorem</div>
-        <div class="eq-display">$$G \,/\, \ker(\varphi) \;\cong\; \operatorname{Im}(\varphi)$$</div>
-        <p class="eq-desc">군 준동형의 핵과 상 사이에 놓인 구조적 동형. 모든 준동형은 몫으로의 사영, 동형, 포함으로 분해된다.</p>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- GITHUB PROFILE -->
-<section id="github">
-  <div class="wrap">
-    <div class="sec-label">GitHub</div>
-    <h2>저장소 & 활동</h2>
-    <div class="rule"></div>
-    <div class="fadeup">
-      <div class="profile-row">
-        <a href="https://github.com/beethoven2k" target="_blank" style="text-decoration:none;">
-          <div class="profile-avatar">𝛻</div>
-        </a>
-        <div class="profile-info">
-          <h3>beethoven2k</h3>
-          <div class="handle">@beethoven2k</div>
-          <div class="bio">집합론 · 선형대수학 · 다변수미적분학 — 수학의 즐거움 GDS 7기</div>
+    <div class="post-item">
+      <div class="post-date">2026.05.25<br>일요일</div>
+      <div class="post-body">
+        <a href="pyeonlin/007-human-being.html" class="post-title">Human Being</a>
+        <p class="post-excerpt">나는 왜 끊임없이 무언가를 해야만 안심이 될까? 어쩌면 우리는 'Human being'이 아니라 'Human doing'으로 살아가고 있는지도 모르겠습니다.</p>
+        <div class="post-tags">
+          <span class="post-tag">사색</span>
+          <span class="post-tag">존재</span>
+          <span class="post-tag">가치</span>
+          <span class="post-tag">위로</span>
         </div>
       </div>
-      <div style="overflow-x:auto; padding-bottom:0.5rem;">
-        <img
-          src="https://ghchart.rshah.org/c8a84b/beethoven2k"
-          alt="beethoven2k GitHub 기여도 그래프"
-          style="width:100%; min-width:600px; filter:opacity(0.85);"
-          onerror="this.parentElement.innerHTML='<div style=\'font-family:Courier New,monospace;font-size:0.75rem;color:var(--text-muted);padding:1rem 0;\'>기여도 그래프를 불러올 수 없습니다.</div>'"
-        >
-      </div>
-      <div style="margin-top:0.6rem; font-family:'Courier New',monospace; font-size:0.68rem; color:var(--text-muted); letter-spacing:0.1em; display:flex; justify-content:space-between; align-items:center;">
-        <span>contribution activity — github.com/beethoven2k</span>
-        <a href="https://github.com/beethoven2k/beethoven2k.github.io" target="_blank" style="color:var(--gold-dim); text-decoration:none; transition:color 0.2s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--gold-dim)'">저장소 바로가기 ↗</a>
+    </div>
+
+    <div class="post-item">
+      <div class="post-date">2026.05.25<br>일요일</div>
+      <div class="post-body">
+        <a href="pyeonlin/006-지금이계절.html" class="post-title">지금, 이 계절</a>
+        <p class="post-excerpt">봄이 첫눈을 기다린다는 말을 처음 읽었을 때, 한참 그 자리에 머물렀다. 봄이기 때문에, 봄이 아닌 것이 그리워지는.</p>
+        <div class="post-tags">
+          <span class="post-tag">사색</span>
+          <span class="post-tag">계절</span>
+          <span class="post-tag">지금</span>
+          <span class="post-tag">기다림</span>
+        </div>
       </div>
     </div>
+
+    <div class="post-item">
+      <div class="post-date">2026.05.23<br>토요일</div>
+      <div class="post-body">
+        <a href="pyeonlin/005-내가잘못한건가.html" class="post-title">내가 잘못한 건가?</a>
+        <p class="post-excerpt">불 꺼진 방에 누우면 천장이 스크린처럼 변하는 밤이 있습니다. 그 영상의 끝에는 항상 하나의 질문이 무거운 마침표처럼 찍힙니다.</p>
+        <div class="post-tags">
+          <span class="post-tag">사색</span>
+          <span class="post-tag">자책</span>
+          <span class="post-tag">위로</span>
+          <span class="post-tag">마음</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="post-item">
+      <div class="post-date">2026.05.18<br>월요일</div>
+      <div class="post-body">
+        <a href="pyeonlin/004-어딘가묻어있는잘못.html" class="post-title">어딘가 묻어 있는 잘못</a>
+        <p class="post-excerpt">세수를 했습니다. 씻기지 않습니다. 손으로 만질 수도, 눈으로 볼 수도 없는 그 '씻기지 않는 것'의 정체를 나는 너무 잘 알고 있기 때문일 것입니다.</p>
+        <div class="post-tags">
+          <span class="post-tag">사색</span>
+          <span class="post-tag">시</span>
+          <span class="post-tag">인간다움</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="post-item">
+      <div class="post-date">2026.05.12<br>월요일</div>
+      <div class="post-body">
+        <a href="pyeonlin/003-무사한착륙.html" class="post-title">무사한 착륙</a>
+        <p class="post-excerpt">"너랑 있으면 이렇게 착륙하게 돼." 곁에 있는 것만으로도 정신없이 퍼덕이던 날개를 접고 온전히 땅에 발을 딛게 만들어 주는 사람이 있다.</p>
+        <div class="post-tags">
+          <span class="post-tag">사색</span>
+          <span class="post-tag">착륙</span>
+          <span class="post-tag">안온함</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="post-item">
+      <div class="post-date">2026.05.12<br>월요일</div>
+      <div class="post-body">
+        <a href="pyeonlin/002-내가있을게.html" class="post-title">내가 있을게</a>
+        <p class="post-excerpt">멈추라는 기호 위에 덧그려진 나아가라는 메시지. 어쩌면 우리가 마주하는 수많은 벽은, 이제 그 문을 밀고 나갈 자기만의 방식을 찾을 때가 되었다는 묵묵한 응원일지도 모릅니다.</p>
+        <div class="post-tags">
+          <span class="post-tag">사색</span>
+          <span class="post-tag">연결</span>
+          <span class="post-tag">위로</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="post-item">
+      <div class="post-date">2026.05.12<br>월요일</div>
+      <div class="post-body">
+        <a href="pyeonlin/001-명사가-아닌-동사로.html" class="post-title">명사가 아닌 동사로</a>
+        <p class="post-excerpt">"인간이래 그런데 인간답지 않아." 오늘은 주인공 변은아의 대사가 명사라는 껍데기만 남은 내 모습을 바라보게 했다.</p>
+        <div class="post-tags">
+          <span class="post-tag">사색</span>
+          <span class="post-tag">명사와 동사</span>
+          <span class="post-tag">인간다움</span>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
   <div class="wrap">
-    <div class="f-sig">© 2025 · built with LaTeX, love, and sleepless nights</div>
-    <div class="f-quote">"Mathematics is the art of giving the same name to different things." — Henri Poincaré</div>
+    <div>© 2025 · beethoven2k.github.io</div>
     <div class="f-counter">
       <span class="gc-label">VISITORS</span><span class="goatcounter-count" data-path="/"></span>
     </div>
   </div>
 </footer>
+
 <!-- GoatCounter analytics -->
-<script data-goatcounter="https://beethoven2k.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script data-goatcounter="https://beethoven2k.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 
 <script>
-/* ── CANVAS: floating math symbols ────────────────────────── */
+/* ── CANVAS: floating fragments ─────────────────────────── */
 const canvas = document.getElementById('canvas-bg');
 const ctx = canvas.getContext('2d');
 const symbols = [
-  'ε','δ','∂','∇','∫','∑','∞','φ','λ','π','Ω','Γ','α','β','θ',
-  'dω','G/N','ker φ','∮','≅','⊕','∈','⊂','∀','∃','τ','ℝⁿ','∂M',
-  'f(z)','d/dx','[a,b]','‖x‖','⟨u,v⟩','χ(M)','2πi'
+  '片','鱗','결','숨','빛','길','문','여백','조각',
+  '사색','안온','착륙','존재','ε','∂','∞','φ','λ',
+  '∈','∀','∃','dω','τ','α'
 ];
 let particles = [];
 let particleColor = '#c8a84b';
@@ -877,15 +428,15 @@ function resize() {
 
 function init() {
   resize();
-  particles = Array.from({ length: 55 }, () => ({
+  particles = Array.from({ length: 38 }, () => ({
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height,
-    vx: (Math.random() - 0.5) * 0.18,
-    vy: (Math.random() - 0.5) * 0.18,
+    vx: (Math.random() - 0.5) * 0.14,
+    vy: (Math.random() - 0.5) * 0.14,
     sym: symbols[Math.floor(Math.random() * symbols.length)],
-    size: 11 + Math.random() * 11,
-    opacity: 0.2 + Math.random() * 0.55,
-    rot: Math.random() * 0.3 - 0.15,
+    size: 10 + Math.random() * 12,
+    opacity: 0.15 + Math.random() * 0.45,
+    rot: Math.random() * 0.25 - 0.125,
     angle: Math.random() * Math.PI * 2,
   }));
 }
@@ -893,13 +444,12 @@ function init() {
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   particles.forEach(p => {
-    p.x  += p.vx;
-    p.y  += p.vy;
+    p.x += p.vx; p.y += p.vy;
     p.angle += p.rot * 0.01;
-    if (p.x < -40)  p.x = canvas.width + 40;
-    if (p.x > canvas.width + 40)  p.x = -40;
-    if (p.y < -40)  p.y = canvas.height + 40;
-    if (p.y > canvas.height + 40) p.y = -40;
+    if (p.x < -50) p.x = canvas.width + 50;
+    if (p.x > canvas.width + 50) p.x = -50;
+    if (p.y < -50) p.y = canvas.height + 50;
+    if (p.y > canvas.height + 50) p.y = -50;
     ctx.save();
     ctx.globalAlpha = p.opacity;
     ctx.fillStyle = particleColor;
@@ -912,75 +462,21 @@ function draw() {
   requestAnimationFrame(draw);
 }
 
-init();
-draw();
+init(); draw();
 window.addEventListener('resize', init);
 
-/* ── THEME TOGGLE ──────────────────────────────────────────── */
+/* ── THEME TOGGLE ─────────────────────────────────────── */
 const themeBtn = document.getElementById('theme-toggle');
-
-function applyTheme(theme) {
-  document.documentElement.dataset.theme = theme;
-  localStorage.setItem('theme', theme);
-  if (theme === 'dark') {
-    themeBtn.textContent = 'LIGHT';
-    particleColor = '#c8a84b';
-  } else {
-    themeBtn.textContent = 'DARK';
-    particleColor = '#8b6914';
-  }
-  const chart = document.querySelector('#github img');
-  if (chart) {
-    const color = theme === 'dark' ? 'c8a84b' : '8b6914';
-    chart.src = `https://ghchart.rshah.org/${color}/beethoven2k`;
-  }
+function applyTheme(t) {
+  document.documentElement.dataset.theme = t;
+  localStorage.setItem('theme', t);
+  themeBtn.textContent = t === 'dark' ? 'LIGHT' : 'DARK';
+  particleColor = t === 'dark' ? '#c8a84b' : '#8b6914';
 }
-
 applyTheme(localStorage.getItem('theme') || 'dark');
 themeBtn.addEventListener('click', () => {
   applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
 });
-
-/* ── RECENT NOTES: notes-data.json 로딩 ───────────────────── */
-async function loadRecentNotes() {
-  const container = document.getElementById('recent-notes-list');
-  if (!container) return;
-
-  try {
-    const r = await fetch('notes-data.json');
-    if (!r.ok) throw new Error();
-    const items = await r.json();
-
-    container.innerHTML = items.slice(0, 6).map(item => `
-      <div class="note-item">
-        <span class="note-date">${item.date || '—'}</span>
-        <a href="${item.href}" class="note-title">
-          ${item.title}
-          <span class="note-badge ${item.cls}">${item.badge}</span>
-        </a>
-        <span class="note-arrow">→</span>
-      </div>
-    `).join('');
-
-    container.classList.add('visible');
-  } catch {
-    container.innerHTML = '<div style="font-family:\'Courier New\',monospace;font-size:0.78rem;color:var(--text-muted);padding:2rem 0;">기록이 없습니다.</div>';
-  }
-}
-
-loadRecentNotes();
-
-/* ── INTERSECTION OBSERVER: fade up ───────────────────────── */
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.classList.add('visible');
-      observer.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.12 });
-
-document.querySelectorAll('.fadeup').forEach(el => observer.observe(el));
 </script>
 </body>
 </html>
